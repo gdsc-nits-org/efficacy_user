@@ -15,7 +15,8 @@ class EfficacyUser extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Efficacy User',
-      routes: {//issue here
+      routes: {
+        //issue here
         Homepage.routeName: (context) => const Homepage(),
         LoginPage.routeName: (context) => const LoginPage(),
         SplashScreen.routeName: (context) => const SplashScreen(),
@@ -25,7 +26,7 @@ class EfficacyUser extends StatelessWidget {
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute: SplashScreen.routeName, //ExperimentPage.routeName,
+      initialRoute: Homepage.routeName, //ExperimentPage.routeName,
     );
   }
 }

@@ -8,6 +8,16 @@ class Formatter {
     return formatter.format(dateTime);
   }
 
+  static String dateOnly(DateTime dateTime) {
+    final formatter = DateFormat('MMM d');
+    return formatter.format(dateTime);
+  }
+
+  static String timeOnly(DateTime dateTime) {
+    final formatter = DateFormat('h:mm a');
+    return formatter.format(dateTime);
+  }
+
   /// Converts Map<dynamic, dynamic> to Map<String, dynamic> recursively
   static Map<String, dynamic>? convertMapToMapStringDynamic(Map? json) {
     if (json == null) return null;
