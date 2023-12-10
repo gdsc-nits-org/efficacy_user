@@ -1,21 +1,21 @@
-import 'package:efficacy_user/utils/utils.dart';
-import 'package:efficacy_user/widgets/custom_phone_input/custom_phone_input.dart';
+import 'package:efficacy_user/utils/validator.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/pages/pages.dart';
-import 'package:intl_phone_field/phone_number.dart';
+import 'package:efficacy_user/utils/exit_program.dart';
 
-class SignUpPage extends StatefulWidget {
-  static const String routeName = '/SignUpPage';
-  const SignUpPage({super.key});
+class SignInPage extends StatefulWidget {
+  static const String routeName = '/SignInPage';
+  const SignInPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool hidePassword = true;
@@ -39,8 +39,8 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               children: [
                 Container(
-                    height: height * 0.3,
-                    padding: EdgeInsets.symmetric(vertical: height * 0.06),
+                    height: height * 0.35,
+                    padding: EdgeInsets.symmetric(vertical: height * 0.08),
                     width: width,
                     decoration: const BoxDecoration(color: Color(0xFF213F8D)),
                     child: Container(
@@ -50,13 +50,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       fit: BoxFit.fitHeight,
                     ))),
                 Container(
-                  height: height * 0.7,
+                  height: height * 0.65,
                   width: width,
                   color: const Color(0xFF213F8D),
                   child: Container(
                     padding: EdgeInsets.symmetric(
                         vertical: height * 0.03, horizontal: width * 0.05),
-                    height: height * 0.7,
+                    height: height * 0.65,
                     width: width,
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -71,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: const Text(
-                            "Sign Up",
+                            "Sign In",
                             style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Color(0xFF213F8D)),
                           ),
                         ),
@@ -84,41 +84,44 @@ class _SignUpPageState extends State<SignUpPage> {
                           height: height * 0.09,
                           prefixIcon: Icons.email,
                         ),
-                        CustomTextField(
-                          controller: passwordController,
-                          hiddenText: hidePassword,
-                          label: "Password",
-                          validator: 
-                              Validator.isPasswordValid,
-                          borderRadius: 50,
-                          height: height * 0.09,
-                          prefixIcon: Icons.lock,
-                          suffixIcon: IconButton(
-                              onPressed: () {
-                                if (passVisibility == Icons.visibility) {
-                                  setState(() {
-                                    passVisibility = Icons.visibility_off;
-                                    hidePassword = false;
-                                  });
-                                } else {
-                                  setState(() {
-                                    passVisibility = Icons.visibility;
-                                    hidePassword = true;
-                                  });
-                                }
-                              },
-                              icon: Icon(
-                                passVisibility,
-                                color: const Color.fromARGB(255, 67, 67, 67),
-                              )),
+                        Column(
+                          children: [
+                            CustomTextField(
+                              controller: passwordController,
+                              hiddenText: hidePassword,
+                              label: "Password",
+                              validator: 
+                                  Validator.isPasswordValid,
+                              borderRadius: 50,
+                              height: height * 0.09,
+                              prefixIcon: Icons.lock,
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    if (passVisibility == Icons.visibility) {
+                                      setState(() {
+                                        passVisibility = Icons.visibility_off;
+                                        hidePassword = false;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        passVisibility = Icons.visibility;
+                                        hidePassword = true;
+                                      });
+                                    }
+                                  },
+                                  icon: Icon(
+                                    passVisibility,
+                                    color: const Color.fromARGB(255, 67, 67, 67),
+                                  )),
+                            ),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: TextButton(
+                            onPressed: (){Navigator.pushNamed(context, ForgotPasswordPage.routeName);}, 
+                            child: const Text("Forgot Password?", 
+                            style: TextStyle(color: Color.fromARGB(255, 126, 126, 126)),)),
                         ),
-                        CustomPhoneField(
-                          label: "Phone No.",
-                          onPhoneChanged: (PhoneNumber newPhoneNumber) {
-                            phoneNumber = newPhoneNumber;
-                          },
-                          borderRadius: 50,
-                          helperText: "* Optional",
+                          ],
                         ),
                         Column(
                           children: [
@@ -133,7 +136,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     _formKey.currentState!.validate();
                                   },
                                   child: const Text(
-                                    "Sign up",
+                                    "Sign in",
                                     style: TextStyle(fontSize: 17),
                                   )),
                             ),
@@ -141,17 +144,17 @@ class _SignUpPageState extends State<SignUpPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Text(
-                                  "Already have an account?",
+                                  "Don't have an account?",
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey),
                                 ),
                                 TextButton(
                                     onPressed: () {
                                       Navigator.popAndPushNamed(
-                                          context, SignInPage.routeName);
+                                          context, SignUpPage.routeName);
                                     },
                                     child: const Text(
-                                      "Sign in",
+                                      "Sign up",
                                       style: TextStyle(fontSize: 12),
                                     ))
                               ],
@@ -164,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   color: Colors.grey,
                                 )),
                                 Text(
-                                  "  Or Sign Up with  ",
+                                  "  Or Sign In with  ",
                                   style: TextStyle(color: Colors.grey),
                                 ),
                                 Expanded(
