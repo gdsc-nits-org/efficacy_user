@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:efficacy_user/controllers/services/user/user_controller.dart';
-import 'package:efficacy_user/controllers/utils/comparator.dart';
 import 'package:efficacy_user/models/club/club_model.dart';
 import 'package:efficacy_user/models/club_position/club_position_model.dart';
 import 'package:efficacy_user/models/utils/constants.dart';
@@ -13,8 +12,6 @@ import 'package:mongo_dart/mongo_dart.dart';
 part 'functions/_save_impl.dart';
 part 'functions/_check_duplicate_impl.dart';
 part 'functions/_check_permission_impl.dart';
-part 'functions/_create_impl.dart';
-part 'functions/_update_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_get_name_impl.dart';
 part 'functions/_get_all_clubs_impl.dart';
@@ -45,19 +42,6 @@ class ClubController {
     );
   }
 
-  /// Combination of clubName and institute name must be unique
-  static Future<ClubModel?> create(ClubModel club) async {
-    return await _createImpl(club);
-  }
-
-  static Future<ClubModel> update(ClubModel club) async {
-    await _checkPermission(
-      clubID: club.id!,
-      forView: false,
-    );
-    return await _updateImpl(club);
-  }
-
   /// For a given id returns all the data of the club
   static Stream<List<ClubModel>> get({
     String? id,
@@ -76,10 +60,6 @@ class ClubController {
   /// For a given id returns only the name
   static Stream<String?> getName(String id) {
     return _getNameImpl(id);
-  }
-
-  static Future<void> delete(String id) async {
-    throw UnimplementedError();
   }
 
   /// In minified only the club id, name and institute name is returned

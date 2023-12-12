@@ -22,12 +22,14 @@ class _SignUpPageState extends State<SignUpPage> {
   PhoneNumber? phoneNumber;
   IconData passVisibility = Icons.visibility;
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
     double gap = height * 0.01;
+    double bodyHeightPercentage = 0.6;
     return WillPopScope(
       onWillPop: () async {
         final quitCondition = await showExitWarning(context);
@@ -39,188 +41,163 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               children: [
                 Container(
-                    height: height * 0.3,
-                    padding: EdgeInsets.symmetric(vertical: height * 0.06),
-                    width: width,
-                    decoration: const BoxDecoration(color: Color(0xFF213F8D)),
-                    child: Container(
-                        width: width*0.3,
-                        child: Image.asset(
-                      "assets/images/efficacy_logo.png",
-                      fit: BoxFit.fitHeight,
-                    ))),
-                Container(
-                  height: height * 0.7,
+                  height: height * (1 - bodyHeightPercentage),
+                  padding: EdgeInsets.symmetric(vertical: height * 0.08),
                   width: width,
-                  color: const Color(0xFF213F8D),
+                  decoration: const BoxDecoration(color: dark),
+                  child: SizedBox(
+                    width: width * 0.3,
+                    child: Image.asset(
+                      Assets.efficacyUserLogoImagePath,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: height * bodyHeightPercentage,
+                  width: width,
+                  color: dark,
                   child: Container(
                     padding: EdgeInsets.symmetric(
                         vertical: height * 0.03, horizontal: width * 0.05),
                     height: height * 0.7,
                     width: width,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30)),
                     ),
                     child: Form(
-                      key: _formKey,
-                      child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            "Sign Up",
-                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Color(0xFF213F8D)),
-                          ),
-                        ),
-                        Gap(gap),
-                        CustomTextField(
-                          controller: emailController,
-                          label: "Email",
-                          validator: Validator.isEmailValid,
-                          borderRadius: 50,
-                          height: height * 0.09,
-                          prefixIcon: Icons.email,
-                        ),
-                        CustomTextField(
-                          controller: passwordController,
-                          hiddenText: hidePassword,
-                          label: "Password",
-                          validator: 
-                              Validator.isPasswordValid,
-                          borderRadius: 50,
-                          height: height * 0.09,
-                          prefixIcon: Icons.lock,
-                          suffixIcon: IconButton(
-                              onPressed: () {
-                                if (passVisibility == Icons.visibility) {
-                                  setState(() {
-                                    passVisibility = Icons.visibility_off;
-                                    hidePassword = false;
-                                  });
-                                } else {
-                                  setState(() {
-                                    passVisibility = Icons.visibility;
-                                    hidePassword = true;
-                                  });
-                                }
-                              },
-                              icon: Icon(
-                                passVisibility,
-                                color: const Color.fromARGB(255, 67, 67, 67),
-                              )),
-                        ),
-                        CustomPhoneField(
-                          label: "Phone No.",
-                          onPhoneChanged: (PhoneNumber newPhoneNumber) {
-                            phoneNumber = newPhoneNumber;
-                          },
-                          borderRadius: 50,
-                          helperText: "* Optional",
-                        ),
-                        Column(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Container(
-                              alignment: Alignment.topCenter,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      minimumSize:
-                                          Size(size.width * 0.5, height * 0.05),
-                                      backgroundColor: const Color(0xFF213F8D)),
-                                  onPressed: () {
-                                    _formKey.currentState!.validate();
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Sign Up",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge
+                                    ?.copyWith(color: dark),
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                CustomTextField(
+                                  controller: emailController,
+                                  label: "Email",
+                                  validator: Validator.isEmailValid,
+                                  borderRadius: 50,
+                                  height: 50,
+                                  prefixIcon: Icons.email,
+                                ),
+                                CustomTextField(
+                                  controller: passwordController,
+                                  hiddenText: hidePassword,
+                                  label: "Password",
+                                  validator: Validator.isPasswordValid,
+                                  borderRadius: 50,
+                                  height: 50,
+                                  prefixIcon: Icons.lock,
+                                  suffixIcon: IconButton(
+                                      onPressed: () {
+                                        if (passVisibility ==
+                                            Icons.visibility) {
+                                          setState(() {
+                                            passVisibility =
+                                                Icons.visibility_off;
+                                            hidePassword = false;
+                                          });
+                                        } else {
+                                          setState(() {
+                                            passVisibility = Icons.visibility;
+                                            hidePassword = true;
+                                          });
+                                        }
+                                      },
+                                      icon: Icon(
+                                        passVisibility,
+                                        color: const Color.fromARGB(
+                                            255, 67, 67, 67),
+                                      )),
+                                ),
+                                CustomPhoneField(
+                                  label: "Phone No.",
+                                  onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                                    phoneNumber = newPhoneNumber;
                                   },
-                                  child: const Text(
-                                    "Sign up",
-                                    style: TextStyle(fontSize: 17),
-                                  )),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Already have an account?",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                  borderRadius: 50,
+                                  helperText: "* Optional",
                                 ),
-                                TextButton(
+                              ].separate(height * 0.02),
+                            ),
+                            Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.topCenter,
+                                  height: 50,
+                                  width: 150,
+                                  child: ElevatedButton(
                                     onPressed: () {
-                                      Navigator.popAndPushNamed(
-                                          context, SignInPage.routeName);
+                                      _formKey.currentState!.validate();
                                     },
-                                    child: const Text(
-                                      "Sign in",
-                                      style: TextStyle(fontSize: 12),
-                                    ))
-                              ],
-                            ),
-                            const Row(
-                              children: [
-                                Expanded(
-                                    child: Divider(
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                )),
-                                Text(
-                                  "  Or Sign Up with  ",
-                                  style: TextStyle(color: Colors.grey),
+                                    child: Text(
+                                      "Sign Up",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                            fontWeight: Theme.of(context)
+                                                .textTheme
+                                                .labelLarge
+                                                ?.fontWeight,
+                                          ),
+                                    ),
+                                  ),
                                 ),
-                                Expanded(
-                                    child: Divider(
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                ))
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Already have an account?",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium
+                                          ?.copyWith(
+                                            color:
+                                                Theme.of(context).disabledColor,
+                                          ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                          LoginPage.routeName,
+                                          (Route<dynamic> route) => false,
+                                        );
+                                      },
+                                      child: Text(
+                                        "Sign in",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: dark,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ],
                             ),
-                            Gap(gap),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          minimumSize: Size(
-                                              height * 0.07, height * 0.07),
-                                          side: const BorderSide(
-                                              width: 0, color: Colors.white),
-                                          shape:
-                                              const ContinuousRectangleBorder(),
-                                          elevation: 3),
-                                      onPressed: () {},
-                                      child: Container(
-                                          height: height * 0.07,
-                                          width: height * 0.03,
-                                          padding: EdgeInsets.symmetric(vertical: height*0.01),
-                                          child: const Image(
-                                              fit: BoxFit.cover,
-                                              image: AssetImage(
-                                                  "assets/images/google_logo.png")))),
-                                  OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          minimumSize: Size(
-                                              height * 0.07, height * 0.07),
-                                          side: const BorderSide(
-                                              width: 0, color: Colors.white),
-                                          shape:
-                                              const ContinuousRectangleBorder(),
-                                          elevation: 3),
-                                      onPressed: () {},
-                                      child: Container(
-                                          height: height * 0.07,
-                                          width: height * 0.03,
-                                          padding: EdgeInsets.symmetric(vertical: height*0.01),
-                                          child: const Image(
-                                              fit: BoxFit.cover,
-                                              image: AssetImage(
-                                                  "assets/images/google_logo.png")))),
-                                ].separate(gap*2))
-                          ],
-                        ),
-                      ].separate(gap),
-                    )),
+                          ].separate(gap),
+                        )),
                   ),
                 )
               ],

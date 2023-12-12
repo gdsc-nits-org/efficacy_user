@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (UserController.currentUser == null) {
         Navigator.of(context)
             .pushNamedAndRemoveUntil(
-                SignInPage.routeName, (Route<dynamic> route) => false)
+                LoginPage.routeName, (Route<dynamic> route) => false)
             .then((value) => exit(0));
       } else {
         Navigator.of(context)

@@ -16,17 +16,9 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   late bool pendingInvites = false;
 
-  Future<void> init() async {
-    pendingInvites = await InvitationController.anyPendingInvitation();
-    if (pendingInvites) {
-      setState(() {});
-    }
-  }
-
   @override
   void initState() {
     // TODO : integrate with backend
-    init();
     super.initState();
   }
 
@@ -87,10 +79,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
             onTap: () {
               // Close the drawer
               Navigator.pop(context);
-              // Navigate to Organizations page
-              Navigator.of(context).pushNamed(
-                OrganizationsPage.routeName,
-              );
             },
           ),
           ListTile(
@@ -101,7 +89,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               if (mounted) {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
-                  SignInPage.routeName,
+                  LoginPage.routeName,
                   (route) => false,
                 );
               }

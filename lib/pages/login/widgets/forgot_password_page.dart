@@ -36,25 +36,32 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     height: height * 0.6,
                     padding: EdgeInsets.symmetric(vertical: height * 0.02),
                     width: width,
-                    decoration: const BoxDecoration(color: Color(0xFF213F8D)),
+                    decoration: const BoxDecoration(color: dark),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        SizedBox(
+                          width: width * 0.5,
+                          child: Image.asset(
+                            Assets.efficacyUserLogoImagePath,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
                         Container(
-                            width: width*0.5,
-                            child: Image.asset(
-                          "assets/images/efficacy_logo.png",
-                          fit: BoxFit.fitHeight,
-                        )),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: width*0.02),
-                          child: Text("Life made easy, life made efficient", 
-                          style: TextStyle(fontSize: height*0.04, fontWeight: FontWeight.w500, color: Colors.white),
-                          textAlign: TextAlign.center,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: width * 0.02),
+                          child: Text(
+                            "Life made easy, life made efficient",
+                            style: TextStyle(
+                              fontSize: height * 0.04,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         )
-                      ].separate(gap*2),
+                      ].separate(gap * 2),
                     )),
                 Container(
                   height: height * 0.4,
@@ -74,43 +81,53 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     child: Form(
                       key: _formKey,
                       child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            "Forgot Password",
-                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Color(0xFF213F8D)),
-                          ),
-                        ),
-                        Gap(gap),
-                        CustomTextField(
-                          controller: emailController,
-                          label: "Email",
-                          validator: Validator.isEmailValid,
-                          borderRadius: 50,
-                          height: height * 0.09,
-                          prefixIcon: Icons.email,
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.topCenter,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      minimumSize:
-                                          Size(size.width * 0.5, height * 0.05),
-                                      backgroundColor: const Color(0xFF213F8D)),
-                                  onPressed: () {
-                                    _formKey.currentState!.validate();
-                                  },
-                                  child: const Text(
-                                    "Sign in",
-                                    style: TextStyle(fontSize: 17),
-                                  )),
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Forgot Password",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineLarge
+                                  ?.copyWith(color: dark),
                             ),
-                          ])
-                      ].separate(gap),
-                    )),
+                          ),
+                          CustomTextField(
+                            controller: emailController,
+                            label: "Email",
+                            validator: Validator.isEmailValid,
+                            borderRadius: 50,
+                            height: height * 0.09,
+                            prefixIcon: Icons.email,
+                          ),
+                          Container(
+                            alignment: Alignment.topCenter,
+                            height: 50,
+                            width: 150,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _formKey.currentState!.validate();
+                              },
+                              child: Text(
+                                "Sign In",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                      fontWeight: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge
+                                          ?.fontWeight,
+                                    ),
+                              ),
+                            ),
+                          )
+                        ].separate(gap),
+                      ),
+                    ),
                   ),
                 )
               ],

@@ -15,13 +15,13 @@ class EfficacyUser extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Efficacy User',
-      routes: {//issue here
+      routes: {
+        //issue here
         Homepage.routeName: (context) => const Homepage(),
-        SignInPage.routeName: (context) => const SignInPage(),
+        LoginPage.routeName: (context) => const LoginPage(),
         SplashScreen.routeName: (context) => const SplashScreen(),
         ProfilePage.routeName: (context) => const ProfilePage(),
         SignUpPage.routeName: (context) => const SignUpPage(),
-        OrganizationsPage.routeName: (context) => const OrganizationsPage(),
         ForgotPasswordPage.routeName: (context) => const ForgotPasswordPage()
       },
       builder: ErrorHandler.handle,
