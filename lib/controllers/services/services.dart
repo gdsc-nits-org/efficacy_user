@@ -5,5 +5,4 @@ export 'club/club_controller.dart';
 export 'club_position/club_position_controller.dart';
 export 'event/event_controller.dart';
 export 'image/image_controller.dart';
-export 'invitation/invitation_controller.dart';
 export 'user/user_controller.dart';

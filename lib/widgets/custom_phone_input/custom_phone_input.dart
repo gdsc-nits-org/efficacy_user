@@ -11,6 +11,8 @@ class CustomPhoneField extends StatelessWidget {
   final IconData? prefixIcon;
   final Widget? suffixIcon;
   final void Function(PhoneNumber) onPhoneChanged;
+  final double borderRadius;
+  final String? helperText;
   const CustomPhoneField({
     super.key,
     this.title,
@@ -21,6 +23,8 @@ class CustomPhoneField extends StatelessWidget {
     this.suffixIcon,
     this.label,
     required this.onPhoneChanged,
+    this.borderRadius = 5,
+    this.helperText,
   });
 
   @override
@@ -35,13 +39,14 @@ class CustomPhoneField extends StatelessWidget {
           ),
         IntlPhoneField(
           decoration: InputDecoration(
+            helperText: helperText,
             labelText: label,
 
             focusColor: const Color(0xFF05354C),
             contentPadding:
                 contentPadding ?? const EdgeInsets.symmetric(horizontal: 10),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(borderRadius),
             ),
 
             prefixIcon: Icon(prefixIcon,
