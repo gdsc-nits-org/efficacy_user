@@ -17,11 +17,12 @@ class EfficacyUser extends StatelessWidget {
       title: 'Efficacy User',
       routes: {//issue here
         Homepage.routeName: (context) => const Homepage(),
-        LoginPage.routeName: (context) => const LoginPage(),
+        SignInPage.routeName: (context) => const SignInPage(),
         SplashScreen.routeName: (context) => const SplashScreen(),
         ProfilePage.routeName: (context) => const ProfilePage(),
         SignUpPage.routeName: (context) => const SignUpPage(),
-        OrganizationsPage.routeName: (context) => const OrganizationsPage()
+        OrganizationsPage.routeName: (context) => const OrganizationsPage(),
+        ForgotPasswordPage.routeName: (context) => const ForgotPasswordPage()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,

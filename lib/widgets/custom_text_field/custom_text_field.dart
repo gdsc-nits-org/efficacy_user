@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
   final double height;
   final TextInputType keyboardType;
   final String? label;
+  final double borderRadius; 
   const CustomTextField({
     super.key,
     this.contentPadding,
@@ -26,6 +27,7 @@ class CustomTextField extends StatelessWidget {
     this.height = 40,
     this.keyboardType = TextInputType.emailAddress,
     this.label,
+    this.borderRadius = 5,
   });
 
   @override
@@ -53,7 +55,7 @@ class CustomTextField extends StatelessWidget {
               contentPadding:
                   contentPadding ?? const EdgeInsets.symmetric(horizontal: 10),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(borderRadius),
               ),
               prefixIcon: Icon(prefixIcon,
                   color: const Color.fromARGB(

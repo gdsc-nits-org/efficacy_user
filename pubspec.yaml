@@ -54,4 +54,5 @@ flutter:
 
   assets:
     - .env
-    - assets/images/
+    - assets/images/efficacy_logo.png
+    - assets/images/google_logo.png

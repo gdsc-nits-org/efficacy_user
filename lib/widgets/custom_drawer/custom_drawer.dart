@@ -101,7 +101,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               if (mounted) {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
-                  LoginPage.routeName,
+                  SignInPage.routeName,
                   (route) => false,
                 );
               }
