@@ -4,6 +4,7 @@ import 'package:efficacy_user/models/models.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_list.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_viewer.dart';
 import 'package:efficacy_user/pages/homepage/widgets/home_appbar/home_appbar.dart';
+import 'package:efficacy_user/pages/subscription_page/subscription_page.dart';
 import 'package:efficacy_user/widgets/custom_bottom_navigation/custom_bottom_navigation.dart';
 import 'package:efficacy_user/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int currentTabIndex = 0;
-  int currentBottomIndex = 0;
+  int currentBottomIndex = 1;
 
   void navigator(Status buttonMessage) {
     setState(() {
@@ -26,7 +27,7 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
-  void bottonNavigator(int index) {
+  void bottomNavigator(int index) {
     setState(() {
       currentBottomIndex = index;
     });
@@ -34,12 +35,18 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    if (currentBottomIndex == 2) {
+      return SubscriptionPage(
+        currentBottomIndex: currentBottomIndex,
+        bottomNavigator: bottomNavigator,
+      );
+    }
     return Scaffold(
       appBar: HomeBar(navigator: navigator, currentTabIndex: currentTabIndex),
       endDrawer: const CustomDrawer(),
       bottomNavigationBar: CustomBottomNavigation(
         currentIndex: currentBottomIndex,
-        onTap: bottonNavigator,
+        onTap: bottomNavigator,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +64,7 @@ class _HomepageState extends State<Homepage> {
           ),
           EventViewer(
             typeIndex: currentTabIndex,
-            events: eventList,
+            events: currentBottomIndex == 0 ? eventList : subscribedList,
           ),
         ].separate(26),
       ),
