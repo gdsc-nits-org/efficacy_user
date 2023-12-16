@@ -23,11 +23,11 @@ class EfficacyUser extends StatelessWidget {
         ProfilePage.routeName: (context) => const ProfilePage(),
         SignUpPage.routeName: (context) => const SignUpPage(),
         ForgotPasswordPage.routeName: (context) => const ForgotPasswordPage(),
-        // SubscriptionPage.routeName: (context) => const SubscriptionPage(),
+        PersonalInfoPage.routeName:(context) =>  const PersonalInfoPage(),
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute: SplashScreen.routeName, //ExperimentPage.routeName,
+      initialRoute: LoginPage.routeName, //ExperimentPage.routeName,
     );
   }
 }
