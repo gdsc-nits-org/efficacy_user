@@ -21,6 +21,13 @@ class CustomBottomNavigation extends StatelessWidget {
       currentIndex: currentIndex,
       items: const [
         BottomNavigationBarItem(
+          icon: Icon(
+            Icons.explore,
+            size: 30,
+          ),
+          label: "",
+        ),
+        BottomNavigationBarItem(
           label: "",
           icon: Icon(
             Icons.home,
@@ -29,24 +36,10 @@ class CustomBottomNavigation extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            CupertinoIcons.profile_circled,
+            Icons.subscriptions,
             size: 30,
           ),
           label: "",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            CupertinoIcons.compass,
-            size: 30,
-          ),
-          label: "",
-        ),
-        BottomNavigationBarItem(
-          label: "",
-          icon: Icon(
-            Icons.menu,
-            size: 30,
-          ),
         ),
       ],
     );
