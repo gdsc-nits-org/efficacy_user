@@ -29,8 +29,10 @@ class _ProfileState extends State<ProfilePage> {
     _nameController.text = UserController.currentUser!.name;
     _scholarIDController.text = UserController.currentUser!.scholarID;
     _emailController.text = UserController.currentUser!.email;
-    selectedDegree = UserController.currentUser!.degree.name;
-    selectedBranch = UserController.currentUser!.branch.name;
+    selectedDegree =
+        UserController.currentUser!.degree?.name ?? Degree.BTech.name;
+    selectedBranch =
+        UserController.currentUser!.branch?.name ?? Branch.CSE.name;
     phoneNumber = UserController.currentUser!.phoneNumber;
   }
 
@@ -42,7 +44,7 @@ class _ProfileState extends State<ProfilePage> {
   final TextEditingController _scholarIDController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   String selectedDegree = Degree.BTech.name;
-  String selectedBranch = Degree.BTech.name;
+  String selectedBranch = Branch.CSE.name;
   Uint8List? image;
   PhoneNumber? phoneNumber;
 
@@ -157,13 +159,13 @@ class _ProfileState extends State<ProfilePage> {
                   title: "Branch",
                   items: Branch.values.map((branch) => branch.name).toList(),
                   enabled: editMode,
-                  value: UserController.currentUser!.branch.name,
+                  value: UserController.currentUser!.branch?.name,
                 ),
                 CustomDropDown(
                   title: "Degree",
                   items: Degree.values.map((degree) => degree.name).toList(),
                   enabled: editMode,
-                  value: UserController.currentUser!.degree.name,
+                  value: UserController.currentUser!.degree?.name,
                 ),
                 // CustomDataTable(
                 //   columnspace: width*0.35,

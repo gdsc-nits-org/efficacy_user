@@ -15,12 +15,12 @@ class PersonalInfoPage extends StatefulWidget {
   // TextEditingController? passwordController;
   // PhoneNumber? phoneNumber;
   static const String routeName = '/PersonalInfoPage';
-  const PersonalInfoPage({super.key,
+  const PersonalInfoPage({
+    super.key,
     // this.emailController,
     // this.passwordController,
     // this.phoneNumber,
-  }
-  );
+  });
 
   @override
   State<PersonalInfoPage> createState() => _PersonalInfoPageState();
@@ -104,18 +104,13 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               height: 50,
                               prefixIcon: Icons.person,
                             ),
-                            Column(
-                              children: [
-                                CustomTextField(
-                                  controller: scholarIDController,
-                                  hiddenText: hidePassword,
-                                  label: "Scholar Id",
-                                  validator: Validator.isScholarIDValid,
-                                  borderRadius: 50,
-                                  height: 50,
-                                  prefixIcon: Icons.numbers,
-                                ),
-                              ],
+                            CustomTextField(
+                              controller: scholarIDController,
+                              label: "Scholar Id",
+                              validator: Validator.isScholarIDValid,
+                              borderRadius: 50,
+                              height: 50,
+                              prefixIcon: Icons.numbers,
                             )
                           ].separate(height * 0.02),
                         ),
@@ -126,9 +121,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               height: 50,
                               width: 150,
                               child: ElevatedButton(
-                                onPressed: () async{
-                                  if(_formKey.currentState!.validate()){
-                                    await UserController.create(
+                                onPressed: () async {
+                                  UserModel? user;
+                                  if (_formKey.currentState!.validate()) {
+                                    user = await UserController.create(
                                       UserModel(
                                         name: nameController.text,
                                         email: args.email.text,
@@ -136,6 +132,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                         scholarID: scholarIDController.text,
                                         phoneNumber: args.phoneNumber,
                                       ),
+                                    );
+                                  }
+
+                                  if (user == null) {
+                                    throw Exception("Could not create user");
+                                  } else if (mounted) {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      Homepage.routeName,
+                                      (route) => false,
                                     );
                                   }
                                 },
@@ -159,7 +165,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Don't have an account?",
+                                  "Already have an account?",
                                   style: Theme.of(context)
                                       .textTheme
                                       .labelMedium
@@ -171,12 +177,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                   onPressed: () {
                                     Navigator.pushNamedAndRemoveUntil(
                                       context,
-                                      SignUpPage.routeName,
+                                      LoginPage.routeName,
                                       (Route<dynamic> route) => false,
                                     );
                                   },
                                   child: Text(
-                                    "Sign Up",
+                                    "Sign in",
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium

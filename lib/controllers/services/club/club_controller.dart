@@ -8,6 +8,7 @@ import 'package:efficacy_user/utils/database/database.dart';
 import 'package:efficacy_user/utils/formatter.dart';
 import 'package:efficacy_user/utils/local_database/local_database.dart';
 import 'package:mongo_dart/mongo_dart.dart';
+import 'package:efficacy_user/controllers/utils/comparator.dart';
 
 part 'functions/_save_impl.dart';
 part 'functions/_check_duplicate_impl.dart';
@@ -15,6 +16,7 @@ part 'functions/_check_permission_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_get_name_impl.dart';
 part 'functions/_get_all_clubs_impl.dart';
+part 'functions/_update_impl.dart';
 
 class ClubController {
   const ClubController._();
@@ -55,6 +57,14 @@ class ClubController {
       clubName: clubName,
       forceGet: forceGet,
     );
+  }
+
+  static Future<ClubModel> update(ClubModel club) async {
+    await _checkPermission(
+      clubID: club.id!,
+      forView: false,
+    );
+    return await _updateImpl(club);
   }
 
   /// For a given id returns only the name

@@ -17,12 +17,13 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       scholarID: json['scholarID'] as String,
       userPhoto: json['userPhoto'] as String?,
       userPhotoPublicID: json['userPhotoPublicID'] as String?,
-      branch: $enumDecode(_$BranchEnumMap, json['branch']),
-      degree: $enumDecode(_$DegreeEnumMap, json['degree']),
+      branch: $enumDecodeNullable(_$BranchEnumMap, json['branch']),
+      degree: $enumDecodeNullable(_$DegreeEnumMap, json['degree']),
       socials: (json['socials'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry($enumDecode(_$SocialEnumMap, k), e as String),
           ) ??
           const {},
+      app: json['app'] as String? ?? appName,
       position: (json['position'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -42,10 +43,11 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'scholarID': instance.scholarID,
       'userPhoto': instance.userPhoto,
       'userPhotoPublicID': instance.userPhotoPublicID,
-      'branch': _$BranchEnumMap[instance.branch]!,
-      'degree': _$DegreeEnumMap[instance.degree]!,
+      'branch': _$BranchEnumMap[instance.branch],
+      'degree': _$DegreeEnumMap[instance.degree],
       'socials':
           instance.socials.map((k, e) => MapEntry(_$SocialEnumMap[k]!, e)),
+      'app': instance.app,
       'position': instance.position,
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };

@@ -30,9 +30,13 @@ mixin _$UserModel {
   String get scholarID => throw _privateConstructorUsedError;
   String? get userPhoto => throw _privateConstructorUsedError;
   String? get userPhotoPublicID => throw _privateConstructorUsedError;
-  Branch get branch => throw _privateConstructorUsedError;
-  Degree get degree => throw _privateConstructorUsedError;
+  Branch? get branch => throw _privateConstructorUsedError;
+  Degree? get degree => throw _privateConstructorUsedError;
   Map<Social, String> get socials => throw _privateConstructorUsedError;
+
+  /// Which app does this user instance belong to
+  /// No need to touch this
+  String get app => throw _privateConstructorUsedError;
 
   /// List<ClubPositionID>
   List<String> get position => throw _privateConstructorUsedError;
@@ -58,9 +62,10 @@ abstract class $UserModelCopyWith<$Res> {
       String scholarID,
       String? userPhoto,
       String? userPhotoPublicID,
-      Branch branch,
-      Degree degree,
+      Branch? branch,
+      Degree? degree,
       Map<Social, String> socials,
+      String app,
       List<String> position,
       DateTime? lastLocalUpdate});
 }
@@ -86,9 +91,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? scholarID = null,
     Object? userPhoto = freezed,
     Object? userPhotoPublicID = freezed,
-    Object? branch = null,
-    Object? degree = null,
+    Object? branch = freezed,
+    Object? degree = freezed,
     Object? socials = null,
+    Object? app = null,
     Object? position = null,
     Object? lastLocalUpdate = freezed,
   }) {
@@ -125,18 +131,22 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.userPhotoPublicID
           : userPhotoPublicID // ignore: cast_nullable_to_non_nullable
               as String?,
-      branch: null == branch
+      branch: freezed == branch
           ? _value.branch
           : branch // ignore: cast_nullable_to_non_nullable
-              as Branch,
-      degree: null == degree
+              as Branch?,
+      degree: freezed == degree
           ? _value.degree
           : degree // ignore: cast_nullable_to_non_nullable
-              as Degree,
+              as Degree?,
       socials: null == socials
           ? _value.socials
           : socials // ignore: cast_nullable_to_non_nullable
               as Map<Social, String>,
+      app: null == app
+          ? _value.app
+          : app // ignore: cast_nullable_to_non_nullable
+              as String,
       position: null == position
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
@@ -166,9 +176,10 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String scholarID,
       String? userPhoto,
       String? userPhotoPublicID,
-      Branch branch,
-      Degree degree,
+      Branch? branch,
+      Degree? degree,
       Map<Social, String> socials,
+      String app,
       List<String> position,
       DateTime? lastLocalUpdate});
 }
@@ -192,9 +203,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? scholarID = null,
     Object? userPhoto = freezed,
     Object? userPhotoPublicID = freezed,
-    Object? branch = null,
-    Object? degree = null,
+    Object? branch = freezed,
+    Object? degree = freezed,
     Object? socials = null,
+    Object? app = null,
     Object? position = null,
     Object? lastLocalUpdate = freezed,
   }) {
@@ -231,18 +243,22 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.userPhotoPublicID
           : userPhotoPublicID // ignore: cast_nullable_to_non_nullable
               as String?,
-      branch: null == branch
+      branch: freezed == branch
           ? _value.branch
           : branch // ignore: cast_nullable_to_non_nullable
-              as Branch,
-      degree: null == degree
+              as Branch?,
+      degree: freezed == degree
           ? _value.degree
           : degree // ignore: cast_nullable_to_non_nullable
-              as Degree,
+              as Degree?,
       socials: null == socials
           ? _value._socials
           : socials // ignore: cast_nullable_to_non_nullable
               as Map<Social, String>,
+      app: null == app
+          ? _value.app
+          : app // ignore: cast_nullable_to_non_nullable
+              as String,
       position: null == position
           ? _value._position
           : position // ignore: cast_nullable_to_non_nullable
@@ -267,9 +283,10 @@ class _$UserModelImpl implements _UserModel {
       required this.scholarID,
       this.userPhoto,
       this.userPhotoPublicID,
-      required this.branch,
-      required this.degree,
+      this.branch,
+      this.degree,
       final Map<Social, String> socials = const {},
+      this.app = appName,
       final List<String> position = const [],
       this.lastLocalUpdate})
       : _socials = socials,
@@ -297,9 +314,9 @@ class _$UserModelImpl implements _UserModel {
   @override
   final String? userPhotoPublicID;
   @override
-  final Branch branch;
+  final Branch? branch;
   @override
-  final Degree degree;
+  final Degree? degree;
   final Map<Social, String> _socials;
   @override
   @JsonKey()
@@ -308,6 +325,12 @@ class _$UserModelImpl implements _UserModel {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_socials);
   }
+
+  /// Which app does this user instance belong to
+  /// No need to touch this
+  @override
+  @JsonKey()
+  final String app;
 
   /// List<ClubPositionID>
   final List<String> _position;
@@ -326,7 +349,7 @@ class _$UserModelImpl implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, userPhotoPublicID: $userPhotoPublicID, branch: $branch, degree: $degree, socials: $socials, position: $position, lastLocalUpdate: $lastLocalUpdate)';
+    return 'UserModel(id: $id, name: $name, phoneNumber: $phoneNumber, password: $password, email: $email, scholarID: $scholarID, userPhoto: $userPhoto, userPhotoPublicID: $userPhotoPublicID, branch: $branch, degree: $degree, socials: $socials, app: $app, position: $position, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @override
@@ -350,6 +373,7 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.branch, branch) || other.branch == branch) &&
             (identical(other.degree, degree) || other.degree == degree) &&
             const DeepCollectionEquality().equals(other._socials, _socials) &&
+            (identical(other.app, app) || other.app == app) &&
             const DeepCollectionEquality().equals(other._position, _position) &&
             (identical(other.lastLocalUpdate, lastLocalUpdate) ||
                 other.lastLocalUpdate == lastLocalUpdate));
@@ -370,6 +394,7 @@ class _$UserModelImpl implements _UserModel {
       branch,
       degree,
       const DeepCollectionEquality().hash(_socials),
+      app,
       const DeepCollectionEquality().hash(_position),
       lastLocalUpdate);
 
@@ -397,9 +422,10 @@ abstract class _UserModel implements UserModel {
       required final String scholarID,
       final String? userPhoto,
       final String? userPhotoPublicID,
-      required final Branch branch,
-      required final Degree degree,
+      final Branch? branch,
+      final Degree? degree,
       final Map<Social, String> socials,
+      final String app,
       final List<String> position,
       final DateTime? lastLocalUpdate}) = _$UserModelImpl;
 
@@ -425,11 +451,16 @@ abstract class _UserModel implements UserModel {
   @override
   String? get userPhotoPublicID;
   @override
-  Branch get branch;
+  Branch? get branch;
   @override
-  Degree get degree;
+  Degree? get degree;
   @override
   Map<Social, String> get socials;
+  @override
+
+  /// Which app does this user instance belong to
+  /// No need to touch this
+  String get app;
   @override
 
   /// List<ClubPositionID>
