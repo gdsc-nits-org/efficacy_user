@@ -1,3 +1,6 @@
+import 'package:efficacy_user/controllers/services/user/user_controller.dart';
+import 'package:efficacy_user/models/user/user_model.dart';
+import 'package:efficacy_user/pages/signup/widgets/infopass.dart';
 import 'package:efficacy_user/utils/utils.dart';
 import 'package:efficacy_user/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
@@ -14,6 +17,7 @@ class SignUpPage extends StatefulWidget {
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
+
 
 class _SignUpPageState extends State<SignUpPage> {
   TextEditingController emailController = TextEditingController();
@@ -140,11 +144,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                   height: 50,
                                   width: 150,
                                   child: ElevatedButton(
-                                    onPressed: () {
-                                      _formKey.currentState!.validate();
+                                    onPressed: () async{
+                                      if(_formKey.currentState!.validate()){
+                                        Navigator.pushNamed(context, PersonalInfoPage.routeName, arguments: ScreenArguments(emailController, passwordController, phoneNumber));
+                                      }
                                     },
                                     child: Text(
-                                      "Sign Up",
+                                      "Next",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyLarge

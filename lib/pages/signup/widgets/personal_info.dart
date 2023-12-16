@@ -1,30 +1,41 @@
+import 'package:efficacy_user/pages/signup/widgets/infopass.dart';
+import 'package:flutter/material.dart';
 import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/models/user/user_model.dart';
 import 'package:efficacy_user/utils/validator.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
-import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/pages/pages.dart';
 import 'package:efficacy_user/utils/exit_program.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
-class LoginPage extends StatefulWidget {
-  static const String routeName = '/LoginPage';
-  const LoginPage({super.key});
+class PersonalInfoPage extends StatefulWidget {
+  // TextEditingController? emailController;
+  // TextEditingController? passwordController;
+  // PhoneNumber? phoneNumber;
+  static const String routeName = '/PersonalInfoPage';
+  const PersonalInfoPage({super.key,
+    // this.emailController,
+    // this.passwordController,
+    // this.phoneNumber,
+  }
+  );
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<PersonalInfoPage> createState() => _PersonalInfoPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class _PersonalInfoPageState extends State<PersonalInfoPage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController scholarIDController = TextEditingController();
   bool hidePassword = true;
   IconData passVisibility = Icons.visibility;
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
@@ -76,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Sign In",
+                            "Personal Info",
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineLarge
@@ -86,61 +97,24 @@ class _LoginPageState extends State<LoginPage> {
                         Column(
                           children: [
                             CustomTextField(
-                              controller: emailController,
-                              label: "Email",
-                              validator: Validator.isEmailValid,
+                              controller: nameController,
+                              label: "Name",
+                              validator: Validator.isNameValid,
                               borderRadius: 50,
                               height: 50,
-                              prefixIcon: Icons.email,
+                              prefixIcon: Icons.person,
                             ),
                             Column(
                               children: [
                                 CustomTextField(
-                                  controller: passwordController,
+                                  controller: scholarIDController,
                                   hiddenText: hidePassword,
-                                  label: "Password",
-                                  validator: Validator.isPasswordValid,
+                                  label: "Scholar Id",
+                                  validator: Validator.isScholarIDValid,
                                   borderRadius: 50,
                                   height: 50,
-                                  prefixIcon: Icons.lock,
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      if (passVisibility == Icons.visibility) {
-                                        setState(() {
-                                          passVisibility = Icons.visibility_off;
-                                          hidePassword = false;
-                                        });
-                                      } else {
-                                        setState(() {
-                                          passVisibility = Icons.visibility;
-                                          hidePassword = true;
-                                        });
-                                      }
-                                    },
-                                    icon: Icon(
-                                      passVisibility,
-                                      color:
-                                          const Color.fromARGB(255, 67, 67, 67),
-                                    ),
-                                  ),
+                                  prefixIcon: Icons.numbers,
                                 ),
-                                // Container(
-                                //   alignment: Alignment.topRight,
-                                //   child: TextButton(
-                                //     onPressed: () {
-                                //       Navigator.pushNamed(
-                                //         context,
-                                //         ForgotPasswordPage.routeName,
-                                //       );
-                                //     },
-                                //     child: Text(
-                                //       "Forgot Password?",
-                                //       style: TextStyle(
-                                //           color:
-                                //               Theme.of(context).disabledColor),
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             )
                           ].separate(height * 0.02),
@@ -154,21 +128,19 @@ class _LoginPageState extends State<LoginPage> {
                               child: ElevatedButton(
                                 onPressed: () async{
                                   if(_formKey.currentState!.validate()){
-                                    UserModel? user = await UserController.login(
-                                      email: emailController.text.toString(),
-                                      password: passwordController.text.toString(),
+                                    await UserController.create(
+                                      UserModel(
+                                        name: nameController.text,
+                                        email: args.email.text,
+                                        password: args.password.text,
+                                        scholarID: scholarIDController.text,
+                                        phoneNumber: args.phoneNumber,
+                                      ),
                                     );
-                                    if (user != null && mounted) {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        Homepage.routeName,
-                                        (route) => false,
-                                      );
-                                    }
                                   }
                                 },
                                 child: Text(
-                                  "Sign In",
+                                  "Sign Up",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge
