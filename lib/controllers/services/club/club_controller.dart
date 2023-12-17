@@ -68,6 +68,9 @@ class ClubController {
     );
   }
 
+  /// Used Deprecated to warn not to use this.
+  /// Maybe use some better alternative.
+  @Deprecated("Use [UserController.toggleFollowClub()] instead")
   static Future<void> toggleFollow({required String clubID}) async {
     return await _toggleFollowImpl(clubID: clubID);
   }

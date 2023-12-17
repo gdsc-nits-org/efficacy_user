@@ -28,6 +28,10 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      following: (json['following'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       lastLocalUpdate: json['lastLocalUpdate'] == null
           ? null
           : DateTime.parse(json['lastLocalUpdate'] as String),
@@ -49,6 +53,7 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
           instance.socials.map((k, e) => MapEntry(_$SocialEnumMap[k]!, e)),
       'app': instance.app,
       'position': instance.position,
+      'following': instance.following,
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };
 

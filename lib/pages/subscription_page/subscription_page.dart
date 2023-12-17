@@ -25,7 +25,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   int filterIndex = 0;
 
   void _toggleSubscription(ClubModel club) async {
-    await ClubController.toggleFollow(clubID: club.id!);
+    await UserController.toggleFollowClub(clubID: club.id!);
     setState(() {});
   }
 

@@ -21,6 +21,7 @@ part 'functions/_get_impl.dart';
 part 'functions/_update_impl.dart';
 part 'functions/_delete_impl.dart';
 part 'functions/_gather_data.dart';
+part 'functions/_toggle_follow_club_impl.dart';
 
 class UserController {
   static const String _collectionName = "users";
@@ -131,5 +132,9 @@ class UserController {
     clubs = [];
     clubPositions = [];
     await _save();
+  }
+
+  static Future<void> toggleFollowClub({required String clubID}) async {
+    return await _toggleFollowClubImpl(clubID: clubID);
   }
 }
