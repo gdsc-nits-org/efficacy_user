@@ -27,6 +27,11 @@ Future<void> _deleteImpl() async {
       UserController.currentUser!.email,
     );
     await collection.deleteOne(selectorBuilder);
+    if (UserController.currentUser!.userPhotoPublicID != null) {
+      await ImageController.delete(
+        publicID: UserController.currentUser!.userPhotoPublicID!,
+      );
+    }
 
     await UserController.logOut();
   }

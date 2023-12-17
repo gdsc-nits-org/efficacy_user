@@ -13,6 +13,7 @@ part 'functions/_upload_image_impl.dart';
 part 'functions/_compressed_image_impl.dart';
 part 'functions/_get_min_size_impl.dart';
 part 'functions/_user_compression_impl.dart';
+part 'functions/_delete_impl.dart';
 
 class UploadInformation {
   final String? url;
@@ -82,5 +83,9 @@ class ImageController {
       maxSize: maxSize,
       context: context,
     );
+  }
+
+  static Future<void> delete({required String publicID}) async {
+    return await _deleteImpl(publicID: publicID);
   }
 }
