@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/models/club/club_model.dart';
-import 'package:efficacy_user/models/club_position/club_position_model.dart';
-import 'package:efficacy_user/models/utils/constants.dart';
 import 'package:efficacy_user/utils/database/database.dart';
 import 'package:efficacy_user/utils/formatter.dart';
 import 'package:efficacy_user/utils/local_database/local_database.dart';
@@ -12,11 +10,11 @@ import 'package:efficacy_user/controllers/utils/comparator.dart';
 
 part 'functions/_save_impl.dart';
 part 'functions/_check_duplicate_impl.dart';
-part 'functions/_check_permission_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_get_name_impl.dart';
 part 'functions/_get_all_clubs_impl.dart';
 part 'functions/_update_impl.dart';
+part 'functions/_toggle_follow_impl.dart';
 
 class ClubController {
   const ClubController._();
@@ -32,16 +30,6 @@ class ClubController {
 
   static Future<void> _checkDuplicate(ClubModel club) async {
     return await _checkDuplicateImpl(club);
-  }
-
-  static Future<void> _checkPermission({
-    required String clubID,
-    required bool forView,
-  }) async {
-    return await _checkPermissionImpl(
-      clubID: clubID,
-      forView: forView,
-    );
   }
 
   /// For a given id returns all the data of the club
@@ -60,10 +48,6 @@ class ClubController {
   }
 
   static Future<ClubModel> update(ClubModel club) async {
-    await _checkPermission(
-      clubID: club.id!,
-      forView: false,
-    );
     return await _updateImpl(club);
   }
 
@@ -82,5 +66,9 @@ class ClubController {
       instituteName: instituteName,
       minified: minified,
     );
+  }
+
+  static Future<void> toggleFollow({required String clubID}) async {
+    return await _toggleFollowImpl(clubID: clubID);
   }
 }

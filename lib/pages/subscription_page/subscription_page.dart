@@ -24,15 +24,9 @@ class SubscriptionPage extends StatefulWidget {
 class _SubscriptionPageState extends State<SubscriptionPage> {
   int filterIndex = 0;
 
-  void _toggleSubscription(ClubModel club) {
-    setState(() {
-      if (userClubList.contains(club)) {
-        club.followers.remove(UserController.currentUser!.id);
-      } else {
-        club.followers.add(
-            UserController.currentUser!.id ?? UserController.currentUser!.name);
-      }
-    });
+  void _toggleSubscription(ClubModel club) async {
+    await ClubController.toggleFollow(clubID: club.id!);
+    setState(() {});
   }
 
   void _changeIndex(int index) {
