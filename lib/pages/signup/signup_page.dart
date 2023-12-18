@@ -33,14 +33,14 @@ class _SignUpPageState extends State<SignUpPage> {
     double height = size.height;
     double width = size.width;
     double gap = height * 0.01;
-    double bodyHeightPercentage = 0.6;
+    double bodyHeightPercentage = 0.7;
     return WillPopScope(
       onWillPop: () async {
         final quitCondition = await showExitWarning(context);
         return quitCondition ?? false;
       },
       child: Scaffold(
-          resizeToAvoidBottomInset: false,
+          // resizeToAvoidBottomInset: false,
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -94,7 +94,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   label: "Email",
                                   validator: Validator.isEmailValid,
                                   borderRadius: 50,
-                                  height: 50,
+                                  height: 79,
                                   prefixIcon: Icons.email,
                                 ),
                                 CustomTextField(
@@ -103,7 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   label: "Password",
                                   validator: Validator.isPasswordValid,
                                   borderRadius: 50,
-                                  height: 50,
+                                  height: 79,
                                   prefixIcon: Icons.lock,
                                   suffixIcon: IconButton(
                                       onPressed: () {
@@ -135,7 +135,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   borderRadius: 50,
                                   helperText: "* Optional",
                                 ),
-                              ].separate(height * 0.02),
+                              ].separate(height*0.01),
                             ),
                             Column(
                               children: [

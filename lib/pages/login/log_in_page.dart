@@ -1,4 +1,5 @@
 import 'package:efficacy_user/controllers/services/user/user_controller.dart';
+import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/user/user_model.dart';
 import 'package:efficacy_user/utils/validator.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
@@ -29,14 +30,13 @@ class _LoginPageState extends State<LoginPage> {
     double height = size.height;
     double width = size.width;
     double gap = height * 0.01;
-    double bodyHeightPercentage = 0.6;
+    double bodyHeightPercentage = 0.7;
     return WillPopScope(
       onWillPop: () async {
         final quitCondition = await showExitWarning(context);
         return quitCondition ?? false;
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                               label: "Email",
                               validator: Validator.isEmailValid,
                               borderRadius: 50,
-                              height: 50,
+                              height: 79,
                               prefixIcon: Icons.email,
                             ),
                             Column(
@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                                   label: "Password",
                                   validator: Validator.isPasswordValid,
                                   borderRadius: 50,
-                                  height: 50,
+                                  height: 79,
                                   prefixIcon: Icons.lock,
                                   suffixIcon: IconButton(
                                     onPressed: () {
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                                 // ),
                               ],
                             )
-                          ].separate(height * 0.02),
+                          ].separate(height * 0.01),
                         ),
                         Column(
                           children: [
@@ -152,19 +152,29 @@ class _LoginPageState extends State<LoginPage> {
                               height: 50,
                               width: 150,
                               child: ElevatedButton(
-                                onPressed: () async{
-                                  if(_formKey.currentState!.validate()){
-                                    UserModel? user = await UserController.login(
-                                      email: emailController.text.toString(),
-                                      password: passwordController.text.toString(),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    UserModel? user;
+                                    showLoadingOverlay(
+                                      context: context,
+                                      asyncTask: () async {
+                                        user = await UserController.login(
+                                          email:
+                                              emailController.text.toString(),
+                                          password: passwordController.text
+                                              .toString(),
+                                        );
+                                      },
+                                      onCompleted: () {
+                                        if (user != null && mounted) {
+                                          Navigator.of(context)
+                                              .pushNamedAndRemoveUntil(
+                                            Homepage.routeName,
+                                            (_) => false,
+                                          );
+                                        }
+                                      },
                                     );
-                                    if (user != null && mounted) {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        Homepage.routeName,
-                                        (route) => false,
-                                      );
-                                    }
                                   }
                                 },
                                 child: Text(
