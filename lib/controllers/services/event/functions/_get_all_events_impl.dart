@@ -6,15 +6,15 @@ Stream<EventPaginationResponse> _getAllEventsImpl({
   bool forceGet = false,
   int count = 10,
 }) async* {
-  EventPaginationResponse filteredEvents = await _fetchAllEventsLocal(
-    skip: skip,
-    clubIDs: clubIDs,
-    forceGet: forceGet,
-    count: count,
-  );
-  if (filteredEvents.events.isNotEmpty) yield filteredEvents;
+  // EventPaginationResponse filteredEvents = await _fetchAllEventsLocal(
+  //   skip: skip,
+  //   clubIDs: clubIDs,
+  //   forceGet: forceGet,
+  //   count: count,
+  // );
+  // if (filteredEvents.events.isNotEmpty) yield filteredEvents;
 
-  filteredEvents = await _fetchAllEventsFromBackend(
+  EventPaginationResponse filteredEvents = await _fetchAllEventsFromBackend(
     skip: skip,
     clubIDs: clubIDs,
     forceGet: forceGet,
