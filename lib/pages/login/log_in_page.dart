@@ -124,23 +124,6 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   ),
                                 ),
-                                // Container(
-                                //   alignment: Alignment.topRight,
-                                //   child: TextButton(
-                                //     onPressed: () {
-                                //       Navigator.pushNamed(
-                                //         context,
-                                //         ForgotPasswordPage.routeName,
-                                //       );
-                                //     },
-                                //     child: Text(
-                                //       "Forgot Password?",
-                                //       style: TextStyle(
-                                //           color:
-                                //               Theme.of(context).disabledColor),
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             )
                           ].separate(height * 0.01),

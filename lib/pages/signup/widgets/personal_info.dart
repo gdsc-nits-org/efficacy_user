@@ -57,17 +57,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           child: Column(
             children: [
               Container(
-                height: height * (1 - bodyHeightPercentage),
-                padding: EdgeInsets.symmetric(vertical: height * 0.08),
-                width: width,
-                decoration: const BoxDecoration(color: Color(0xFF213F8D)),
-                child: ProfileImageViewer(
-                  height: 90,
-                  onImageChange: (Uint8List? newImage) {
-                    _image = newImage;
-                  },
-                )
-              ),
+                  height: height * (1 - bodyHeightPercentage),
+                  padding: EdgeInsets.symmetric(vertical: height * 0.08),
+                  width: width,
+                  decoration: const BoxDecoration(color: Color(0xFF213F8D)),
+                  child: ProfileImageViewer(
+                    height: 110,
+                    onImageChange: (Uint8List? newImage) {
+                      _image = newImage;
+                    },
+                  )),
               Container(
                 height: height * bodyHeightPercentage,
                 width: width,
@@ -126,40 +125,43 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               width: 150,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  UserModel? user;
-                                  showLoadingOverlay(
-                                    context: context,
-                                    asyncTask: () async {
-                                      UploadInformation? info;
-                                      if (_image != null) {
-                                        info =
-                                            await ImageController.uploadImage(
-                                          img: _image!,
-                                          userName: nameController.text,
-                                          folder: ImageFolder.userImage,
-                                        );
-                                      }
-                                      user = await UserController.create(
-                                        UserModel(
-                                          name: nameController.text,
-                                          email: args.email.text,
-                                          password: args.password.text,
-                                          scholarID: scholarIDController.text,
-                                          userPhoto: info?.url,
-                                          userPhotoPublicID: info?.publicID,
-                                          phoneNumber: args.phoneNumber,
-                                        ),
-                                      );
-                                    },
-                                    onCompleted: () {
-                                      if (user != null && mounted) {
-                                        Navigator.of(context)
-                                            .pushNamedAndRemoveUntil(
-                                          Homepage.routeName,
-                                          (_) => false,
-                                        );
-                                      }
-                                    });
+                                  if (_formKey.currentState!.validate()) {
+                                    UserModel? user;
+                                    showLoadingOverlay(
+                                        context: context,
+                                        asyncTask: () async {
+                                          UploadInformation? info;
+                                          if (_image != null) {
+                                            info = await ImageController
+                                                .uploadImage(
+                                              img: _image!,
+                                              userName: nameController.text,
+                                              folder: ImageFolder.userImage,
+                                            );
+                                          }
+                                          user = await UserController.create(
+                                            UserModel(
+                                              name: nameController.text,
+                                              email: args.email.text,
+                                              password: args.password.text,
+                                              scholarID:
+                                                  scholarIDController.text,
+                                              userPhoto: info?.url,
+                                              userPhotoPublicID: info?.publicID,
+                                              phoneNumber: args.phoneNumber,
+                                            ),
+                                          );
+                                        },
+                                        onCompleted: () {
+                                          if (user != null && mounted) {
+                                            Navigator.of(context)
+                                                .pushNamedAndRemoveUntil(
+                                              Homepage.routeName,
+                                              (_) => false,
+                                            );
+                                          }
+                                        });
+                                  }
                                 },
                                 child: Text(
                                   "Sign Up",
