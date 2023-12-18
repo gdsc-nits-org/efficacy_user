@@ -27,7 +27,7 @@ class EfficacyUser extends StatelessWidget {
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
-      initialRoute: SplashScreen.routeName, //ExperimentPage.routeName,
+      initialRoute: SignUpPage.routeName, //ExperimentPage.routeName,
     );
   }
 }

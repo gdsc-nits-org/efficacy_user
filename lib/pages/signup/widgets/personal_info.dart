@@ -1,4 +1,9 @@
+import 'dart:typed_data';
+
+import 'package:efficacy_user/controllers/services/image/image_controller.dart';
+import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/pages/signup/widgets/infopass.dart';
+import 'package:efficacy_user/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/models/user/user_model.dart';
@@ -32,6 +37,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   bool hidePassword = true;
   IconData passVisibility = Icons.visibility;
   final _formKey = GlobalKey<FormState>();
+  Uint8List? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +46,13 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     double height = size.height;
     double width = size.width;
     double gap = height * 0.01;
-    double bodyHeightPercentage = 0.6;
+    double bodyHeightPercentage = 0.7;
     return WillPopScope(
       onWillPop: () async {
         final quitCondition = await showExitWarning(context);
         return quitCondition ?? false;
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -56,13 +61,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 padding: EdgeInsets.symmetric(vertical: height * 0.08),
                 width: width,
                 decoration: const BoxDecoration(color: Color(0xFF213F8D)),
-                child: SizedBox(
-                  width: width * 0.3,
-                  child: Image.asset(
-                    Assets.efficacyUserLogoImagePath,
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
+                child: ProfileImageViewer(
+                  height: 90,
+                  onImageChange: (Uint8List? newImage) {
+                    _image = newImage;
+                  },
+                )
               ),
               Container(
                 height: height * bodyHeightPercentage,
@@ -101,7 +105,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               label: "Name",
                               validator: Validator.isNameValid,
                               borderRadius: 50,
-                              height: 50,
+                              height: 79,
                               prefixIcon: Icons.person,
                             ),
                             CustomTextField(
@@ -109,10 +113,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               label: "Scholar Id",
                               validator: Validator.isScholarIDValid,
                               borderRadius: 50,
-                              height: 50,
+                              height: 79,
                               prefixIcon: Icons.numbers,
                             )
-                          ].separate(height * 0.02),
+                          ].separate(height * 0.01),
                         ),
                         Column(
                           children: [
@@ -123,27 +127,39 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   UserModel? user;
-                                  if (_formKey.currentState!.validate()) {
-                                    user = await UserController.create(
-                                      UserModel(
-                                        name: nameController.text,
-                                        email: args.email.text,
-                                        password: args.password.text,
-                                        scholarID: scholarIDController.text,
-                                        phoneNumber: args.phoneNumber,
-                                      ),
-                                    );
-                                  }
-
-                                  if (user == null) {
-                                    throw Exception("Could not create user");
-                                  } else if (mounted) {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      Homepage.routeName,
-                                      (route) => false,
-                                    );
-                                  }
+                                  showLoadingOverlay(
+                                    context: context,
+                                    asyncTask: () async {
+                                      UploadInformation? info;
+                                      if (_image != null) {
+                                        info =
+                                            await ImageController.uploadImage(
+                                          img: _image!,
+                                          userName: nameController.text,
+                                          folder: ImageFolder.userImage,
+                                        );
+                                      }
+                                      user = await UserController.create(
+                                        UserModel(
+                                          name: nameController.text,
+                                          email: args.email.text,
+                                          password: args.password.text,
+                                          scholarID: scholarIDController.text,
+                                          userPhoto: info?.url,
+                                          userPhotoPublicID: info?.publicID,
+                                          phoneNumber: args.phoneNumber,
+                                        ),
+                                      );
+                                    },
+                                    onCompleted: () {
+                                      if (user != null && mounted) {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                          Homepage.routeName,
+                                          (_) => false,
+                                        );
+                                      }
+                                    });
                                 },
                                 child: Text(
                                   "Sign Up",
