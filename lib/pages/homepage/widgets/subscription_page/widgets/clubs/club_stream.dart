@@ -1,10 +1,9 @@
+import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/controllers/services/club/club_controller.dart';
 import 'package:efficacy_user/models/club/club_model.dart';
-import 'package:efficacy_user/pages/subscription_page/widgets/clubs/club_card.dart';
+import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/clubs/club_card.dart';
 import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
-
-import '../../../homepage/widgets/events/event_list.dart';
 
 class ClubsStream extends StatelessWidget {
   final int filterIndex;
@@ -20,8 +19,10 @@ class ClubsStream extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Stream<List<ClubModel>> clubStream =
+        ClubController.get(instituteName: "NIT, Silchar");
     return StreamBuilder<List<ClubModel>>(
-      stream: ClubController.get(instituteName: "NIT Silchar"),
+      stream: clubStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Loading state
@@ -36,6 +37,10 @@ class ClubsStream extends StatelessWidget {
         } else {
           // Data available
           final clubs = snapshot.data!;
+          final userClubList = clubs
+              .where((club) =>
+                  UserController.currentUser!.following.contains(club.id))
+              .toList();
           List<ClubModel> specificList = filterIndex == 0
               ? clubs
               : filterIndex == 1

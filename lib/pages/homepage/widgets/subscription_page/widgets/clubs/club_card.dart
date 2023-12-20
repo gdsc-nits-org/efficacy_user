@@ -4,7 +4,7 @@ import 'package:efficacy_user/models/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ClubCard extends StatefulWidget {
+class ClubCard extends StatelessWidget {
   ClubCard({
     super.key,
     required this.club,
@@ -14,17 +14,11 @@ class ClubCard extends StatefulWidget {
   final Function(ClubModel) onToggle;
 
   @override
-  State<ClubCard> createState() => _ClubCardState();
-}
-
-class _ClubCardState extends State<ClubCard> {
-  late bool isSubscribed =
-      widget.club.followers.contains(UserController.currentUser!.id);
-  @override
   Widget build(BuildContext context) {
+    bool isSubscribed = UserController.currentUser!.following.contains(club.id);
     return ListTile(
       title: Text(
-        widget.club.name,
+        club.name,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
@@ -32,7 +26,7 @@ class _ClubCardState extends State<ClubCard> {
       onTap: () {}, // to club details page
       leading: ClipOval(
         child: Image(
-          image: NetworkImage(widget.club.clubLogoURL),
+          image: NetworkImage(club.clubLogoURL),
           errorBuilder: (context, error, stackTrace) =>
               const Icon(Icons.people),
           width: 45, // Adjust the width as needed
@@ -44,7 +38,7 @@ class _ClubCardState extends State<ClubCard> {
         borderRadius: BorderRadius.circular(15),
         renderBorder: false,
         isSelected: [isSubscribed],
-        onPressed: (int index) => widget.onToggle(widget.club),
+        onPressed: (int index) => onToggle(club),
         selectedColor: Colors.white,
         fillColor: Color.fromARGB(253, 82, 81, 81),
         children: [

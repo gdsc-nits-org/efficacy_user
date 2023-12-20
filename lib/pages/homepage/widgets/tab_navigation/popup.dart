@@ -16,6 +16,7 @@ class PopUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FocusedMenuHolder(
+      blurSize: 2.0,
       openWithTap: true,
       onPressed: () {},
       menuItems: Status.values
@@ -26,14 +27,14 @@ class PopUpButton extends StatelessWidget {
                 child: Text(
                   status.toString().split('.').last,
                   style: TextStyle(
-                    color: const Color.fromARGB(255, 103, 75, 246),
+                    color: accent,
                     fontWeight: FontWeight.bold,
                     fontSize: MediaQuery.of(context).size.width * 0.05,
                   ),
                 ),
               ),
               backgroundColor: currentTabIndex == Status.values.indexOf(status)
-                  ? Color.fromARGB(255, 196, 195, 248)
+                  ? const Color(0xFFADECFF)
                   : null,
               onPressed: () => onTap(status),
             ),
@@ -42,7 +43,7 @@ class PopUpButton extends StatelessWidget {
       child: Icon(
         Icons.filter_alt_outlined,
         size: MediaQuery.of(context).size.width * 0.1,
-        color: dark,
+        color: accent,
       ),
     );
   }
