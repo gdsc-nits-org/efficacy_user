@@ -68,7 +68,7 @@ Future<List<ClubModel>> _fetchAllClubsFromBackend({
   }
 
   if (instituteName.isNotEmpty) {
-    selectorBuilder.all(ClubFields.instituteName.name, instituteName);
+    selectorBuilder.oneFrom(ClubFields.instituteName.name, instituteName);
   }
 
   List<Map<String, dynamic>> listResponse =

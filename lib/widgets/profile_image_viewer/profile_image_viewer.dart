@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -17,6 +18,7 @@ class ProfileImageViewer extends StatefulWidget {
   final double height;
   final String? imagePath;
   final Uint8List? imageData;
+  final bool showBorder;
   final bool enabled;
   final void Function(Uint8List?)? onImageChange;
   const ProfileImageViewer({
@@ -24,6 +26,7 @@ class ProfileImageViewer extends StatefulWidget {
     this.height = 150,
     this.imagePath,
     this.imageData,
+    this.showBorder = false,
     this.enabled = true,
     this.onImageChange,
   });
@@ -126,24 +129,24 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
     return InkWell(
       onTap: () => (widget.enabled) ? _showPicker(context) : null,
       child: CircleAvatar(
-        backgroundColor: const Color.fromRGBO(196, 196, 196, 1),
+        backgroundColor: widget.showBorder
+            ? const Color.fromRGBO(196, 196, 196, 1)
+            : Colors.transparent,
         radius: widget.height / 2,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(widget.height / 2),
+          borderRadius: BorderRadius.circular(widget.height),
           clipBehavior: Clip.hardEdge,
           child: _image != null
               ? Image.memory(
                   _image!,
                   fit: BoxFit.fitHeight,
                   height: widget.height,
-                  width: widget.height,
                 )
               : widget.imagePath != null
                   ? CachedNetworkImage(
                       imageUrl: widget.imagePath!,
-                      fit: BoxFit.fitHeight,
+                      fit: BoxFit.cover,
                       height: widget.height,
-                      width: widget.height,
                       errorWidget: (BuildContext context, _, __) {
                         return Icon(
                           CupertinoIcons.person_alt_circle,
