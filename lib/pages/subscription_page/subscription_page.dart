@@ -1,6 +1,7 @@
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/models/club/club_model.dart';
+import 'package:efficacy_user/pages/homepage/homepage.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_list.dart';
 import 'package:efficacy_user/pages/subscription_page/widgets/clubs/club_stream.dart';
 import 'package:efficacy_user/pages/subscription_page/widgets/filter_button.dart';
@@ -34,13 +35,23 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       filterIndex = index;
     });
   }
+  int? currentBottomIndex;
+  void bottomNavigator(int index) {
+    setState(() {
+      currentBottomIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    currentBottomIndex = widget.currentBottomIndex;
+    if (widget.currentBottomIndex == 1) {
+      return const Homepage();
+    }
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       bottomNavigationBar: CustomBottomNavigation(
-        currentIndex: widget.currentBottomIndex,
+        currentIndex: currentBottomIndex!,
         onTap: widget.bottomNavigator,
       ),
       appBar: AppBar(
