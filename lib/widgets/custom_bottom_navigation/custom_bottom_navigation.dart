@@ -1,3 +1,4 @@
+import 'package:efficacy_user/config/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class CustomBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      selectedItemColor: Color.fromARGB(255, 6, 188, 176),
+      selectedItemColor: accent,
       type: BottomNavigationBarType.fixed,
       onTap: (index) {
         onTap(index); // more logic to be added regarding page navigation

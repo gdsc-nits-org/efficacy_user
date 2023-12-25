@@ -6,7 +6,7 @@ import 'package:efficacy_user/models/models.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_card.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_list.dart';
 import 'package:efficacy_user/pages/homepage/widgets/home_appbar/home_appbar.dart';
-import 'package:efficacy_user/pages/subscription_page/subscription_page.dart';
+import 'package:efficacy_user/pages/homepage/widgets/subscription_page/subscription_page.dart';
 import 'package:efficacy_user/widgets/custom_bottom_navigation/custom_bottom_navigation.dart';
 import 'package:efficacy_user/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +41,12 @@ class _HomepageState extends State<Homepage> {
   }
 
   int currentTabIndex = 0;
+  int currentEventFilterTypeIndex = 0;
   int currentBottomIndex = 1;
   
   void navigator(Status buttonMessage) {
     setState(() {
-      currentTabIndex = Status.values.indexOf(buttonMessage);
+      currentEventFilterTypeIndex = Status.values.indexOf(buttonMessage);
     });
   }
 
@@ -57,20 +58,23 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    if (currentBottomIndex == 2) {
-      return SubscriptionPage(
-        currentBottomIndex: currentBottomIndex,
-        bottomNavigator: bottomNavigator,
-      );
-    }
     return Scaffold(
-        appBar: HomeBar(navigator: navigator, currentTabIndex: currentTabIndex),
-        endDrawer: const CustomDrawer(),
-        bottomNavigationBar: CustomBottomNavigation(
-          currentIndex: currentBottomIndex,
-          onTap: bottomNavigator,
-        ),
-        body: Column(
+      appBar: HomeBar(
+        navigator: navigator,
+        currentTabIndex: currentEventFilterTypeIndex,
+        currentBottomIndex: currentBottomIndex,
+      ),
+      endDrawer: const CustomDrawer(),
+      bottomNavigationBar: CustomBottomNavigation(
+        currentIndex: currentBottomIndex,
+        onTap: bottomNavigator,
+      ),
+      body: currentBottomIndex == 2
+          ? SubscriptionPage(
+              currentBottomIndex: currentBottomIndex,
+              bottomNavigator: bottomNavigator,
+            )
+          : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
@@ -120,6 +124,7 @@ class _HomepageState extends State<Homepage> {
                   ),
             )
           ],
-        ));
+        )
+    );
   }
 }

@@ -3,8 +3,8 @@ import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/models/club/club_model.dart';
 import 'package:efficacy_user/pages/homepage/homepage.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_list.dart';
-import 'package:efficacy_user/pages/subscription_page/widgets/clubs/club_stream.dart';
-import 'package:efficacy_user/pages/subscription_page/widgets/filter_button.dart';
+import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/clubs/club_stream.dart';
+import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/filter_button.dart';
 import 'package:efficacy_user/widgets/custom_bottom_navigation/custom_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 

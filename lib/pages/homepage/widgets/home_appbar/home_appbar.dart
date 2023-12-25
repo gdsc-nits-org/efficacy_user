@@ -9,8 +9,10 @@ class HomeBar extends StatefulWidget implements PreferredSizeWidget {
     super.key,
     required this.navigator,
     required this.currentTabIndex,
+    required this.currentBottomIndex,
   });
   final int currentTabIndex;
+  final int currentBottomIndex;
   final Function(Status) navigator;
 
   @override
@@ -38,8 +40,11 @@ class _HomeBarState extends State<HomeBar> {
         //     style:
         //         ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.transparent),)),
         actions: [
-          PopUpButton(
-              onTap: widget.navigator, currentTabIndex: widget.currentTabIndex),
+          if (widget.currentBottomIndex != 2)
+            PopUpButton(
+              onTap: widget.navigator,
+              currentTabIndex: widget.currentTabIndex,
+            ),
           IconButton(
             onPressed: () {
               Scaffold.of(context).openEndDrawer();

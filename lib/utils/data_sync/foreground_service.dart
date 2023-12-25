@@ -26,7 +26,6 @@ class ForegroundService {
   const ForegroundService._();
 
   static Future<void> init() async {
-    print("init");
     await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
   }
 
