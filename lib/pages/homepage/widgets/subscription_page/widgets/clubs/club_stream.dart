@@ -56,9 +56,12 @@ class ClubsStream extends StatelessWidget {
                 itemCount: specificList.length,
                 itemBuilder: (context, index) {
                   final club = specificList[index];
-                  return ClubCard(
-                    club: club,
-                    onToggle: onToggle,
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: ClubCard(
+                      club: club,
+                      onToggle: onToggle,
+                    ),
                   );
                 },
               ),

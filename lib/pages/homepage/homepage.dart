@@ -18,12 +18,12 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  int currentTabIndex = 0;
+  int currentEventFilterTypeIndex = 0;
   int currentBottomIndex = 1;
 
   void navigator(Status buttonMessage) {
     setState(() {
-      currentTabIndex = Status.values.indexOf(buttonMessage);
+      currentEventFilterTypeIndex = Status.values.indexOf(buttonMessage);
     });
   }
 
@@ -35,39 +35,42 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    if (currentBottomIndex == 2) {
-      return SubscriptionPage(
-        currentBottomIndex: currentBottomIndex,
-        bottomNavigator: bottomNavigator,
-      );
-    }
     return Scaffold(
-      appBar: HomeBar(navigator: navigator, currentTabIndex: currentTabIndex),
+      appBar: HomeBar(
+        navigator: navigator,
+        currentTabIndex: currentEventFilterTypeIndex,
+        currentBottomIndex: currentBottomIndex,
+      ),
       endDrawer: const CustomDrawer(),
       bottomNavigationBar: CustomBottomNavigation(
         currentIndex: currentBottomIndex,
         onTap: bottomNavigator,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 25.0),
-            child: Text(
-              "${Status.values[currentTabIndex].toString().split('.').last} Events",
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.06,
-                color: Color.fromARGB(253, 82, 81, 81),
-                fontWeight: FontWeight.w500,
-              ),
+      body: currentBottomIndex == 2
+          ? SubscriptionPage(
+              currentBottomIndex: currentBottomIndex,
+              bottomNavigator: bottomNavigator,
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: Text(
+                    "${Status.values[currentEventFilterTypeIndex].toString().split('.').last} Events",
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.06,
+                      color: const Color.fromARGB(253, 82, 81, 81),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                EventViewer(
+                  typeIndex: currentEventFilterTypeIndex,
+                  currentBottomIndex: currentBottomIndex,
+                ),
+              ].separate(26),
             ),
-          ),
-          EventViewer(
-            typeIndex: currentTabIndex,
-            currentBottomIndex: currentBottomIndex,
-          ),
-        ].separate(26),
-      ),
     );
   }
 }

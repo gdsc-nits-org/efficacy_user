@@ -20,15 +20,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  late bool pendingInvites = false;
   late String _displayedTitle;
-
-  // Future<void> init() async {
-  //   pendingInvites = await InvitationController.anyPendingInvitation();
-  //   if (pendingInvites) {
-  //     setState(() {});
-  //   }
-  // }
 
   @override
   void initState() {
@@ -36,7 +28,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
     // init();
     super.initState();
     _displayedTitle = widget.title ?? 'Efficacy';
-    // _Button = widget.actionButton ?? const SizedBox.shrink();
   }
 
   void updateAppBar() {
@@ -90,24 +81,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 color: Colors.white,
               ),
             ),
-            // Notification bubble
-            pendingInvites
-                ? Positioned(
-                    right: 5,
-                    top: 5,
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 14,
-                        minHeight: 14,
-                      ),
-                    ),
-                  )
-                : Container()
           ],
         )
       ],

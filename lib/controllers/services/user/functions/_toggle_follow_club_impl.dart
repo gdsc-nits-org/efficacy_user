@@ -15,7 +15,6 @@ Future<void> _toggleFollowClubImpl({required String clubID}) async {
   } catch (e) {
     rethrow;
   }
-  print(followedClubs);
   UserController.currentUser = UserController.currentUser!.copyWith(
     following: followedClubs,
   );

@@ -3,7 +3,6 @@ import 'package:efficacy_user/controllers/services/event/event_controller.dart';
 import 'package:efficacy_user/models/event/event_model.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_card.dart';
 import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EventViewer extends StatelessWidget {

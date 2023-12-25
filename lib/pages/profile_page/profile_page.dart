@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
+import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/models.dart';
 import 'package:efficacy_user/pages/profile_page/widgets/buttons.dart';
 import 'package:efficacy_user/widgets/custom_app_bar/custom_app_bar.dart';
@@ -57,7 +58,7 @@ class _ProfileState extends State<ProfilePage> {
     });
   }
 
-  void saveUpdates() async {
+  Future<void> saveUpdates() async {
     UploadInformation info = UploadInformation(
       url: UserController.currentUser?.userPhoto,
       publicID: UserController.currentUser?.userPhotoPublicID,
@@ -112,7 +113,12 @@ class _ProfileState extends State<ProfilePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: editMode
           ? SaveButton(onPressed: () {
-              saveUpdates();
+              showLoadingOverlay(
+                context: context,
+                asyncTask: () async {
+                  await saveUpdates();
+                },
+              );
             })
           : null,
       body: Center(
@@ -129,7 +135,6 @@ class _ProfileState extends State<ProfilePage> {
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Gap(gap),
-
                 ProfileImageViewer(
                   enabled: editMode,
                   imagePath: UserController.currentUser?.userPhoto,
@@ -138,7 +143,6 @@ class _ProfileState extends State<ProfilePage> {
                     image = newImage;
                   },
                 ),
-
                 CustomTextField(
                   controller: _nameController,
                   title: "Name",
@@ -174,11 +178,6 @@ class _ProfileState extends State<ProfilePage> {
                   enabled: editMode,
                   value: UserController.currentUser!.degree?.name,
                 ),
-                // CustomDataTable(
-                //   columnspace: width*0.35,
-                //   columns: const ["ClubId", "Position"],
-                //   rows: (UserController.currentUser?.position)??const [],
-                // )
               ].separate(gap),
             ),
           ),
