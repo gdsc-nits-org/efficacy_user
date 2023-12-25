@@ -4,7 +4,7 @@ import 'package:efficacy_user/models/models.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_list.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_viewer.dart';
 import 'package:efficacy_user/pages/homepage/widgets/home_appbar/home_appbar.dart';
-import 'package:efficacy_user/pages/subscription_page/subscription_page.dart';
+import 'package:efficacy_user/pages/homepage/widgets/subscription_page/subscription_page.dart';
 import 'package:efficacy_user/widgets/custom_bottom_navigation/custom_bottom_navigation.dart';
 import 'package:efficacy_user/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _HomepageState extends State<Homepage> {
           ),
           EventViewer(
             typeIndex: currentTabIndex,
-            events: currentBottomIndex == 0 ? eventList : subscribedList,
+            currentBottomIndex: currentBottomIndex,
           ),
         ].separate(26),
       ),

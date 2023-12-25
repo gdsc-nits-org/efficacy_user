@@ -1,14 +1,13 @@
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
+import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/club/club_model.dart';
-import 'package:efficacy_user/pages/homepage/widgets/events/event_list.dart';
-import 'package:efficacy_user/pages/subscription_page/widgets/clubs/club_stream.dart';
-import 'package:efficacy_user/pages/subscription_page/widgets/filter_button.dart';
+import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/clubs/club_stream.dart';
+import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/filter_button.dart';
 import 'package:efficacy_user/widgets/custom_bottom_navigation/custom_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionPage extends StatefulWidget {
-  static const String routeName = "/subscriptionPage";
   final int currentBottomIndex;
   final Function(int) bottomNavigator;
   const SubscriptionPage({
@@ -25,8 +24,13 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   int filterIndex = 0;
 
   void _toggleSubscription(ClubModel club) async {
-    await UserController.toggleFollowClub(clubID: club.id!);
-    setState(() {});
+    showLoadingOverlay(
+      context: context,
+      asyncTask: () async {
+        await UserController.toggleFollowClub(clubID: club.id!);
+      },
+      onCompleted: () => setState(() {}),
+    );
   }
 
   void _changeIndex(int index) {
