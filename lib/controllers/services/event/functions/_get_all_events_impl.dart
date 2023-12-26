@@ -75,7 +75,7 @@ Future<EventPaginationResponse> _fetchAllEventsFromBackend({
   if (clubIDs.isNotEmpty) {
     selectorBuilder.oneFrom(EventFields.clubID.name, clubIDs);
   }
-  selectorBuilder.sortBy(EventFields.updatedAt.name);
+  selectorBuilder.sortBy(EventFields.updatedAt.name, descending: true);
   selectorBuilder.skip(skip);
   selectorBuilder.limit(count);
 

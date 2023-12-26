@@ -98,7 +98,7 @@ class _ProfileState extends State<ProfilePage> {
     //size constants
     double gap = height * 0.02;
     double hMargin = width * 0.08;
-    double vMargin = width * 0.16;
+    double vMargin = width * 0.1;
 
     return Scaffold(
       endDrawer: const CustomDrawer(),

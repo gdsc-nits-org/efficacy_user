@@ -16,97 +16,83 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
-    double width = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () {},
-      child: Stack(children: [
-        Card(
-          child: Column(
-            children: [
-              Gap(10),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: (item!.posterURL != null)?Image.asset(
-                  "assets/images/media.png",
-                  fit: BoxFit.cover,
-                ):Image.network(item!.posterURL),
-              //   // child: CustomNetworkImage(
-              //   //   posterUrl: item.posterURL,
-              //   //   defaultUrl: "",
-              //   // ),
+      child: Card(
+        child: Column(
+          children: [
+            const Gap(10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: item?.posterURL == null || item!.posterURL.isEmpty
+                  ? Image.asset(
+                      Assets.mediaImgPath,
+                      fit: BoxFit.cover,
+                    )
+                  : CustomNetworkImage(url: item!.posterURL),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0,
+                left: 28.0,
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 8.0,
-                  left: 28.0,
-                ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    item!.title,
-                    style: const TextStyle(
-                      color: Color.fromARGB(253, 82, 81, 81),
-                      fontSize: 25,
-                      fontWeight: FontWeight.w600,
-                    ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  item!.title,
+                  style: const TextStyle(
+                    color: Color.fromARGB(253, 82, 81, 81),
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 28.0,
-                  bottom: 25.0,
-                ),
-                child: Row(
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          CupertinoIcons.calendar,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 28.0,
+                bottom: 25.0,
+              ),
+              child: Row(
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        CupertinoIcons.calendar,
+                        color: shadow,
+                        size: 16,
+                      ),
+                      Text(
+                        _dateFormatter.format(item!.startDate),
+                        style: const TextStyle(
+                          fontSize: 15,
                           color: shadow,
-                          size: 16,
                         ),
-                        Text(
-                          _dateFormatter.format(item!.startDate),
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: shadow,
-                          ),
-                        ),
-                      ].separate(10),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          CupertinoIcons.clock,
+                      ),
+                    ].separate(10),
+                  ),
+                  Row(
+                    children: [
+                      const Icon(
+                        CupertinoIcons.clock,
+                        color: shadow,
+                        size: 16,
+                      ),
+                      Text(
+                        Formatter.timeOnly(item!.endDate),
+                        style: const TextStyle(
+                          fontSize: 15,
                           color: shadow,
-                          size: 16,
                         ),
-                        Text(
-                          Formatter.timeOnly(item!.endDate),
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: shadow,
-                          ),
-                        ),
-                      ].separate(10),
-                    ),
-                  ].separate(20),
-                ),
-              )
-            ].separate(5),
-          ),
+                      ),
+                    ].separate(10),
+                  ),
+                ].separate(20),
+              ),
+            )
+          ].separate(5),
         ),
-        Positioned(
-          top: 295,
-          left: width * 0.41,
-          child: const Icon(
-            CupertinoIcons.arrow_down_circle_fill,
-            size: 30,
-            color: Color.fromARGB(253, 82, 81, 81),
-          ),
-        )
-      ]),
+      ),
     );
   }
 }

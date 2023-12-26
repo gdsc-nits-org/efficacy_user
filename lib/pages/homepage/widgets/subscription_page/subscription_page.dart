@@ -4,16 +4,11 @@ import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/club/club_model.dart';
 import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/clubs/club_stream.dart';
 import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/filter_button.dart';
-import 'package:efficacy_user/widgets/custom_bottom_navigation/custom_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionPage extends StatefulWidget {
-  final int currentBottomIndex;
-  final Function(int) bottomNavigator;
   const SubscriptionPage({
     super.key,
-    required this.currentBottomIndex,
-    required this.bottomNavigator,
   });
 
   @override
