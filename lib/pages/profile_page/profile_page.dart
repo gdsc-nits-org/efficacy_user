@@ -29,6 +29,10 @@ class _ProfileState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  void init() {
     _nameController.text = UserController.currentUser!.name;
     _scholarIDController.text = UserController.currentUser!.scholarID;
     _emailController.text = UserController.currentUser!.email;
@@ -89,6 +93,11 @@ class _ProfileState extends State<ProfilePage> {
     });
   }
 
+  Future<void> _refresh() async {
+    await UserController.loginSilently().first;
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
     //screen size
@@ -121,64 +130,67 @@ class _ProfileState extends State<ProfilePage> {
               );
             })
           : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding:
-                EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Account Details",
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                Gap(gap),
-                ProfileImageViewer(
-                  enabled: editMode,
-                  imagePath: UserController.currentUser?.userPhoto,
-                  imageData: image,
-                  onImageChange: (Uint8List? newImage) {
-                    image = newImage;
-                  },
-                ),
-                CustomTextField(
-                  controller: _nameController,
-                  title: "Name",
-                  enabled: editMode,
-                ),
-                CustomTextField(
-                  controller: _emailController,
-                  title: "Email",
-                  enabled: false,
-                ),
-                CustomPhoneField(
-                  title: "Phone",
-                  initialValue: phoneNumber,
-                  onPhoneChanged: (PhoneNumber newPhoneNumber) {
-                    phoneNumber = newPhoneNumber;
-                  },
-                  enabled: editMode,
-                ),
-                CustomTextField(
-                  controller: _scholarIDController,
-                  title: "ScholarID",
-                  enabled: editMode,
-                ),
-                CustomDropDown(
-                  title: "Branch",
-                  items: Branch.values.map((branch) => branch.name).toList(),
-                  enabled: editMode,
-                  value: UserController.currentUser!.branch?.name,
-                ),
-                CustomDropDown(
-                  title: "Degree",
-                  items: Degree.values.map((degree) => degree.name).toList(),
-                  enabled: editMode,
-                  value: UserController.currentUser!.degree?.name,
-                ),
-              ].separate(gap),
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Account Details",
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  Gap(gap),
+                  ProfileImageViewer(
+                    enabled: editMode,
+                    imagePath: UserController.currentUser?.userPhoto,
+                    imageData: image,
+                    onImageChange: (Uint8List? newImage) {
+                      image = newImage;
+                    },
+                  ),
+                  CustomTextField(
+                    controller: _nameController,
+                    title: "Name",
+                    enabled: editMode,
+                  ),
+                  CustomTextField(
+                    controller: _emailController,
+                    title: "Email",
+                    enabled: false,
+                  ),
+                  CustomPhoneField(
+                    title: "Phone",
+                    initialValue: phoneNumber,
+                    onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                      phoneNumber = newPhoneNumber;
+                    },
+                    enabled: editMode,
+                  ),
+                  CustomTextField(
+                    controller: _scholarIDController,
+                    title: "ScholarID",
+                    enabled: editMode,
+                  ),
+                  CustomDropDown(
+                    title: "Branch",
+                    items: Branch.values.map((branch) => branch.name).toList(),
+                    enabled: editMode,
+                    value: UserController.currentUser!.branch?.name,
+                  ),
+                  CustomDropDown(
+                    title: "Degree",
+                    items: Degree.values.map((degree) => degree.name).toList(),
+                    enabled: editMode,
+                    value: UserController.currentUser!.degree?.name,
+                  ),
+                ].separate(gap),
+              ),
             ),
           ),
         ),
