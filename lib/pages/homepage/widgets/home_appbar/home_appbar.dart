@@ -32,6 +32,7 @@ class _HomeBarState extends State<HomeBar> {
         leading: Image.asset(
           Assets.gdscLogoImagePath,
         ),
+        surfaceTintColor: Colors.white,
         backgroundColor: Colors.transparent,
         // Removing the default back button
         // automaticallyImplyLeading: false,
