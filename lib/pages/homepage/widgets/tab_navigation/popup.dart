@@ -43,7 +43,7 @@ class PopUpButton extends StatelessWidget {
       child: Icon(
         Icons.filter_alt_outlined,
         size: MediaQuery.of(context).size.width * 0.1,
-        color: accent,
+        color: dark,
       ),
     );
   }

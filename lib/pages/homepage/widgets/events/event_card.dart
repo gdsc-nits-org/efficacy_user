@@ -15,7 +15,7 @@ class EventCard extends StatelessWidget {
   final EventModel? item;
   @override
   Widget build(BuildContext context) {
-    final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
+    final DateFormat _dateFormatter = DateFormat('dd MMM yyyy');
     return InkWell(
       onTap: () {},
       child: Card(
@@ -53,7 +53,7 @@ class EventCard extends StatelessWidget {
                 left: 28.0,
                 bottom: 25.0,
               ),
-              child: Row(
+              child: Column(
                 children: [
                   Row(
                     children: [
@@ -63,7 +63,7 @@ class EventCard extends StatelessWidget {
                         size: 16,
                       ),
                       Text(
-                        _dateFormatter.format(item!.startDate),
+                        "${_dateFormatter.format(item!.startDate)} - ${_dateFormatter.format(item!.endDate)}",
                         style: const TextStyle(
                           fontSize: 15,
                           color: shadow,
@@ -79,7 +79,7 @@ class EventCard extends StatelessWidget {
                         size: 16,
                       ),
                       Text(
-                        Formatter.timeOnly(item!.endDate),
+                        Formatter.timeOnly(item!.startDate),
                         style: const TextStyle(
                           fontSize: 15,
                           color: shadow,
@@ -87,7 +87,7 @@ class EventCard extends StatelessWidget {
                       ),
                     ].separate(10),
                   ),
-                ].separate(20),
+                ].separate(15),
               ),
             )
           ].separate(5),

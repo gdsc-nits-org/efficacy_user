@@ -48,8 +48,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
             child: AbsorbPointer(
               child: DrawerHeader(
-                decoration: const BoxDecoration(color: accent),
+                decoration: const BoxDecoration(color: dark),
                 child: ProfileImageViewer(
+                  height: 140,
                   enabled: false,
                   imagePath: UserController.currentUser?.userPhoto,
                 ),
@@ -60,7 +61,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: const Text('Home'),
             selected: routeName == "/homePage",
             selectedColor: light,
-            selectedTileColor: accent,
+            selectedTileColor: dark,
             onTap: () {
               // Close the drawer
               Navigator.pop(context);
@@ -73,7 +74,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ListTile(
             title: const Text(
               'Log out',
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Colors.black87),
             ),
             onTap: () async {
               await UserController.logOut();
