@@ -40,7 +40,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
     events.clear();
     skip = 0;
     setState(() {
-      event = EventController.getAllEvents(skip: skip);
+      event = EventController.getAllEvents(skip: skip, forceGet: true);
     });
   }
 

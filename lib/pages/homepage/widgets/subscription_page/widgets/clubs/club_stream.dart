@@ -24,7 +24,7 @@ class ClubsStream extends StatelessWidget {
   }
 
   Future<void> refresh() async {
-    ClubController.get(instituteName: "NIT, Silchar");
+    ClubController.get(instituteName: "NIT, Silchar",forceGet: true);
   }
 
   @override
