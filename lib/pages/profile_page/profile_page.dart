@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/models.dart';
 import 'package:efficacy_user/pages/profile_page/widgets/buttons.dart';
+import 'package:efficacy_user/utils/utils.dart';
 import 'package:efficacy_user/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:efficacy_user/widgets/custom_drawer/custom_drawer.dart';
 import 'package:efficacy_user/widgets/custom_drop_down/custom_drop_down.dart';
@@ -26,6 +26,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfilePage> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -63,34 +65,43 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   Future<void> saveUpdates() async {
-    UploadInformation info = UploadInformation(
-      url: UserController.currentUser?.userPhoto,
-      publicID: UserController.currentUser?.userPhotoPublicID,
-    );
-    if (image != null) {
-      info = await ImageController.uploadImage(
-        img: image!,
-        folder: ImageFolder.userImage,
-        publicID: UserController.currentUser?.userPhotoPublicID,
-        userName: _nameController.text,
+    if(_formKey.currentState!.validate()){
+      showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          UploadInformation info = UploadInformation(
+            url: UserController.currentUser?.userPhoto,
+            publicID: UserController.currentUser?.userPhotoPublicID,
+          );
+          if (image != null) {
+            info = await ImageController.uploadImage(
+              img: image!,
+              folder: ImageFolder.userImage,
+              publicID: UserController.currentUser?.userPhotoPublicID,
+              userName: _nameController.text,
+            );
+          }
+          UserController.currentUser = UserController.currentUser?.copyWith(
+            name: _nameController.text,
+            scholarID: _scholarIDController.text,
+            userPhoto: info.url,
+            userPhotoPublicID: info.publicID,
+            phoneNumber: phoneNumber,
+            branch: Branch.values
+                .firstWhere((branch) => branch.name == selectedBranch),
+            degree: Degree.values
+                .firstWhere((degree) => degree.name == selectedDegree),
+          );
+          await UserController.update();
+        },
+        onCompleted: () {
+          setState(() {
+            editMode = false;
+            showButton = false;
+          });
+        },
       );
     }
-    UserController.currentUser = UserController.currentUser?.copyWith(
-      name: _nameController.text,
-      scholarID: _scholarIDController.text,
-      userPhoto: info.url,
-      userPhotoPublicID: info.publicID,
-      phoneNumber: phoneNumber,
-      branch:
-          Branch.values.firstWhere((branch) => branch.name == selectedBranch),
-      degree:
-          Degree.values.firstWhere((degree) => degree.name == selectedDegree),
-    );
-    await UserController.update();
-    setState(() {
-      editMode = false;
-      showButton = false;
-    });
   }
 
   Future<void> _refresh() async {
@@ -120,16 +131,8 @@ class _ProfileState extends State<ProfilePage> {
           ),
       ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: editMode
-          ? SaveButton(onPressed: () {
-              showLoadingOverlay(
-                context: context,
-                asyncTask: () async {
-                  await saveUpdates();
-                },
-              );
-            })
-          : null,
+      floatingActionButton:
+          showButton ? SaveButton(onPressed: saveUpdates) : null,
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: Center(
@@ -137,59 +140,67 @@ class _ProfileState extends State<ProfilePage> {
             child: Padding(
               padding:
                   EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Account Details",
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  Gap(gap),
-                  ProfileImageViewer(
-                    enabled: editMode,
-                    imagePath: UserController.currentUser?.userPhoto,
-                    imageData: image,
-                    onImageChange: (Uint8List? newImage) {
-                      image = newImage;
-                    },
-                  ),
-                  CustomTextField(
-                    controller: _nameController,
-                    title: "Name",
-                    enabled: editMode,
-                  ),
-                  CustomTextField(
-                    controller: _emailController,
-                    title: "Email",
-                    enabled: false,
-                  ),
-                  CustomPhoneField(
-                    title: "Phone",
-                    initialValue: phoneNumber,
-                    onPhoneChanged: (PhoneNumber newPhoneNumber) {
-                      phoneNumber = newPhoneNumber;
-                    },
-                    enabled: editMode,
-                  ),
-                  CustomTextField(
-                    controller: _scholarIDController,
-                    title: "ScholarID",
-                    enabled: editMode,
-                  ),
-                  CustomDropDown(
-                    title: "Branch",
-                    items: Branch.values.map((branch) => branch.name).toList(),
-                    enabled: editMode,
-                    value: UserController.currentUser!.branch?.name,
-                  ),
-                  CustomDropDown(
-                    title: "Degree",
-                    items: Degree.values.map((degree) => degree.name).toList(),
-                    enabled: editMode,
-                    value: UserController.currentUser!.degree?.name,
-                  ),
-                ].separate(gap),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Account Details",
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    Gap(gap),
+                    ProfileImageViewer(
+                      enabled: editMode,
+                      imagePath: UserController.currentUser?.userPhoto,
+                      imageData: image,
+                      onImageChange: (Uint8List? newImage) {
+                        image = newImage;
+                      },
+                    ),
+                    CustomTextField(
+                      controller: _nameController,
+                      title: "Name",
+                      enabled: editMode,
+                      validator: Validator.isNameValid,
+                    ),
+                    CustomTextField(
+                      controller: _emailController,
+                      title: "Email",
+                      enabled: false,
+                      validator: Validator.isEmailValid,
+                    ),
+                    CustomPhoneField(
+                      title: "Phone",
+                      initialValue: phoneNumber,
+                      onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                        phoneNumber = newPhoneNumber;
+                      },
+                      enabled: editMode,
+                    ),
+                    CustomTextField(
+                      controller: _scholarIDController,
+                      title: "ScholarID",
+                      enabled: editMode,
+                      validator: Validator.isScholarIDValid,
+                    ),
+                    CustomDropDown(
+                      title: "Branch",
+                      items:
+                          Branch.values.map((branch) => branch.name).toList(),
+                      enabled: editMode,
+                      value: UserController.currentUser!.branch?.name,
+                    ),
+                    CustomDropDown(
+                      title: "Degree",
+                      items:
+                          Degree.values.map((degree) => degree.name).toList(),
+                      enabled: editMode,
+                      value: UserController.currentUser!.degree?.name,
+                    ),
+                  ].separate(gap),
+                ),
               ),
             ),
           ),
