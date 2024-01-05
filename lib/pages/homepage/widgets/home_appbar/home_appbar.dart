@@ -29,6 +29,7 @@ class _HomeBarState extends State<HomeBar> {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 17.0),
       child: AppBar(
+        title: const Center(child: Text("Homepage")),
         leading: Image.asset(
           Assets.efficacyUserLogoImagePath,
         ),
