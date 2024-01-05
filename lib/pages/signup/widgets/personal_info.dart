@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:efficacy_user/controllers/services/image/image_controller.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
+import 'package:efficacy_user/models/models.dart';
 import 'package:efficacy_user/pages/signup/widgets/infopass.dart';
 import 'package:efficacy_user/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,27 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   IconData passVisibility = Icons.visibility;
   final _formKey = GlobalKey<FormState>();
   Uint8List? _image;
+
+  Branch? getBranch(int branchCode) {
+    Map<int, Branch> branches = {
+      1: Branch.CE,
+      2: Branch.CSE,
+      3: Branch.EE,
+      4: Branch.ECE,
+      5: Branch.EIE,
+      6: Branch.ME
+    };
+    return branches[branchCode];
+  }
+
+  Degree? getDegree(int degreeCode){
+    Map<int, Degree> degrees ={
+      1:Degree.BTech,
+      2:Degree.MTech,
+      3:Degree.Phd
+    };
+    return degrees[degreeCode];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +171,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                               userPhoto: info?.url,
                                               userPhotoPublicID: info?.publicID,
                                               phoneNumber: args.phoneNumber,
+                                              branch: getBranch(int.parse(scholarIDController.text[3])),
+                                              degree: getDegree(int.parse(scholarIDController.text[2])),
                                             ),
                                           );
                                         },
