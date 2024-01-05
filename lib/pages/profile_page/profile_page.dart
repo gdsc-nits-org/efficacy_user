@@ -178,6 +178,7 @@ class _ProfileState extends State<ProfilePage> {
                   enabled: editMode,
                   value: UserController.currentUser!.degree?.name,
                 ),
+                const DeleteProfileButton(),
               ].separate(gap),
             ),
           ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'confirm_delete_profile.dart';
+
 class EditButton extends StatelessWidget {
   final void Function() onPressed;
 
@@ -55,6 +57,33 @@ class SaveButton extends StatelessWidget {
               style: TextStyle(fontSize: fontSize),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class DeleteProfileButton extends StatelessWidget {
+  const DeleteProfileButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double fontSize = 20;
+    double pad = 18.0;
+    return Padding(
+      padding: EdgeInsets.all(pad),
+      child: ElevatedButton(
+        style: const ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(Colors.red)),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => const ConfirmDelProfile(),
+          );
+        },
+        child: Text(
+          "Delete Profile",
+          style: TextStyle(fontSize: fontSize),
         ),
       ),
     );
