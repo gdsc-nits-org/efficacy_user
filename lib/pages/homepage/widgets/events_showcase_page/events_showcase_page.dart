@@ -36,6 +36,14 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
     });
   }
 
+  Future<void> _refreshEvents() async {
+    events.clear();
+    skip = 0;
+    setState(() {
+      event = EventController.getAllEvents(skip: skip, forceGet: true);
+    });
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -59,40 +67,43 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
           ),
         ),
         Expanded(
-          child: StreamBuilder(
-            stream: event,
-            builder:
-                (context, AsyncSnapshot<EventPaginationResponse> snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text("Error"),
-                );
-              } else if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                if (snapshot.data != null) {
-                  if (skip != snapshot.data!.skip) {
-                    skip = snapshot.data!.skip;
-                    events.addAll(snapshot.data!.events);
+          child: RefreshIndicator(
+            onRefresh: _refreshEvents,
+            child: StreamBuilder(
+              stream: event,
+              builder:
+                  (context, AsyncSnapshot<EventPaginationResponse> snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text("Error"),
+                  );
+                } else if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  if (snapshot.data != null) {
+                    if (skip != snapshot.data!.skip) {
+                      skip = snapshot.data!.skip;
+                      events.addAll(snapshot.data!.events);
+                    }
                   }
+                  itemCount = events.length;
+                  return ListView.builder(
+                    controller: _controller,
+                    itemCount: itemCount,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 10,
+                        ),
+                        child: EventCard(
+                            item: snapshot.data != null ? events[index] : null),
+                      );
+                    },
+                  );
                 }
-                itemCount = events.length;
-                return ListView.builder(
-                  controller: _controller,
-                  itemCount: itemCount,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 10,
-                      ),
-                      child: EventCard(
-                          item: snapshot.data != null ? events[index] : null),
-                    );
-                  },
-                );
-              }
-            },
+              },
+            ),
           ),
         )
       ],

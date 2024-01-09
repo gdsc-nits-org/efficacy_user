@@ -12,10 +12,10 @@ class SubscriptionPage extends StatefulWidget {
   });
 
   @override
-  State<SubscriptionPage> createState() => _SubscriptionPageState();
+  State<SubscriptionPage> createState() => SubscriptionPageState();
 }
 
-class _SubscriptionPageState extends State<SubscriptionPage> {
+class SubscriptionPageState extends State<SubscriptionPage> {
   int filterIndex = 0;
 
   void _toggleSubscription(ClubModel club) async {
@@ -39,42 +39,49 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, top: 10.0),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: Text(
-                "Subscriptions",
-                style: TextStyle(
-                  fontSize: width * 0.08,
-                  color: const Color.fromARGB(253, 82, 81, 81),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ClubsStream clubsStream = ClubsStream(
+              filterIndex: filterIndex, onToggle: _toggleSubscription);
+          clubsStream.refresh();
+        },
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 30),
+                child: Text(
+                  "Subscriptions",
+                  style: TextStyle(
+                    fontSize: width * 0.08,
+                    color: const Color.fromARGB(253, 82, 81, 81),
+                  ),
                 ),
               ),
             ),
-          ),
-          Row(
-            children: [
-              Text(
-                "Filters",
-                style: TextStyle(
-                  fontSize: width * 0.06,
-                  color: const Color.fromARGB(253, 82, 81, 81),
-                  fontWeight: FontWeight.w500,
+            Row(
+              children: [
+                Text(
+                  "Filters",
+                  style: TextStyle(
+                    fontSize: width * 0.06,
+                    color: const Color.fromARGB(253, 82, 81, 81),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              FilterButton(
-                onTap: _changeIndex,
-                currentTabIndex: filterIndex,
-              ),
-            ].separate(10),
-          ),
-          ClubsStream(
-            onToggle: _toggleSubscription,
-            filterIndex: filterIndex,
-          ),
-        ],
+                FilterButton(
+                  onTap: _changeIndex,
+                  currentTabIndex: filterIndex,
+                ),
+              ].separate(10),
+            ),
+            ClubsStream(
+              onToggle: _toggleSubscription,
+              filterIndex: filterIndex,
+            ),
+          ],
+        ),
       ),
     );
   }
