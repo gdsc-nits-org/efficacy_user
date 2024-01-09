@@ -30,8 +30,12 @@ class _HomeBarState extends State<HomeBar> {
       padding: const EdgeInsets.only(left: 25.0, right: 17.0),
       child: AppBar(
         title: const Center(child: Text("Homepage")),
-        leading: Image.asset(
-          Assets.efficacyUserLogoImagePath,
+        leading: Center(
+          child: Image.asset(
+            Assets.efficacyUserLogoImagePath,
+            height: 40,
+            width: 40,
+          ),
         ),
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.transparent,

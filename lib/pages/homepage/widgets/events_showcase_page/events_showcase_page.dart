@@ -37,7 +37,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   }
 
   Future<void> _refreshEvents() async {
-    events.clear();
+    events = [];
     skip = 0;
     setState(() {
       event = EventController.getAllEvents(skip: skip, forceGet: true);
@@ -75,7 +75,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                   (context, AsyncSnapshot<EventPaginationResponse> snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text("Error"),
+                    child: Text("Some error occurred. Please restart the app"),
                   );
                 } else if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());

@@ -18,6 +18,9 @@ class SubscriptionPage extends StatefulWidget {
 class SubscriptionPageState extends State<SubscriptionPage> {
   int filterIndex = 0;
 
+  late Stream<List<ClubModel>> clubStream =
+      ClubController.get(instituteName: "NIT, Silchar");
+
   void _toggleSubscription(ClubModel club) async {
     showLoadingOverlay(
       context: context,
@@ -41,9 +44,12 @@ class SubscriptionPageState extends State<SubscriptionPage> {
       padding: const EdgeInsets.only(left: 25.0, top: 10.0),
       child: RefreshIndicator(
         onRefresh: () async {
-          ClubsStream clubsStream = ClubsStream(
-              filterIndex: filterIndex, onToggle: _toggleSubscription);
-          clubsStream.refresh();
+          setState(() {
+            clubStream = ClubController.get(
+              instituteName: "NIT, Silchar",
+              forceGet: true,
+            );
+          });
         },
         child: Column(
           children: [
@@ -79,6 +85,7 @@ class SubscriptionPageState extends State<SubscriptionPage> {
             ClubsStream(
               onToggle: _toggleSubscription,
               filterIndex: filterIndex,
+              clubStream: clubStream,
             ),
           ],
         ),

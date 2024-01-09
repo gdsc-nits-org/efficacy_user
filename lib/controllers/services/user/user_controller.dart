@@ -22,6 +22,7 @@ part 'functions/_update_impl.dart';
 part 'functions/_delete_impl.dart';
 part 'functions/_gather_data.dart';
 part 'functions/_toggle_follow_club_impl.dart';
+part 'functions/_refresh_current_user_data_impl.dart';
 
 class UserController {
   static const String _collectionName = "users";
@@ -80,6 +81,10 @@ class UserController {
       await _gatherData();
     }
     return user;
+  }
+
+  static Future<UserModel?> refreshCurrentUserData() async {
+    return _refreshCurrentUserDataImpl();
   }
 
   /// Log in without internet i.e. from local database

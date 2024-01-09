@@ -65,7 +65,7 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   Future<void> saveUpdates() async {
-    if(_formKey.currentState!.validate()){
+    if (_formKey.currentState!.validate()) {
       showLoadingOverlay(
         context: context,
         asyncTask: () async {
@@ -105,7 +105,7 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   Future<void> _refresh() async {
-    await UserController.loginSilently().first;
+    await UserController.refreshCurrentUserData();
     init();
   }
 
@@ -199,12 +199,9 @@ class _ProfileState extends State<ProfilePage> {
                       enabled: editMode,
                       value: UserController.currentUser!.degree?.name,
                     ),
+                    const DeleteProfileButton(),
                   ].separate(gap),
                 ),
-
-                const DeleteProfileButton(),
-              ].separate(gap),
-
               ),
             ),
           ),
