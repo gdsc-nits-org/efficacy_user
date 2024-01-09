@@ -201,6 +201,10 @@ class _ProfileState extends State<ProfilePage> {
                     ),
                   ].separate(gap),
                 ),
+
+                const DeleteProfileButton(),
+              ].separate(gap),
+
               ),
             ),
           ),
