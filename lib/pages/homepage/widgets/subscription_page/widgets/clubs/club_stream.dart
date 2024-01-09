@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 class ClubsStream extends StatelessWidget {
   final int filterIndex;
   final Function(ClubModel) onToggle;
-  const ClubsStream({
+
+  ClubsStream({
     super.key,
     required this.filterIndex,
     required this.onToggle,
@@ -16,11 +17,18 @@ class ClubsStream extends StatelessWidget {
   static const double bigFontSize = 18;
   static const double smallFontSize = 14;
   static const double elevation = 5;
+  late Stream<List<ClubModel>> clubStream;
+
+  Future<void> getClubs() async {
+    clubStream = ClubController.get(instituteName: "NIT, Silchar");
+  }
+
+  Future<void> refresh() async {
+    ClubController.get(instituteName: "NIT, Silchar",forceGet: true);
+  }
 
   @override
   Widget build(BuildContext context) {
-    Stream<List<ClubModel>> clubStream =
-        ClubController.get(instituteName: "NIT, Silchar");
     return StreamBuilder<List<ClubModel>>(
       stream: clubStream,
       builder: (context, snapshot) {
