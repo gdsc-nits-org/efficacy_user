@@ -1,7 +1,8 @@
-import 'package:efficacy_user/controllers/services/event/event_controller.dart';
 import 'package:efficacy_user/models/event/event_model.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events/event_card.dart';
+import 'package:efficacy_user/pages/pages.dart';
 import 'package:flutter/material.dart';
+import 'package:efficacy_user/controllers/controllers.dart';
 
 class EventsShowcasePage extends StatefulWidget {
   final bool showSubscribedOnly;
@@ -86,7 +87,18 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                       events.addAll(snapshot.data!.events);
                     }
                   }
-                  itemCount = events.length;
+                  final subscribedEvents = events
+                      .where((event) => UserController.currentUser!.following
+                          .contains(event.clubID))
+                      .toList();
+                  List<EventModel> specificList =
+                      widget.showSubscribedOnly ? subscribedEvents : events;
+                  List<EventModel> displayList = specificList
+                      .where((element) =>
+                          Status.values.indexOf(element.type) ==
+                          widget.currentTabIndex)
+                      .toList();
+                  itemCount = displayList.length;
                   return ListView.builder(
                     controller: _controller,
                     itemCount: itemCount,
@@ -97,7 +109,9 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                           horizontal: 10,
                         ),
                         child: EventCard(
-                            item: snapshot.data != null ? events[index] : null),
+                            item: snapshot.data != null
+                                ? displayList[index]
+                                : null),
                       );
                     },
                   );
