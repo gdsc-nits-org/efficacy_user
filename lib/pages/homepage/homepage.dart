@@ -56,7 +56,7 @@ class _HomepageState extends State<Homepage> {
           ? const SubscriptionPage()
           : EventsShowcasePage(
               showSubscribedOnly: currentBottomIndex == 1,
-              currentTabIndex: currentTabIndex,
+              currentTabIndex: currentEventFilterTypeIndex,
             ),
     );
   }
