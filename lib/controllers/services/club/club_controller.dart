@@ -68,6 +68,9 @@ class ClubController {
     );
   }
 
+  /// NOTE: ONLY TO BE USED FOR INTERNAL PURPOSE
+  ///
+  ///
   /// Used Deprecated to warn not to use this.
   /// Maybe use some better alternative.
   @Deprecated("Use [UserController.toggleFollowClub()] instead")
