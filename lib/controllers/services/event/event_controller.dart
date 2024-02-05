@@ -12,6 +12,7 @@ part 'functions/_is_any_update_impl.dart';
 part 'functions/_get_impl.dart';
 part 'functions/_update_impl.dart';
 part 'functions/_get_all_events_impl.dart';
+part 'functions/_toggle_like_impl.dart';
 
 class EventController {
   static const String _collectionName = "events";
@@ -49,18 +50,31 @@ class EventController {
   /// The [prevPassed] is used in terms of the updatedAt parameter
   ///
   /// If [clubIDs] is not provided it returns for all the clubs.
+  ///
+  /// [skip] is returned -1 if there are no more events
   static Stream<EventPaginationResponse> getAllEvents({
     int skip = 0,
     List<String> clubIDs = const [],
     bool forceGet = false,
+    EventStatus? eventStatus,
     int count = 10,
   }) {
     return _getAllEventsImpl(
       skip: skip,
       clubIDs: clubIDs,
       forceGet: forceGet,
+      eventStatus: eventStatus,
       count: count,
     );
+  }
+
+  static Future<EventModel> toggleLike(
+      {required String userEmail, required EventModel event}) async {
+    return _toggleLikeImpl(userEmail: userEmail, event: event);
+  }
+
+  static Future<EventModel> update(EventModel event) async {
+    return await _updateImpl(event);
   }
 }
 

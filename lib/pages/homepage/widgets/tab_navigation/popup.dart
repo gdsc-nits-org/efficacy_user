@@ -10,7 +10,7 @@ class PopUpButton extends StatelessWidget {
     required this.onTap,
     required this.currentTabIndex,
   });
-  final Function(Status) onTap;
+  final Function(EventStatus) onTap;
   final int currentTabIndex;
 
   @override
@@ -19,7 +19,7 @@ class PopUpButton extends StatelessWidget {
       blurSize: 2.0,
       openWithTap: true,
       onPressed: () {},
-      menuItems: Status.values
+      menuItems: EventStatus.values
           .map(
             (status) => FocusedMenuItem(
               title: Align(
@@ -33,7 +33,7 @@ class PopUpButton extends StatelessWidget {
                   ),
                 ),
               ),
-              backgroundColor: currentTabIndex == Status.values.indexOf(status)
+              backgroundColor: currentTabIndex == EventStatus.values.indexOf(status)
                   ? const Color(0xFFADECFF)
                   : null,
               onPressed: () => onTap(status),

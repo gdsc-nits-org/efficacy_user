@@ -13,7 +13,7 @@ class HomeBar extends StatefulWidget implements PreferredSizeWidget {
   });
   final int currentTabIndex;
   final int currentBottomIndex;
-  final Function(Status) navigator;
+  final Function(EventStatus) navigator;
 
   @override
   State<HomeBar> createState() => _HomeBarState();

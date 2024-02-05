@@ -23,12 +23,13 @@ mixin _$EventModel {
   @JsonKey(name: "_id")
   String? get id => throw _privateConstructorUsedError;
   String get posterURL => throw _privateConstructorUsedError;
+  String get posterPublicID => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get shortDescription => throw _privateConstructorUsedError;
   String? get longDescription => throw _privateConstructorUsedError;
   DateTime get startDate => throw _privateConstructorUsedError;
   DateTime get endDate => throw _privateConstructorUsedError;
-  String get registrationLink => throw _privateConstructorUsedError;
+  String? get registrationLink => throw _privateConstructorUsedError;
   String? get facebookPostURL => throw _privateConstructorUsedError;
   String get venue => throw _privateConstructorUsedError;
 
@@ -36,6 +37,7 @@ mixin _$EventModel {
   List<String> get contacts => throw _privateConstructorUsedError;
 
   /// Users who liked the event
+  /// Emails are stored
   List<String> get liked => throw _privateConstructorUsedError;
   String get clubID => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
@@ -57,12 +59,13 @@ abstract class $EventModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "_id") String? id,
       String posterURL,
+      String posterPublicID,
       String title,
       String shortDescription,
       String? longDescription,
       DateTime startDate,
       DateTime endDate,
-      String registrationLink,
+      String? registrationLink,
       String? facebookPostURL,
       String venue,
       List<String> contacts,
@@ -88,12 +91,13 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
   $Res call({
     Object? id = freezed,
     Object? posterURL = null,
+    Object? posterPublicID = null,
     Object? title = null,
     Object? shortDescription = null,
     Object? longDescription = freezed,
     Object? startDate = null,
     Object? endDate = null,
-    Object? registrationLink = null,
+    Object? registrationLink = freezed,
     Object? facebookPostURL = freezed,
     Object? venue = null,
     Object? contacts = null,
@@ -111,6 +115,10 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
       posterURL: null == posterURL
           ? _value.posterURL
           : posterURL // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterPublicID: null == posterPublicID
+          ? _value.posterPublicID
+          : posterPublicID // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _value.title
@@ -132,10 +140,10 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      registrationLink: null == registrationLink
+      registrationLink: freezed == registrationLink
           ? _value.registrationLink
           : registrationLink // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       facebookPostURL: freezed == facebookPostURL
           ? _value.facebookPostURL
           : facebookPostURL // ignore: cast_nullable_to_non_nullable
@@ -183,12 +191,13 @@ abstract class _$$EventModelImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: "_id") String? id,
       String posterURL,
+      String posterPublicID,
       String title,
       String shortDescription,
       String? longDescription,
       DateTime startDate,
       DateTime endDate,
-      String registrationLink,
+      String? registrationLink,
       String? facebookPostURL,
       String venue,
       List<String> contacts,
@@ -212,12 +221,13 @@ class __$$EventModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? posterURL = null,
+    Object? posterPublicID = null,
     Object? title = null,
     Object? shortDescription = null,
     Object? longDescription = freezed,
     Object? startDate = null,
     Object? endDate = null,
-    Object? registrationLink = null,
+    Object? registrationLink = freezed,
     Object? facebookPostURL = freezed,
     Object? venue = null,
     Object? contacts = null,
@@ -235,6 +245,10 @@ class __$$EventModelImplCopyWithImpl<$Res>
       posterURL: null == posterURL
           ? _value.posterURL
           : posterURL // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterPublicID: null == posterPublicID
+          ? _value.posterPublicID
+          : posterPublicID // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _value.title
@@ -256,10 +270,10 @@ class __$$EventModelImplCopyWithImpl<$Res>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      registrationLink: null == registrationLink
+      registrationLink: freezed == registrationLink
           ? _value.registrationLink
           : registrationLink // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       facebookPostURL: freezed == facebookPostURL
           ? _value.facebookPostURL
           : facebookPostURL // ignore: cast_nullable_to_non_nullable
@@ -298,16 +312,17 @@ class __$$EventModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$EventModelImpl extends _EventModel {
+class _$EventModelImpl extends _EventModel with DiagnosticableTreeMixin {
   const _$EventModelImpl(
       {@JsonKey(name: "_id") this.id,
       required this.posterURL,
+      required this.posterPublicID,
       required this.title,
       required this.shortDescription,
       this.longDescription,
       required this.startDate,
       required this.endDate,
-      required this.registrationLink,
+      this.registrationLink,
       this.facebookPostURL,
       required this.venue,
       required final List<String> contacts,
@@ -329,6 +344,8 @@ class _$EventModelImpl extends _EventModel {
   @override
   final String posterURL;
   @override
+  final String posterPublicID;
+  @override
   final String title;
   @override
   final String shortDescription;
@@ -339,7 +356,7 @@ class _$EventModelImpl extends _EventModel {
   @override
   final DateTime endDate;
   @override
-  final String registrationLink;
+  final String? registrationLink;
   @override
   final String? facebookPostURL;
   @override
@@ -357,9 +374,11 @@ class _$EventModelImpl extends _EventModel {
   }
 
   /// Users who liked the event
+  /// Emails are stored
   final List<String> _liked;
 
   /// Users who liked the event
+  /// Emails are stored
   @override
   @JsonKey()
   List<String> get liked {
@@ -378,62 +397,33 @@ class _$EventModelImpl extends _EventModel {
   final DateTime? updatedAt;
 
   @override
-  String toString() {
-    return 'EventModel(id: $id, posterURL: $posterURL, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID, lastLocalUpdate: $lastLocalUpdate, createdAt: $createdAt, updatedAt: $updatedAt)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'EventModel(id: $id, posterURL: $posterURL, posterPublicID: $posterPublicID, title: $title, shortDescription: $shortDescription, longDescription: $longDescription, startDate: $startDate, endDate: $endDate, registrationLink: $registrationLink, facebookPostURL: $facebookPostURL, venue: $venue, contacts: $contacts, liked: $liked, clubID: $clubID, lastLocalUpdate: $lastLocalUpdate, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$EventModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.posterURL, posterURL) ||
-                other.posterURL == posterURL) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.shortDescription, shortDescription) ||
-                other.shortDescription == shortDescription) &&
-            (identical(other.longDescription, longDescription) ||
-                other.longDescription == longDescription) &&
-            (identical(other.startDate, startDate) ||
-                other.startDate == startDate) &&
-            (identical(other.endDate, endDate) || other.endDate == endDate) &&
-            (identical(other.registrationLink, registrationLink) ||
-                other.registrationLink == registrationLink) &&
-            (identical(other.facebookPostURL, facebookPostURL) ||
-                other.facebookPostURL == facebookPostURL) &&
-            (identical(other.venue, venue) || other.venue == venue) &&
-            const DeepCollectionEquality().equals(other._contacts, _contacts) &&
-            const DeepCollectionEquality().equals(other._liked, _liked) &&
-            (identical(other.clubID, clubID) || other.clubID == clubID) &&
-            (identical(other.lastLocalUpdate, lastLocalUpdate) ||
-                other.lastLocalUpdate == lastLocalUpdate) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'EventModel'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('posterURL', posterURL))
+      ..add(DiagnosticsProperty('posterPublicID', posterPublicID))
+      ..add(DiagnosticsProperty('title', title))
+      ..add(DiagnosticsProperty('shortDescription', shortDescription))
+      ..add(DiagnosticsProperty('longDescription', longDescription))
+      ..add(DiagnosticsProperty('startDate', startDate))
+      ..add(DiagnosticsProperty('endDate', endDate))
+      ..add(DiagnosticsProperty('registrationLink', registrationLink))
+      ..add(DiagnosticsProperty('facebookPostURL', facebookPostURL))
+      ..add(DiagnosticsProperty('venue', venue))
+      ..add(DiagnosticsProperty('contacts', contacts))
+      ..add(DiagnosticsProperty('liked', liked))
+      ..add(DiagnosticsProperty('clubID', clubID))
+      ..add(DiagnosticsProperty('lastLocalUpdate', lastLocalUpdate))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      posterURL,
-      title,
-      shortDescription,
-      longDescription,
-      startDate,
-      endDate,
-      registrationLink,
-      facebookPostURL,
-      venue,
-      const DeepCollectionEquality().hash(_contacts),
-      const DeepCollectionEquality().hash(_liked),
-      clubID,
-      lastLocalUpdate,
-      createdAt,
-      updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -453,12 +443,13 @@ abstract class _EventModel extends EventModel {
   const factory _EventModel(
       {@JsonKey(name: "_id") final String? id,
       required final String posterURL,
+      required final String posterPublicID,
       required final String title,
       required final String shortDescription,
       final String? longDescription,
       required final DateTime startDate,
       required final DateTime endDate,
-      required final String registrationLink,
+      final String? registrationLink,
       final String? facebookPostURL,
       required final String venue,
       required final List<String> contacts,
@@ -478,6 +469,8 @@ abstract class _EventModel extends EventModel {
   @override
   String get posterURL;
   @override
+  String get posterPublicID;
+  @override
   String get title;
   @override
   String get shortDescription;
@@ -488,7 +481,7 @@ abstract class _EventModel extends EventModel {
   @override
   DateTime get endDate;
   @override
-  String get registrationLink;
+  String? get registrationLink;
   @override
   String? get facebookPostURL;
   @override
@@ -500,6 +493,7 @@ abstract class _EventModel extends EventModel {
   @override
 
   /// Users who liked the event
+  /// Emails are stored
   List<String> get liked;
   @override
   String get clubID;
