@@ -9,7 +9,7 @@ class EventRegistrationButton extends StatelessWidget {
     required this.message,
   });
 
-  final Function onTap;
+  final void Function() onTap;
   final Widget icon;
   final String message;
 
@@ -17,19 +17,14 @@ class EventRegistrationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 35,
-      width: (message.length * 17.0).toDouble(),
       child: ElevatedButton.icon(
-        onPressed: () {},
+        onPressed: onTap,
         icon: icon,
         label: Text(
           message,
-          style: const TextStyle(
-            color: dark,
-          ),
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(color: dark),
         ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: light,
-        ),
+        style: ElevatedButton.styleFrom(backgroundColor: light),
       ),
     );
   }

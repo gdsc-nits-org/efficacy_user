@@ -19,16 +19,6 @@ class _EventFullScreenState extends State<EventFullScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    // final EventModel currentEvent = EventModel(
-    //     posterURL: "posterURL",
-    //     title: "title",
-    //     shortDescription: "shortDescription",
-    //     startDate: DateTime.now(),
-    //     endDate: DateTime.now(),
-    //     registrationLink: "registrationLink",
-    //     venue: "venue",
-    //     contacts: [],
-    //     clubID: "");
     return Stack(
       children: [
         Scaffold(
@@ -54,9 +44,7 @@ class _EventFullScreenState extends State<EventFullScreen> {
             padding: const EdgeInsets.only(top: 30),
             maxHeight: screenHeight,
             minHeight: screenHeight * 0.63,
-            panel: EventDetailsViewer(
-              currentEvent: widget.currentEvent,
-            ),
+            panel: EventDetailsViewer(currentEvent: widget.currentEvent),
             body: widget.currentEvent == null
                 ? Column(
                     children: [

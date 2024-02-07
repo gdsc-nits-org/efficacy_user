@@ -1,4 +1,4 @@
-package com.gdscnits.efficacy_user.efficacy_user
+package com.efficacyuserv2.app
 
 import io.flutter.embedding.android.FlutterActivity
 

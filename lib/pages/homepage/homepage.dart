@@ -24,12 +24,13 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int currentTabIndex = 0;
-  int currentEventFilterTypeIndex = 0;
+  ValueNotifier<int> currentEventFilterTypeIndex = ValueNotifier(0);
   int currentBottomIndex = 1;
 
-  void navigator(Status buttonMessage) {
+  void navigator(EventStatus buttonMessage) {
     setState(() {
-      currentEventFilterTypeIndex = Status.values.indexOf(buttonMessage);
+      currentEventFilterTypeIndex.value =
+          EventStatus.values.indexOf(buttonMessage);
     });
   }
 
@@ -44,7 +45,7 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: HomeBar(
         navigator: navigator,
-        currentTabIndex: currentEventFilterTypeIndex,
+        currentTabIndex: currentEventFilterTypeIndex.value,
         currentBottomIndex: currentBottomIndex,
       ),
       endDrawer: const CustomDrawer(),
@@ -56,7 +57,7 @@ class _HomepageState extends State<Homepage> {
           ? const SubscriptionPage()
           : EventsShowcasePage(
               showSubscribedOnly: currentBottomIndex == 1,
-              currentTabIndex: currentEventFilterTypeIndex,
+              currentEventFilterTypeIndex: currentEventFilterTypeIndex,
             ),
     );
   }
