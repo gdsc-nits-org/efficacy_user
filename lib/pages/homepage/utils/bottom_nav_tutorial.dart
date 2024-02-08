@@ -17,15 +17,15 @@ List<TargetFocus> getTargets(
     GlobalKey eventsKey, GlobalKey homeKey, GlobalKey subKey) {
   return [
     TargetFocus(
-      identify: "Edit Club",
+      identify: "Events Page",
       keyTarget: eventsKey,
       contents: [
         TargetContent(
-          align: ContentAlign.bottom,
+          align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
-              heading: "Edit Club",
-              text: "Click here to edit club.",
+              heading: "Events",
+              text: "Click here to view events page",
               onNext: () {
                 controller.next();
               },
@@ -38,16 +38,16 @@ List<TargetFocus> getTargets(
       ],
     ),
     TargetFocus(
-      identify: "Edit Club Position",
+      identify: "Home Page",
       keyTarget: homeKey,
       contents: [
         TargetContent(
-          align: ContentAlign.bottom,
+          align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
-              heading: "Edit Club Position",
+              heading: "Home Page",
               text:
-                  "Click to create and edit club positions and also view members in different positions of the club.",
+                  "Click here to view home page",
               onNext: () {
                 controller.next();
               },
@@ -60,15 +60,15 @@ List<TargetFocus> getTargets(
       ],
     ),
     TargetFocus(
-      identify: "Invite",
+      identify: "Subs Page",
       keyTarget: subKey,
       contents: [
         TargetContent(
-          align: ContentAlign.bottom,
+          align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
-              heading: "Invite",
-              text: "Click here to invite new members to the club.",
+              heading: "Subscriptions Page",
+              text: "Click here to view your subscribed clubs.",
               onNext: () {
                 controller.next();
               },
