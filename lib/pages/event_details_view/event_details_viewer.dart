@@ -3,9 +3,9 @@ import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/event/event_model.dart';
 import 'package:efficacy_user/pages/event_details_view/widgets/contributors.dart';
 import 'package:efficacy_user/pages/event_details_view/widgets/event_registration_button.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'widgets/event_stats.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -16,6 +16,7 @@ class EventDetailsViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DateFormat dateFormatter = DateFormat('dd MMM yyyy');
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Padding(
@@ -34,7 +35,50 @@ class EventDetailsViewer extends StatelessWidget {
                     fontSize: screenWidth * 0.094,
                   ),
                 ),
-                Text(currentEvent!.shortDescription),
+                // EventStats(event: currentEvent!),
+                const Text(
+                  "When and Where",
+                  style: TextStyle(
+                    color: dark,
+                    fontSize: 20,
+                  ),
+                ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.date_range_outlined, color: dark, size: 25,),
+                        Text(
+                          "${dateFormatter.format(currentEvent!.startDate)} - ${dateFormatter.format(currentEvent!.endDate)}",
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: shadow,
+                          ),
+                        ),
+                      ].separate(15),
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on_outlined, color: dark, size: 25,),
+                        Text(
+                          currentEvent!.venue,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: shadow,
+                          ),
+                        ),
+                      ].separate(15),
+                    )
+                  ].separate(10),
+                ),
+                const Text(
+                  "About",
+                  style: TextStyle(
+                    color: dark,
+                    fontSize: 20,
+                  ),
+                ),
+                Text((currentEvent!.longDescription != null)? currentEvent!.longDescription! : currentEvent!.shortDescription),
               ].separate(15),
             ),
             Row(

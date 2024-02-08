@@ -4,7 +4,6 @@ import 'package:efficacy_user/models/user/user_model.dart';
 import 'package:efficacy_user/utils/validator.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/pages/pages.dart';
 import 'package:efficacy_user/utils/exit_program.dart';
@@ -29,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
-    double gap = height * 0.01;
     double bodyHeightPercentage = 0.7;
     return WillPopScope(
       onWillPop: () async {
