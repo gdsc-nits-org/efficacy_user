@@ -102,7 +102,7 @@ Future<EventPaginationResponse> _fetchAllEventsFromBackend({
       );
     }
   }
-  selectorBuilder.sortBy(EventFields.updatedAt.name, descending: true);
+  selectorBuilder.sortBy(EventFields.startDate.name, descending: false);
   selectorBuilder.skip(skip);
   selectorBuilder.limit(count);
 
