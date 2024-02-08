@@ -21,6 +21,8 @@ class CustomBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      unselectedFontSize: 0,
+      selectedFontSize: 0,
       selectedItemColor: accent,
       type: BottomNavigationBarType.fixed,
       onTap: (index) {

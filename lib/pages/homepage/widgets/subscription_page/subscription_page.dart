@@ -25,7 +25,6 @@ class SubscriptionPageState extends State<SubscriptionPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    LocalDatabase.deleteAll();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.subFilter)) {
       Future.delayed(const Duration(seconds: 1), () {
         showSubFilterTutorial(context, filterKeySubPage);
