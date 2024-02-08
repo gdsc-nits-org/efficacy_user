@@ -3,7 +3,6 @@ import 'package:efficacy_user/utils/exit_program.dart';
 import 'package:efficacy_user/utils/validator.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   static const String routeName = '/ForgotPasswordPage';

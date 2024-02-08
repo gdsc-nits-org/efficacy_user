@@ -3,6 +3,7 @@ import 'package:efficacy_user/models/event/event_model.dart';
 import 'package:efficacy_user/pages/event_details_view/event_details_viewer.dart';
 import 'package:efficacy_user/utils/custom_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class EventFullScreen extends StatefulWidget {
@@ -73,12 +74,6 @@ class _EventFullScreenState extends State<EventFullScreen> {
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30),
               topRight: Radius.circular(30),
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: const Icon(
-              Icons.edit_outlined,
             ),
           ),
         ),
