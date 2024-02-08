@@ -8,3 +8,9 @@ enum LocalDocuments {
   invitations,
   institutions,
 }
+
+enum LocalGuideCheck {
+  home,
+  profile,
+  eventDetails
+}
