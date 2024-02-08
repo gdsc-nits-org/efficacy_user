@@ -61,6 +61,9 @@ flutter:
 
 
   fonts:
+    - family: SofiaPro
+      fonts:
+        - asset: assets/fonts/Sofia_Pro/sofiapro-light.otf
     - family: OpenSans
       fonts:
         - asset: assets/fonts/Open_Sans/OpenSans-Light.ttf
