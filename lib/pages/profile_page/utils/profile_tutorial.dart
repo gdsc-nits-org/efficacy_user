@@ -51,7 +51,7 @@ List<TargetFocus> getTargets(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
-              heading: "Edit Club Position",
+              heading: "Delete Profile",
               text: "Click here to delete your profile.",
               onNext: () {
                 controller.next();
