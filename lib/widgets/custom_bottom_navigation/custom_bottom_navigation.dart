@@ -1,5 +1,4 @@
 import 'package:efficacy_user/config/config.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
@@ -22,6 +21,7 @@ class CustomBottomNavigation extends StatelessWidget {
       currentIndex: currentIndex,
       items: const [
         BottomNavigationBarItem(
+          tooltip: 'Events',
           icon: Icon(
             Icons.explore,
             size: 30,
@@ -29,6 +29,7 @@ class CustomBottomNavigation extends StatelessWidget {
           label: "",
         ),
         BottomNavigationBarItem(
+          tooltip: 'Home',
           label: "",
           icon: Icon(
             Icons.home,
@@ -36,6 +37,7 @@ class CustomBottomNavigation extends StatelessWidget {
           ),
         ),
         BottomNavigationBarItem(
+          tooltip: 'Subscriptions',
           icon: Icon(
             Icons.subscriptions,
             size: 30,
