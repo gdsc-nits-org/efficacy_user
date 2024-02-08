@@ -80,7 +80,7 @@ class LocalDatabase {
       await _removeStaleDataFromBox(doc);
     }
   }
-  ///Local database functions for guide
+  //Local database functions for guide
 
   /// Returns true if the [checkpoint] was not shown before
   /// else sets it true with the assumption that the guide is being shown now
