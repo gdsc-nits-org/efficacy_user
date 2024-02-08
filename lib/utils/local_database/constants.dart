@@ -10,7 +10,8 @@ enum LocalDocuments {
 }
 
 enum LocalGuideCheck {
-  filter,
+  homeFilter,
+  subFilter,
   profile,
   bottomNav
 }
