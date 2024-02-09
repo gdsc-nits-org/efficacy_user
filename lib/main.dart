@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:feedback/feedback.dart';
 import 'utils/utils.dart';
 import 'config/config.dart';
 import 'pages/pages.dart';
 
 void main() async {
-  runApp(const EfficacyUser());
+  runApp(const BetterFeedback(child: EfficacyUser()));
 }
 
 class EfficacyUser extends StatelessWidget {

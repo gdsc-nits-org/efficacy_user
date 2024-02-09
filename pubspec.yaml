@@ -42,6 +42,8 @@ dependencies:
   path_provider: ^2.1.1
   focused_menu: ^1.0.2
   share_plus: ^7.2.2
+  feedback: ^3.0.0
+  feedback_gitlab: ^3.0.0
 
 dev_dependencies:
   flutter_test:

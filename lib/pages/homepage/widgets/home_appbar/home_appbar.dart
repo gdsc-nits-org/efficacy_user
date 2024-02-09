@@ -61,7 +61,7 @@ class _HomeBarState extends State<HomeBar> {
             ),
             color: Colors.white,
           ),
-        ].separate(15),
+        ].separate(5),
       ),
     );
   }
