@@ -5,15 +5,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeBar extends StatefulWidget implements PreferredSizeWidget {
-  const HomeBar({
+  HomeBar({
     super.key,
     required this.navigator,
     required this.currentTabIndex,
     required this.currentBottomIndex,
+    required this.filterKeyHomePage
   });
   final int currentTabIndex;
   final int currentBottomIndex;
   final Function(EventStatus) navigator;
+  GlobalKey filterKeyHomePage = GlobalKey();
 
   @override
   State<HomeBar> createState() => _HomeBarState();
@@ -48,6 +50,7 @@ class _HomeBarState extends State<HomeBar> {
         actions: [
           if (widget.currentBottomIndex != 2)
             PopUpButton(
+              key: widget.filterKeyHomePage,
               onTap: widget.navigator,
               currentTabIndex: widget.currentTabIndex,
             ),

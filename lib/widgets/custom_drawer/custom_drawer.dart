@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
@@ -86,6 +85,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
               // Navigate to Home page
               Navigator.of(context).pushNamed(
                 Homepage.routeName,
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Developers'),
+            selected: routeName == "/developersPage",
+            selectedColor: light,
+            selectedTileColor: dark,
+            onTap: () {
+              // Close the drawer
+              Navigator.pop(context);
+              // Navigate to Home page
+              Navigator.of(context).pushNamed(
+                DevelopersPage.routeName,
               );
             },
           ),

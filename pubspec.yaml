@@ -42,6 +42,7 @@ dependencies:
   path_provider: ^2.1.1
   focused_menu: ^1.0.2
   share_plus: ^7.2.2
+  tutorial_coach_mark: ^1.2.11
 
 dev_dependencies:
   flutter_test:
@@ -55,11 +56,28 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/developers_data/
     - .env
     - assets/images/
 
 
   fonts:
+    - family: SofiaPro
+      fonts:
+        - asset: assets/fonts/Sofia_Pro/SofiaProExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Sofia_Pro/SofiaProLight.ttf
+          weight: 300
+        - asset: assets/fonts/Sofia_Pro/SofiaProRegular.ttf
+          weight: 400
+        - asset: assets/fonts/Sofia_Pro/SofiaProMedium.ttf
+          weight: 500
+        - asset: assets/fonts/Sofia_Pro/SofiaProSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Sofia_Pro/SofiaProBold.ttf
+          weight: 700
+        - asset: assets/fonts/Sofia_Pro/SofiaProBlack.ttf
+          weight: 900
     - family: OpenSans
       fonts:
         - asset: assets/fonts/Open_Sans/OpenSans-Light.ttf

@@ -24,6 +24,7 @@ class EfficacyUser extends StatelessWidget {
         SignUpPage.routeName: (context) => const SignUpPage(),
         ForgotPasswordPage.routeName: (context) => const ForgotPasswordPage(),
         PersonalInfoPage.routeName: (context) => const PersonalInfoPage(),
+        DevelopersPage.routeName: (context) => const DevelopersPage()
       },
       builder: ErrorHandler.handle,
       theme: lightTheme,
