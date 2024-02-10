@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-import '../../../widgets/coach_mark_desc/coach_mark_desc.dart';
+import '../../widgets/coach_mark_desc/coach_mark_desc.dart';
 
-void showBottomNavTutorial(BuildContext context, GlobalKey eventsKey,
-    GlobalKey homeKey, GlobalKey subKey) {
-  List<TargetFocus> targets = getTargets(eventsKey, homeKey, subKey);
+void showBottomNavTutorial(
+  BuildContext context,
+  GlobalKey eventsKey,
+  GlobalKey homeKey,
+  GlobalKey subKey, {
+  void Function()? onFinish,
+}) {
+  List<TargetFocus> targets = getBottomNavTargets(
+    context,
+    eventsKey,
+    homeKey,
+    subKey,
+  );
   TutorialCoachMark(
     hideSkip: true,
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
   ).show(context: context);
 }
 
-List<TargetFocus> getTargets(
-    GlobalKey eventsKey, GlobalKey homeKey, GlobalKey subKey) {
+List<TargetFocus> getBottomNavTargets(
+  BuildContext parentContext,
+  GlobalKey eventsKey,
+  GlobalKey homeKey,
+  GlobalKey subKey,
+) {
   return [
     TargetFocus(
       identify: "Events Page",
@@ -24,8 +39,9 @@ List<TargetFocus> getTargets(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
-              heading: "Events",
-              text: "Click here to view events page",
+              parentContext: parentContext,
+              heading: "Explore",
+              text: "Click here to explore the events of all the clubs.",
               onNext: () {
                 controller.next();
               },
@@ -45,9 +61,9 @@ List<TargetFocus> getTargets(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
-              heading: "Home Page",
-              text:
-                  "Click here to view home page",
+              parentContext: parentContext,
+              heading: "Home",
+              text: "Click here to view events of your subscribed clubs.",
               onNext: () {
                 controller.next();
               },
@@ -60,15 +76,16 @@ List<TargetFocus> getTargets(
       ],
     ),
     TargetFocus(
-      identify: "Subs Page",
+      identify: "Subscriptions",
       keyTarget: subKey,
       contents: [
         TargetContent(
           align: ContentAlign.top,
           builder: (context, controller) {
             return CoachmarkDesc(
-              heading: "Subscriptions Page",
-              text: "Click here to view your subscribed clubs.",
+              parentContext: parentContext,
+              heading: "Subscriptions",
+              text: "Click here to view clubs and subscribe them.",
               onNext: () {
                 controller.next();
               },

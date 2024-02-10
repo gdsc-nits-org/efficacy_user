@@ -68,7 +68,8 @@ class _EventFullScreenState extends State<EventFullScreen> {
                     : Column(
                         children: [
                           CustomNetworkImage(
-                              url: widget.currentEvent!.posterURL)
+                            url: widget.currentEvent!.posterURL,
+                          )
                         ],
                       ),
             borderRadius: const BorderRadius.only(

@@ -23,9 +23,10 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   int skip = 0;
 
   final ScrollController _controller = ScrollController();
-  List<EventModel> events = [];
+  Set<EventModel> events = {};
   int itemCount = 0;
   EventStatus? currentEventStatus;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -45,14 +46,18 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   }
 
   Future<void> _refreshEvents() async {
-    events = [];
-    skip = 0;
+    setState(() {
+      isLoading = true;
+      events.clear();
+      skip = 0;
+    });
     EventPaginationResponse updatedEvent = await EventController.getAllEvents(
       skip: skip,
       forceGet: true,
       eventStatus: currentEventStatus,
     ).first;
     setState(() {
+      isLoading = false;
       skip = updatedEvent.skip;
       events.addAll(updatedEvent.events);
     });
@@ -72,6 +77,7 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
           Size screen = MediaQuery.of(context).size;
           EventStatus status = EventStatus.values[currentEventFilterTypeIndex];
           if (status != currentEventStatus) {
+            isLoading = true;
             currentEventStatus = status;
             skip = 0;
             events.clear();
@@ -106,29 +112,41 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                           child: Text(
                               "Some error occurred. Please restart the app"),
                         );
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
                       } else {
-                        if (snapshot.data != null) {
-                          if (skip != snapshot.data!.skip) {
-                            skip = snapshot.data!.skip;
-                            events.addAll(snapshot.data!.events);
+                        if (snapshot.hasData) {
+                          EventPaginationResponse? response = snapshot.data;
+                          if (response != null) {
+                            if (response.events.isEmpty) {
+                              isLoading = false;
+                            } else {
+                              EventModel testData = response.events.first;
+                              if (testData.type == currentEventStatus) {
+                                isLoading = false;
+                              }
+                            }
                           }
                         }
-                        final subscribedEvents = events
-                            .where((event) => UserController
-                                .currentUser!.following
-                                .contains(event.clubID))
-                            .toList();
-                        List<EventModel> filteredList =
-                            widget.showSubscribedOnly
-                                ? subscribedEvents
-                                : events;
+                        if (isLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (snapshot.data != null) {
+                          skip = snapshot.data!.skip;
+                          events.addAll(snapshot.data!.events);
+                        }
+
+                        List<EventModel> filteredList = events.toList();
+                        if (widget.showSubscribedOnly) {
+                          filteredList = events
+                              .where((event) => UserController
+                                  .currentUser!.following
+                                  .contains(event.clubID))
+                              .toList();
+                        }
                         itemCount = filteredList.length;
                         return ListView.builder(
                           controller: _controller,
-                          itemCount: max(1, itemCount),
+                          itemCount: max(1, itemCount + 1),
                           physics: const AlwaysScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             if (itemCount == 0) {
@@ -137,6 +155,15 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                                 height: screen.height * .7,
                                 child:
                                     const Center(child: Text("No event found")),
+                              );
+                            } else if (index == itemCount) {
+                              return SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: skip != -1
+                                    ? const Center(
+                                        child: CircularProgressIndicator())
+                                    : null,
                               );
                             }
                             return Padding(

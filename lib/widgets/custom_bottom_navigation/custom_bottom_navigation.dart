@@ -2,21 +2,20 @@ import 'package:efficacy_user/config/config.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
-  CustomBottomNavigation({
-    super.key,
-    required this.currentIndex,
-    required this.onTap,
-    required this.subKey,
-    required this.homeKey,
-    required this.eventsKey
-  });
+  const CustomBottomNavigation(
+      {super.key,
+      required this.currentIndex,
+      required this.onTap,
+      required this.subKey,
+      required this.homeKey,
+      required this.exploreKey});
   final int currentIndex;
   final Function onTap;
 
   //keys for guide
-  GlobalKey eventsKey = GlobalKey();
-  GlobalKey homeKey = GlobalKey();
-  GlobalKey subKey = GlobalKey();
+  final GlobalKey exploreKey;
+  final GlobalKey homeKey;
+  final GlobalKey subKey;
 
   @override
   Widget build(BuildContext context) {
@@ -29,30 +28,30 @@ class CustomBottomNavigation extends StatelessWidget {
         onTap(index); // more logic to be added regarding page navigation
       },
       currentIndex: currentIndex,
-      items:  [
+      items: [
         BottomNavigationBarItem(
-          key: eventsKey,
-          tooltip: 'Events',
-          icon: const Icon(
+          tooltip: 'Explore',
+          icon: Icon(
             Icons.explore,
+            key: exploreKey,
             size: 30,
           ),
           label: "",
         ),
         BottomNavigationBarItem(
-          key: homeKey,
           tooltip: 'Home',
           label: "",
-          icon: const Icon(
+          icon: Icon(
             Icons.home,
+            key: homeKey,
             size: 30,
           ),
         ),
         BottomNavigationBarItem(
-          key: subKey,
           tooltip: 'Subscriptions',
-          icon: const Icon(
+          icon: Icon(
             Icons.subscriptions,
+            key: subKey,
             size: 30,
           ),
           label: "",

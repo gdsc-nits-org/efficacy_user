@@ -1,12 +1,7 @@
 import 'dart:async';
-import 'package:efficacy_user/config/config.dart';
-import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/models/event/event_model.dart';
 import 'package:efficacy_user/models/models.dart';
-import 'package:efficacy_user/pages/homepage/utils/bottom_nav_tutorial.dart';
-import 'package:efficacy_user/pages/homepage/utils/filter_tutorial.dart';
-import 'package:efficacy_user/pages/homepage/widgets/events/event_card.dart';
-import 'package:efficacy_user/pages/homepage/widgets/events/event_list.dart';
+import 'package:efficacy_user/utils/tutorials/tutorials.dart';
 import 'package:efficacy_user/pages/homepage/widgets/events_showcase_page/events_showcase_page.dart';
 import 'package:efficacy_user/pages/homepage/widgets/home_appbar/home_appbar.dart';
 import 'package:efficacy_user/pages/homepage/widgets/subscription_page/subscription_page.dart';
@@ -29,25 +24,41 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   //keys for guide
-  GlobalKey eventsKey = GlobalKey();
+  GlobalKey exploreKey = GlobalKey();
   GlobalKey homeKey = GlobalKey();
   GlobalKey subKey = GlobalKey();
   GlobalKey filterKeyHomePage = GlobalKey();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    // To view guide everytime uncomment the next line
+    LocalDatabase.resetGuideCheckpoint();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.bottomNav)) {
-      Future.delayed(const Duration(seconds: 1), () {
-        showBottomNavTutorial(context, eventsKey, homeKey, subKey);
-      });
-    }
-
-    if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.homeFilter)) {
-      Future.delayed(const Duration(seconds: 1), () {
-        showFilterTutorial(context, filterKeyHomePage);
-      });
+      Future.delayed(
+        const Duration(seconds: 1),
+        () {
+          showBottomNavTutorial(
+            context,
+            exploreKey,
+            homeKey,
+            subKey,
+            onFinish: () {
+              if (LocalDatabase.getAndSetGuideStatus(
+                  LocalGuideCheck.homeFilter)) {
+                showFilterTutorial(context, filterKeyHomePage);
+              }
+            },
+          );
+        },
+      );
+    } else if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.homeFilter)) {
+      Future.delayed(
+        const Duration(seconds: 1),
+        () {
+          showFilterTutorial(context, filterKeyHomePage);
+        },
+      );
     }
   }
 
@@ -79,7 +90,7 @@ class _HomepageState extends State<Homepage> {
       ),
       endDrawer: const CustomDrawer(),
       bottomNavigationBar: CustomBottomNavigation(
-        eventsKey: eventsKey,
+        exploreKey: exploreKey,
         subKey: subKey,
         homeKey: homeKey,
         currentIndex: currentBottomIndex,

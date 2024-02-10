@@ -2,7 +2,7 @@ import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/club/club_model.dart';
-import 'package:efficacy_user/pages/homepage/utils/filter_sub_tutorial.dart';
+import 'package:efficacy_user/utils/tutorials/filter_sub_tutorial.dart';
 import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/clubs/club_stream.dart';
 import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/filter_button.dart';
 import 'package:flutter/material.dart';

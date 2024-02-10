@@ -1,4 +1,3 @@
-
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/pages/pages.dart';
@@ -75,6 +74,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.home),
             title: const Text('Home'),
             selected: routeName == "/homePage",
             selectedColor: light,
@@ -89,6 +89,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.developer_mode),
             title: const Text('Developers'),
             selected: routeName == "/developersPage",
             selectedColor: light,
@@ -103,9 +104,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.red,
+            ),
             title: const Text(
               'Log out',
-              style: TextStyle(color: Colors.black87),
+              style: TextStyle(color: Colors.red),
             ),
             onTap: () async {
               await UserController.logOut();

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/models.dart';
-import 'package:efficacy_user/pages/profile_page/utils/profile_tutorial.dart';
+import 'package:efficacy_user/utils/tutorials/profile_tutorial.dart';
 import 'package:efficacy_user/pages/profile_page/widgets/buttons.dart';
 import 'package:efficacy_user/utils/utils.dart';
 import 'package:efficacy_user/widgets/custom_app_bar/custom_app_bar.dart';
@@ -32,6 +32,7 @@ class _ProfileState extends State<ProfilePage> {
   // Global keys for guide
   GlobalKey editProfileKey = GlobalKey();
   GlobalKey deleteProfileKey = GlobalKey();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -39,7 +40,12 @@ class _ProfileState extends State<ProfilePage> {
     init();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.profile)) {
       Future.delayed(const Duration(seconds: 1), () {
-        showProfileTutorial(context, editProfileKey, deleteProfileKey);
+        showProfileTutorial(
+          context,
+          editProfileKey,
+          deleteProfileKey,
+          scrollController,
+        );
       });
     }
   }
@@ -148,6 +154,7 @@ class _ProfileState extends State<ProfilePage> {
         onRefresh: _refresh,
         child: Center(
           child: SingleChildScrollView(
+            controller: scrollController,
             child: Padding(
               padding:
                   EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),

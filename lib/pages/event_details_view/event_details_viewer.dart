@@ -1,5 +1,7 @@
 import 'package:efficacy_user/config/config.dart';
+import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
+import 'package:efficacy_user/models/club/club_model.dart';
 import 'package:efficacy_user/models/event/event_model.dart';
 import 'package:efficacy_user/pages/event_details_view/widgets/contributors.dart';
 import 'package:efficacy_user/pages/event_details_view/widgets/event_registration_button.dart';
@@ -11,7 +13,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class EventDetailsViewer extends StatelessWidget {
   static const String routeName = "/eventDetails";
-  const EventDetailsViewer({super.key, required this.currentEvent});
+  const EventDetailsViewer({
+    super.key,
+    required this.currentEvent,
+  });
   final EventModel? currentEvent;
 
   @override
@@ -35,7 +40,45 @@ class EventDetailsViewer extends StatelessWidget {
                     fontSize: screenWidth * 0.094,
                   ),
                 ),
-                // EventStats(event: currentEvent!),
+                StreamBuilder(
+                    stream: ClubController.get(id: currentEvent!.clubID),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        );
+                      } else if (snapshot.hasData) {
+                        List<ClubModel> club = snapshot.data;
+
+                        if (club.isNotEmpty) {
+                          return Row(
+                            children: [
+                              Text(
+                                "Club: ",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(
+                                        color: dark,
+                                        fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                club.first.name,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(color: dark),
+                              ),
+                            ],
+                          );
+                        }
+                      }
+                      return const SizedBox();
+                    }),
                 const Text(
                   "When and Where",
                   style: TextStyle(
@@ -47,7 +90,11 @@ class EventDetailsViewer extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.date_range_outlined, color: dark, size: 25,),
+                        const Icon(
+                          Icons.date_range_outlined,
+                          color: dark,
+                          size: 25,
+                        ),
                         Text(
                           "${dateFormatter.format(currentEvent!.startDate)} - ${dateFormatter.format(currentEvent!.endDate)}",
                           style: const TextStyle(
@@ -59,7 +106,11 @@ class EventDetailsViewer extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        const Icon(Icons.location_on_outlined, color: dark, size: 25,),
+                        const Icon(
+                          Icons.location_on_outlined,
+                          color: dark,
+                          size: 25,
+                        ),
                         Text(
                           currentEvent!.venue,
                           style: const TextStyle(
@@ -78,7 +129,9 @@ class EventDetailsViewer extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
-                Text((currentEvent!.longDescription != null)? currentEvent!.longDescription! : currentEvent!.shortDescription),
+                Text((currentEvent!.longDescription != null)
+                    ? currentEvent!.longDescription!
+                    : currentEvent!.shortDescription),
               ].separate(15),
             ),
             Row(
