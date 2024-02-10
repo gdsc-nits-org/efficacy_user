@@ -1,8 +1,10 @@
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/models/event/event_model.dart';
 import 'package:efficacy_user/pages/event_details_view/event_details_viewer.dart';
+import 'package:efficacy_user/pages/event_details_view/widgets/photo_viewer.dart';
 import 'package:efficacy_user/utils/custom_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:intl/intl.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -46,32 +48,35 @@ class _EventFullScreenState extends State<EventFullScreen> {
             maxHeight: screenHeight,
             minHeight: screenHeight * 0.63,
             panel: EventDetailsViewer(currentEvent: widget.currentEvent),
-            body: widget.currentEvent == null
-                ? Column(
-                    children: [
-                      Image.asset(
-                        Assets.mediaImgPath,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
-                  )
-                : widget.currentEvent?.posterURL == null ||
-                        widget.currentEvent!.posterURL.isEmpty
-                    ? Column(
-                        children: [
-                          Image.asset(
+            body: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>EventPosterViewer(currentEvent: widget.currentEvent!)));
+              },
+              child: widget.currentEvent == null
+                  ? Column(
+                      children: [ 
+                        Image.asset(
                             Assets.mediaImgPath,
-                            fit: BoxFit.cover,
                           ),
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          CustomNetworkImage(
-                            url: widget.currentEvent!.posterURL,
-                          )
-                        ],
-                      ),
+                      ],
+                    )
+                  : widget.currentEvent?.posterURL == null ||
+                          widget.currentEvent!.posterURL.isEmpty
+                      ? Column(
+                          children: [
+                            Image.asset(
+                              Assets.mediaImgPath,
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            CustomNetworkImage(
+                                url: widget.currentEvent!.posterURL)
+                          ],
+                        ),
+            ),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30),
               topRight: Radius.circular(30),
