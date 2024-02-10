@@ -136,7 +136,7 @@ class UserController {
     currentUser = null;
     clubs = [];
     clubPositions = [];
-    await _save();
+    await LocalDatabase.clearLocalStorage();
   }
 
   static Future<void> toggleFollowClub({required String clubID}) async {

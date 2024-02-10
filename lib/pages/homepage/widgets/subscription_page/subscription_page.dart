@@ -2,9 +2,12 @@ import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/club/club_model.dart';
+import 'package:efficacy_user/utils/tutorials/filter_sub_tutorial.dart';
 import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/clubs/club_stream.dart';
 import 'package:efficacy_user/pages/homepage/widgets/subscription_page/widgets/filter_button.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../utils/local_database/local_database.dart';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({
@@ -16,6 +19,18 @@ class SubscriptionPage extends StatefulWidget {
 }
 
 class SubscriptionPageState extends State<SubscriptionPage> {
+  GlobalKey filterKeySubPage = GlobalKey();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.subFilter)) {
+      Future.delayed(const Duration(seconds: 1), () {
+        showSubFilterTutorial(context, filterKeySubPage);
+      });
+    }
+  }
   int filterIndex = 0;
 
   late Stream<List<ClubModel>> clubStream =
@@ -77,6 +92,7 @@ class SubscriptionPageState extends State<SubscriptionPage> {
                   ),
                 ),
                 FilterButton(
+                  key: filterKeySubPage,
                   onTap: _changeIndex,
                   currentTabIndex: filterIndex,
                 ),
