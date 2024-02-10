@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:efficacy_user/models/event/event_model.dart';
 import 'package:efficacy_user/models/models.dart';
 import 'package:efficacy_user/utils/tutorials/tutorials.dart';

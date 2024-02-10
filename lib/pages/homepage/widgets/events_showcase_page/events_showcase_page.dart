@@ -1,3 +1,5 @@
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:efficacy_user/models/event/event_model.dart';
@@ -23,10 +25,20 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
   int skip = 0;
 
   final ScrollController _controller = ScrollController();
-  Set<EventModel> events = {};
+  SplayTreeSet<EventModel> events = SplayTreeSet<EventModel>(sortCompareEvents);
   int itemCount = 0;
   EventStatus? currentEventStatus;
   bool isLoading = false;
+
+  static int sortCompareEvents(EventModel b, EventModel a) {
+    return a.startDate == b.startDate
+        ? a.endDate == b.endDate
+            ? a.id == null || b.id == null
+                ? 0
+                : a.id!.compareTo(b.id!)
+            : a.endDate.compareTo(b.endDate)
+        : a.startDate.compareTo(b.startDate);
+  }
 
   @override
   void initState() {
@@ -172,9 +184,8 @@ class _EventsShowcasePageState extends State<EventsShowcasePage> {
                                 horizontal: 10,
                               ),
                               child: EventCard(
-                                  item: snapshot.data != null
-                                      ? filteredList[index]
-                                      : null),
+                                event: filteredList[index],
+                              ),
                             );
                           },
                         );
