@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 class HomeBar extends StatefulWidget implements PreferredSizeWidget {
   HomeBar({
     super.key,
+    required this.drawerKey,
     required this.navigator,
     required this.currentTabIndex,
     required this.currentBottomIndex,
@@ -15,6 +16,7 @@ class HomeBar extends StatefulWidget implements PreferredSizeWidget {
   final int currentTabIndex;
   final int currentBottomIndex;
   final Function(EventStatus) navigator;
+  final GlobalKey? drawerKey;
   GlobalKey filterKeyHomePage = GlobalKey();
 
   @override
@@ -55,6 +57,7 @@ class _HomeBarState extends State<HomeBar> {
               currentTabIndex: widget.currentTabIndex,
             ),
           IconButton(
+            key: widget.drawerKey,
             onPressed: () {
               Scaffold.of(context).openEndDrawer();
             },
