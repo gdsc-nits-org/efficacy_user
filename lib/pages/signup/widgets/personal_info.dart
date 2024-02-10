@@ -52,11 +52,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     return branches[branchCode];
   }
 
-  Degree? getDegree(int degreeCode){
-    Map<int, Degree> degrees ={
-      1:Degree.BTech,
-      2:Degree.MTech,
-      3:Degree.Phd
+  Degree? getDegree(int degreeCode) {
+    Map<int, Degree> degrees = {
+      1: Degree.BTech,
+      2: Degree.MTech,
+      3: Degree.Phd
     };
     return degrees[degreeCode];
   }
@@ -157,7 +157,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                             info = await ImageController
                                                 .uploadImage(
                                               img: _image!,
-                                              userName: nameController.text,
+                                              name: nameController.text,
                                               folder: ImageFolder.userImage,
                                             );
                                           }
@@ -171,8 +171,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                               userPhoto: info?.url,
                                               userPhotoPublicID: info?.publicID,
                                               phoneNumber: args.phoneNumber,
-                                              branch: getBranch(int.parse(scholarIDController.text[3])),
-                                              degree: getDegree(int.parse(scholarIDController.text[2])),
+                                              branch: getBranch(int.parse(
+                                                  scholarIDController.text[3])),
+                                              degree: getDegree(int.parse(
+                                                  scholarIDController.text[2])),
                                             ),
                                           );
                                         },

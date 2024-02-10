@@ -26,7 +26,8 @@ class UploadInformation {
 
 enum ImageFolder {
   eventThumbnail("events/posters"),
-  userImage("users/profile");
+  userImage("users/profile"),
+  feedback("feedback");
 
   final String name;
   const ImageFolder(this.name);
@@ -57,7 +58,7 @@ class ImageController {
     required Uint8List img,
     String? clubName,
     String? eventName,
-    String? userName,
+    String? name,
     String? publicID,
     required ImageFolder folder,
     void Function(int count, int total)? progressCallback,
@@ -66,7 +67,7 @@ class ImageController {
       img: img,
       clubName: clubName,
       eventName: eventName,
-      userName: userName,
+      userName: name,
       folder: folder,
       publicID: publicID,
       progressCallback: progressCallback,

@@ -5,7 +5,18 @@ import 'config/config.dart';
 import 'pages/pages.dart';
 
 void main() async {
-  runApp(const BetterFeedback(child: EfficacyUser()));
+  runApp(
+    BetterFeedback(
+      theme: FeedbackThemeData(
+        activeFeedbackModeColor: accent,
+        colorScheme: const ColorScheme.light(
+          primary: accent,
+          secondary: accent,
+        ),
+      ),
+      child: const EfficacyUser(),
+    ),
+  );
 }
 
 class EfficacyUser extends StatelessWidget {
