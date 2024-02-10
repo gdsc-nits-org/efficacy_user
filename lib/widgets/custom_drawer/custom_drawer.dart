@@ -1,8 +1,15 @@
+import 'dart:io';
+
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/pages/pages.dart';
+import 'package:efficacy_user/utils/database/constants.dart';
 import 'package:efficacy_user/widgets/profile_image_viewer/profile_image_viewer.dart';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -18,6 +25,75 @@ class _CustomDrawerState extends State<CustomDrawer> {
   void initState() {
     // TODO : integrate with backend
     super.initState();
+  }
+
+  void showFeedback() {
+    BetterFeedback.of(context).show(
+      sendFeedback(
+        projectId: dotenv.env[EnvValues.GITLAB_ID.name]!,
+        apiToken: dotenv.env[EnvValues.GITLAB_TOKEN.name]!,
+        gitlabUrl: null,
+        client: null,
+      ),
+    );
+  }
+
+  OnFeedbackCallback sendFeedback({
+    required String projectId,
+    required String apiToken,
+    String? gitlabUrl,
+    http.Client? client,
+  }) {
+    final httpClient = client ?? http.Client();
+    final baseUrl = gitlabUrl ?? 'gitlab.com';
+
+    return (UserFeedback feedback) async {
+      final uri = Uri.https(
+        baseUrl,
+        '/api/v4/projects/$projectId/uploads',
+      );
+      final uploadRequest = http.MultipartRequest('POST', uri)
+        ..headers.putIfAbsent('PRIVATE-TOKEN', () => apiToken)
+        ..fields['id'] = projectId
+        ..files.add(http.MultipartFile.fromBytes(
+          'file',
+          feedback.screenshot,
+          filename: 'feedback.png',
+          contentType: MediaType('image', 'png'),
+        ));
+
+      final uploadResponse = await httpClient.send(uploadRequest);
+
+      final dynamic uploadResponseMap = jsonDecode(
+        await uploadResponse.stream.bytesToString(),
+      );
+
+      final imageMarkdown = uploadResponseMap["markdown"] as String?;
+      final extras = feedback.extra?.toString() ?? '';
+
+      final description = '${feedback.text}\n'
+          '${imageMarkdown ?? 'Missing image!'}\n'
+          '$extras';
+
+      // Create issue
+      await httpClient.post(
+        Uri.https(
+          baseUrl,
+          '/api/v4/projects/$projectId/issues',
+          <String, String>{
+            'title':
+                "${feedback.text} - ${UserController.currentUser!.name} - ${UserController.currentUser!.email}",
+            'description': description,
+          },
+        ),
+        headers: {'PRIVATE-TOKEN': apiToken},
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("Efficacy has reported the bug to the team"),
+      //   ),
+      // );
+    };
   }
 
   @override
@@ -74,7 +150,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.home),
             title: const Text('Home'),
             selected: routeName == "/homePage",
             selectedColor: light,
@@ -89,6 +164,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(
+              Icons.bug_report_outlined,
+              color: dark,
+            ),
+            title: const Text(
+              'Report Bug',
+              style: TextStyle(color: Colors.black87),
+            ),
+            onTap: showFeedback,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.cancel,
+              color: Colors.red,
+            ),
             leading: const Icon(Icons.developer_mode),
             title: const Text('Developers'),
             selected: routeName == "/developersPage",
