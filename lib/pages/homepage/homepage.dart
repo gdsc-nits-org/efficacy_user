@@ -92,7 +92,9 @@ class _HomepageState extends State<Homepage> {
         currentTabIndex: currentEventFilterTypeIndex.value,
         currentBottomIndex: currentBottomIndex,
       ),
-      endDrawer: const CustomDrawer(),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
       bottomNavigationBar: CustomBottomNavigation(
         exploreKey: exploreKey,
         subKey: subKey,

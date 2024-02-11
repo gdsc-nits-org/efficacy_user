@@ -137,7 +137,9 @@ class _ProfileState extends State<ProfilePage> {
     double vMargin = width * 0.1;
 
     return Scaffold(
-      endDrawer: const CustomDrawer(),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
       appBar: CustomAppBar(title: "Profile", actions: [
         if (editMode == false)
           EditButton(
