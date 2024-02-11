@@ -29,6 +29,7 @@ class _HomepageState extends State<Homepage> {
   GlobalKey homeKey = GlobalKey();
   GlobalKey subKey = GlobalKey();
   GlobalKey filterKeyHomePage = GlobalKey();
+  GlobalKey reportBugKey = GlobalKey();
 
   @override
   void initState() {
@@ -89,7 +90,9 @@ class _HomepageState extends State<Homepage> {
         currentTabIndex: currentEventFilterTypeIndex.value,
         currentBottomIndex: currentBottomIndex,
       ),
-      endDrawer: const CustomDrawer(),
+      endDrawer: CustomDrawer(
+        reportBugKey: reportBugKey,
+      ),
       bottomNavigationBar: CustomBottomNavigation(
         exploreKey: exploreKey,
         subKey: subKey,

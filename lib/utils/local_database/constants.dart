@@ -13,5 +13,6 @@ enum LocalGuideCheck {
   homeFilter,
   subFilter,
   profile,
-  bottomNav
+  bottomNav,
+  reportBug
 }
