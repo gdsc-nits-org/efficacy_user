@@ -49,7 +49,7 @@ class _EventStatsState extends State<EventStats> {
         event = event.copyWith(liked: liked);
       });
     } else {
-      showErrorSnackBar(context, "Please log in again");
+      showSnackBar(context, "Please log in again");
     }
   }
 

@@ -1,9 +1,15 @@
+import 'package:efficacy_user/controllers/services/mails/mail_controller.dart';
 import 'package:efficacy_user/controllers/services/user/user_controller.dart';
+import 'package:efficacy_user/controllers/services/verification_code/verification_code_controller.dart';
+import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/user/user_model.dart';
+import 'package:efficacy_user/models/verification_code/verification_code_model.dart';
 import 'package:efficacy_user/pages/signup/widgets/infopass.dart';
+import 'package:efficacy_user/pages/signup/widgets/verification_code_page.dart';
 import 'package:efficacy_user/utils/utils.dart';
 import 'package:efficacy_user/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
+import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:efficacy_user/config/config.dart';
@@ -22,10 +28,27 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController verificationCodeController = TextEditingController();
   bool hidePassword = true;
   PhoneNumber? phoneNumber;
   IconData passVisibility = Icons.visibility;
   final _formKey = GlobalKey<FormState>();
+  Future<void> generateAndSendCode(String email) async {
+    showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          VerificationCodeModel verificationCode =
+              await VerificationCodeController.generateRandomCodeAndSave(
+            len: 5,
+            email: email,
+          );
+          await MailController.sendVerificationCodeMail(
+            code: verificationCode.code,
+            email: verificationCode.email,
+          );
+          showSnackBar(context, "Please check your email for the code");
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +169,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                   child: ElevatedButton(
                                     onPressed: () async{
                                       if(_formKey.currentState!.validate()){
-                                        Navigator.pushNamed(context, PersonalInfoPage.routeName, arguments: ScreenArguments(emailController, passwordController, phoneNumber));
+                                        // await generateAndSendCode(emailController.text.toString());
+                                        Navigator.pushNamed(context, VerificatioCodePage.routeName, arguments: ScreenArguments(emailController, passwordController, phoneNumber));
                                       }
                                     },
                                     child: Text(
