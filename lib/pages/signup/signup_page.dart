@@ -5,6 +5,7 @@ import 'package:efficacy_user/utils/utils.dart';
 import 'package:efficacy_user/widgets/custom_phone_input/custom_phone_input.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/pages/pages.dart';
@@ -34,10 +35,16 @@ class _SignUpPageState extends State<SignUpPage> {
     double width = size.width;
     double gap = height * 0.01;
     double bodyHeightPercentage = 0.7;
-    return WillPopScope(
-      onWillPop: () async {
-        final quitCondition = await showExitWarning(context);
-        return quitCondition ?? false;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        final bool shouldPop = await showExitWarning(context);
+        if (shouldPop) {
+          SystemNavigator.pop();
+        }
       },
       child: Scaffold(
           // resizeToAvoidBottomInset: false,
