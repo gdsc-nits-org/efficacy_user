@@ -10,6 +10,7 @@ import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/models/user/user_model.dart';
 import 'package:efficacy_user/utils/validator.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/pages/pages.dart';
@@ -78,7 +79,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         }
         final bool shouldPop = await showExitWarning(context);
         if (shouldPop) {
-          Navigator.pop(context);
+          SystemNavigator.pop();
         }
       },
       child: Scaffold(
