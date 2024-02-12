@@ -21,6 +21,7 @@ class PersonalInfoPage extends StatefulWidget {
   // TextEditingController? passwordController;
   // PhoneNumber? phoneNumber;
   static const String routeName = '/PersonalInfoPage';
+
   const PersonalInfoPage({
     super.key,
     // this.emailController,
@@ -69,10 +70,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     double width = size.width;
     double gap = height * 0.01;
     double bodyHeightPercentage = 0.7;
-    return WillPopScope(
-      onWillPop: () async {
-        final quitCondition = await showExitWarning(context);
-        return quitCondition ?? false;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        final bool shouldPop = await showExitWarning(context);
+        if (shouldPop) {
+          Navigator.pop(context);
+        }
       },
       child: Scaffold(
         body: SingleChildScrollView(
