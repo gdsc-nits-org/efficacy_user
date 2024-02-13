@@ -19,7 +19,8 @@ import 'package:http_parser/http_parser.dart';
 import 'utils/get_feedback_data.dart';
 
 class CustomDrawer extends StatefulWidget {
-  const CustomDrawer({super.key});
+  final BuildContext pageContext;
+  const CustomDrawer({super.key, required this.pageContext});
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
@@ -136,7 +137,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   LocalGuideCheck.reportBug)) {
                 await showReportBugTutorial(context);
               }
-              BetterFeedback.of(context).show(sendFeedback());
+              // Close the drawer
+              Navigator.pop(context);
+              if (widget.pageContext.mounted) {
+                BetterFeedback.of(widget.pageContext).show(sendFeedback());
+              }
             },
           ),
           ListTile(

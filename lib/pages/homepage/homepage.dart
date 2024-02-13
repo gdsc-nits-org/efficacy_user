@@ -34,7 +34,7 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     // To view guide everytime uncomment the next line
-    LocalDatabase.resetGuideCheckpoint();
+    // LocalDatabase.resetGuideCheckpoint();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.bottomNav)) {
       Future.delayed(
         const Duration(seconds: 1),
@@ -89,7 +89,9 @@ class _HomepageState extends State<Homepage> {
         currentTabIndex: currentEventFilterTypeIndex.value,
         currentBottomIndex: currentBottomIndex,
       ),
-      endDrawer: const CustomDrawer(),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
       bottomNavigationBar: CustomBottomNavigation(
         exploreKey: exploreKey,
         subKey: subKey,
