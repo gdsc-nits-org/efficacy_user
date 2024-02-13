@@ -5,6 +5,7 @@ import '../../widgets/coach_mark_desc/coach_mark_desc.dart';
 
 void showBottomNavTutorial(
   BuildContext context,
+  GlobalKey drawerKey,
   GlobalKey eventsKey,
   GlobalKey homeKey,
   GlobalKey subKey, {
@@ -12,6 +13,7 @@ void showBottomNavTutorial(
 }) {
   List<TargetFocus> targets = getBottomNavTargets(
     context,
+    drawerKey,
     eventsKey,
     homeKey,
     subKey,
@@ -29,6 +31,7 @@ List<TargetFocus> getBottomNavTargets(
   GlobalKey eventsKey,
   GlobalKey homeKey,
   GlobalKey subKey,
+  GlobalKey drawerKey,
 ) {
   return [
     TargetFocus(
@@ -95,6 +98,28 @@ List<TargetFocus> getBottomNavTargets(
             );
           },
         ),
+      ],
+    ),
+    TargetFocus(
+      identify: "Drawer",
+      keyTarget: drawerKey,
+      contents: [
+        TargetContent(
+          // align: ContentAlign.bottom,
+          builder: (context, controller) {
+            return CoachmarkDesc(
+              parentContext: parentContext,
+              heading: "Menu",
+              text: "Click to navigate between pages and see more options.",
+              onNext: () {
+                controller.next();
+              },
+              onSkip: () {
+                controller.skip();
+              },
+            );
+          },
+        )
       ],
     ),
   ];

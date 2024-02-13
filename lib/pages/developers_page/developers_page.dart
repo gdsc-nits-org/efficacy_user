@@ -69,8 +69,9 @@ class DevelopersPageState extends State<DevelopersPage> {
     double cardSpacing = width * 0.025;
     return Scaffold(
       endDrawer: CustomDrawer(
-        reportBugKey: reportBugKey,
+        pageContext: context
       ),
+
       appBar: const CustomAppBar(
         title: 'Developers',
       ),

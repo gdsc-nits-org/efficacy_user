@@ -14,5 +14,5 @@ enum LocalGuideCheck {
   subFilter,
   profile,
   bottomNav,
-  reportBug
+  reportBug,
 }

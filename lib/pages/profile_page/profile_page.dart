@@ -139,8 +139,9 @@ class _ProfileState extends State<ProfilePage> {
 
     return Scaffold(
       endDrawer: CustomDrawer(
-        reportBugKey: reportBugKey,
+        pageContext: context,
       ),
+
       appBar: CustomAppBar(title: "Profile", actions: [
         if (editMode == false)
           EditButton(
