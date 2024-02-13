@@ -6,6 +6,8 @@ import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/pages/pages.dart';
 import 'package:efficacy_user/utils/database/constants.dart';
+import 'package:efficacy_user/utils/local_database/local_database.dart';
+import 'package:efficacy_user/utils/tutorials/report_bug_tutorial.dart';
 import 'package:efficacy_user/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
 import 'package:feedback/feedback.dart';
@@ -128,11 +130,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
               'Report Bug',
               style: TextStyle(color: Colors.black87),
             ),
-            onTap: () {
+            onTap: () async {
+              if (LocalDatabase.getAndSetGuideStatus(
+                  LocalGuideCheck.reportBug)) {
+                await showReportBugTutorial(context);
+              }
               // Close the drawer
               Navigator.pop(context);
               if (widget.pageContext.mounted) {
-                // Then send feedback
                 BetterFeedback.of(widget.pageContext).show(sendFeedback());
               }
             },
