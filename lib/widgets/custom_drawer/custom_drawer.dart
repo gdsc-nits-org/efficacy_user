@@ -6,6 +6,8 @@ import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/pages/pages.dart';
 import 'package:efficacy_user/utils/database/constants.dart';
+import 'package:efficacy_user/utils/local_database/local_database.dart';
+import 'package:efficacy_user/utils/tutorials/report_bug_tutorial.dart';
 import 'package:efficacy_user/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
 import 'package:feedback/feedback.dart';
@@ -17,7 +19,8 @@ import 'package:http_parser/http_parser.dart';
 import 'utils/get_feedback_data.dart';
 
 class CustomDrawer extends StatefulWidget {
-  const CustomDrawer({super.key});
+  final BuildContext pageContext;
+  const CustomDrawer({super.key, required this.pageContext});
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
@@ -29,7 +32,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   OnFeedbackCallback sendFeedback() {
     return (UserFeedback feedback) async {
       await showLoadingOverlay(
-        context: context,
+        context: widget.pageContext,
         asyncTask: () async {
           Uint8List data = await getFeedBackData(feedback);
           DateTime now = DateTime.now();
@@ -38,8 +41,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             folder: ImageFolder.feedback,
             name: now.toIso8601String(),
           );
-          showSnackBar(context,
-              "Your feedback was shared, Thank you for your feedback.");
+          showSnackBar(widget.pageContext,
+              "Your feedback was shared. Thank you for your feedback.");
         },
       );
     };
@@ -127,8 +130,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
               'Report Bug',
               style: TextStyle(color: Colors.black87),
             ),
-            onTap: () {
-              BetterFeedback.of(context).show(sendFeedback());
+            onTap: () async {
+              if (LocalDatabase.getAndSetGuideStatus(
+                  LocalGuideCheck.reportBug)) {
+                await showReportBugTutorial(context);
+              }
+              // Close the drawer
+              Navigator.pop(context);
+              if (widget.pageContext.mounted) {
+                BetterFeedback.of(widget.pageContext).show(sendFeedback());
+              }
             },
           ),
           ListTile(

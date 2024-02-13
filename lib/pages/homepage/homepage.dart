@@ -29,6 +29,7 @@ class _HomepageState extends State<Homepage> {
   GlobalKey homeKey = GlobalKey();
   GlobalKey subKey = GlobalKey();
   GlobalKey filterKeyHomePage = GlobalKey();
+  GlobalKey drawerKey = GlobalKey();
 
   @override
   void initState() {
@@ -44,6 +45,7 @@ class _HomepageState extends State<Homepage> {
             exploreKey,
             homeKey,
             subKey,
+            drawerKey,
             onFinish: () {
               if (LocalDatabase.getAndSetGuideStatus(
                   LocalGuideCheck.homeFilter)) {
@@ -84,12 +86,15 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HomeBar(
+        drawerKey: drawerKey,
         filterKeyHomePage: filterKeyHomePage,
         navigator: navigator,
         currentTabIndex: currentEventFilterTypeIndex.value,
         currentBottomIndex: currentBottomIndex,
       ),
-      endDrawer: const CustomDrawer(),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
       bottomNavigationBar: CustomBottomNavigation(
         exploreKey: exploreKey,
         subKey: subKey,
