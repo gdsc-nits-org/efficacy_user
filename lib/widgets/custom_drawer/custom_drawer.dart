@@ -32,7 +32,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   OnFeedbackCallback sendFeedback() {
     return (UserFeedback feedback) async {
       await showLoadingOverlay(
-        context: context,
+        context: widget.pageContext,
         asyncTask: () async {
           Uint8List data = await getFeedBackData(feedback);
           DateTime now = DateTime.now();
@@ -41,10 +41,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             folder: ImageFolder.feedback,
             name: now.toIso8601String(),
           );
-          showErrorSnackBar(
-            context,
-            "Your feedback was shared, Thank you for your feedback.",
-          );
+          showErrorSnackBar(widget.pageContext,
+              "Your feedback was shared, Thank you for your feedback.");
         },
       );
     };
