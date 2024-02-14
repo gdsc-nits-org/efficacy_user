@@ -7,7 +7,6 @@ import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/pages/pages.dart';
 import 'package:efficacy_user/utils/database/constants.dart';
 import 'package:efficacy_user/utils/local_database/local_database.dart';
-
 import 'package:efficacy_user/utils/tutorials/report_bug_tutorial.dart';
 import 'package:efficacy_user/widgets/profile_image_viewer/profile_image_viewer.dart';
 import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
@@ -17,34 +16,18 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
-import '../../utils/utils.dart';
 import 'utils/get_feedback_data.dart';
 
 class CustomDrawer extends StatefulWidget {
   final BuildContext pageContext;
   const CustomDrawer({super.key, required this.pageContext});
 
-
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.reportBug)) {
-      Future.delayed(const Duration(seconds: 1), () {
-        showReportBugTutorial(
-          context,
-        );
-      });
-    }
-  }
-
   late bool pendingInvites = false;
-
 
   OnFeedbackCallback sendFeedback() {
     return (UserFeedback feedback) async {
@@ -59,7 +42,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             name: now.toIso8601String(),
           );
           showErrorSnackBar(widget.pageContext,
-              "Your feedback was shared, Thank you for your feedback.");
+              "Your feedback was shared. Thank you for your feedback.");
         },
       );
     };
