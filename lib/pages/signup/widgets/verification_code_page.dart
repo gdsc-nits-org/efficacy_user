@@ -1,5 +1,6 @@
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/services/mail/mail_controller.dart';
+import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/controllers/services/verification_code/verification_code_controller.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/verification_code/verification_code_model.dart';
@@ -24,16 +25,21 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
     showLoadingOverlay(
         context: context,
         asyncTask: () async {
-          VerificationCodeModel verificationCode =
-              await VerificationCodeController.generateRandomCodeAndSave(
-            len: 5,
-            email: email,
-          );
-          await MailController.sendVerificationCodeMail(
-            code: verificationCode.code,
-            email: verificationCode.email,
-          );
-          showSnackBar(context, "Please check your email for the code");
+          if (!(await UserController.doesUserExists(email: email))) {
+            VerificationCodeModel verificationCode =
+                await VerificationCodeController.generateRandomCodeAndSave(
+              len: 5,
+              email: email,
+            );
+            await MailController.sendVerificationCodeMail(
+              code: verificationCode.code,
+              email: verificationCode.email,
+              expiresAt: verificationCode.expiresAt,
+            );
+            showSnackBar(context, "Please check your email for the code");
+          } else {
+            showSnackBar(context, "User already exists");
+          }
         });
   }
 

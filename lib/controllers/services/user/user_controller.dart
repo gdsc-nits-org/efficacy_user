@@ -23,6 +23,7 @@ part 'functions/_delete_impl.dart';
 part 'functions/_gather_data.dart';
 part 'functions/_toggle_follow_club_impl.dart';
 part 'functions/_refresh_current_user_data_impl.dart';
+part 'functions/_does_user_exists_impl.dart';
 
 class UserController {
   static const String _collectionName = "users";
@@ -42,6 +43,10 @@ class UserController {
 
   static UserModel _removePassword(UserModel user) {
     return user.copyWith(password: null);
+  }
+
+  static Future<bool> doesUserExists({required String email}) async {
+    return _doesUserExistsImpl(email: email);
   }
 
   /// Checks for duplicate values
