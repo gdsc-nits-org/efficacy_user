@@ -7,5 +7,4 @@ export 'profile_page/profile_page.dart';
 export 'signup/signup_page.dart';
 export 'login/login_page.dart';
 export 'login/widgets/forgot_password_page.dart';
-export 'signup/widgets/personal_info.dart';
 export 'developers_page/developers_page.dart';
