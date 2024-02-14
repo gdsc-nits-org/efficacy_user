@@ -41,7 +41,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             folder: ImageFolder.feedback,
             name: now.toIso8601String(),
           );
-          showErrorSnackBar(widget.pageContext,
+          showSnackBar(widget.pageContext,
               "Your feedback was shared. Thank you for your feedback.");
         },
       );

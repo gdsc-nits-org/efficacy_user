@@ -30,7 +30,7 @@ class ClubsStream extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           // Error state
-          showErrorSnackBar(context, 'Error: ${snapshot.error}');
+          showSnackBar(context, 'Error: ${snapshot.error}');
           throw Exception('Error: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           // Empty data state
