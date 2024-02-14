@@ -3,9 +3,11 @@ import 'package:efficacy_user/utils/exit_program.dart';
 import 'package:efficacy_user/utils/validator.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   static const String routeName = '/ForgotPasswordPage';
+
   const ForgotPasswordPage({super.key});
 
   @override
@@ -15,16 +17,23 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   TextEditingController emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
     double gap = height * 0.01;
-    return WillPopScope(
-      onWillPop: () async {
-        final quitCondition = await showExitWarning(context);
-        return quitCondition ?? false;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        final bool shouldPop = await showExitWarning(context);
+        if (shouldPop) {
+          SystemNavigator.pop();
+        }
       },
       child: Scaffold(
           resizeToAvoidBottomInset: false,

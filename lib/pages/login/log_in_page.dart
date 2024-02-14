@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/pages/pages.dart';
 import 'package:efficacy_user/utils/exit_program.dart';
+import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
   static const String routeName = '/LoginPage';
@@ -29,10 +30,16 @@ class _LoginPageState extends State<LoginPage> {
     double height = size.height;
     double width = size.width;
     double bodyHeightPercentage = 0.7;
-    return WillPopScope(
-      onWillPop: () async {
-        final quitCondition = await showExitWarning(context);
-        return quitCondition ?? false;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        final bool shouldPop = await showExitWarning(context);
+        if (shouldPop) {
+          SystemNavigator.pop();
+        }
       },
       child: Scaffold(
         body: SingleChildScrollView(

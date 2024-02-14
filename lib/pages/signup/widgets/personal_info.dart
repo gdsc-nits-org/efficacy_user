@@ -10,6 +10,7 @@ import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/models/user/user_model.dart';
 import 'package:efficacy_user/utils/validator.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/pages/pages.dart';
@@ -21,6 +22,7 @@ class PersonalInfoPage extends StatefulWidget {
   // TextEditingController? passwordController;
   // PhoneNumber? phoneNumber;
   static const String routeName = '/PersonalInfoPage';
+
   const PersonalInfoPage({
     super.key,
     // this.emailController,
@@ -69,10 +71,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     double width = size.width;
     double gap = height * 0.01;
     double bodyHeightPercentage = 0.7;
-    return WillPopScope(
-      onWillPop: () async {
-        final quitCondition = await showExitWarning(context);
-        return quitCondition ?? false;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        final bool shouldPop = await showExitWarning(context);
+        if (shouldPop) {
+          SystemNavigator.pop();
+        }
       },
       child: Scaffold(
         body: SingleChildScrollView(

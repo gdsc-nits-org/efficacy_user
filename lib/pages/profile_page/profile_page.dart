@@ -33,6 +33,7 @@ class _ProfileState extends State<ProfilePage> {
   GlobalKey editProfileKey = GlobalKey();
   GlobalKey deleteProfileKey = GlobalKey();
   final ScrollController scrollController = ScrollController();
+  GlobalKey reportBugKey = GlobalKey();
 
   @override
   void initState() {
@@ -137,7 +138,10 @@ class _ProfileState extends State<ProfilePage> {
     double vMargin = width * 0.1;
 
     return Scaffold(
-      endDrawer: CustomDrawer(pageContext: context),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
+
       appBar: CustomAppBar(title: "Profile", actions: [
         if (editMode == false)
           EditButton(
