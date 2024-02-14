@@ -4,7 +4,7 @@ import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/controllers/services/verification_code/verification_code_controller.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/verification_code/verification_code_model.dart';
-import 'package:efficacy_user/pages/login/log_in_page.dart';
+import 'package:efficacy_user/pages/login/login_page.dart';
 import 'package:efficacy_user/pages/signup/widgets/infopass.dart';
 import 'package:efficacy_user/pages/signup/widgets/personal_info.dart';
 import 'package:efficacy_user/utils/validator.dart';

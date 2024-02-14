@@ -1,7 +1,7 @@
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/user/user_model.dart';
-import 'package:efficacy_user/pages/login/log_in_page.dart';
+import 'package:efficacy_user/pages/login/login_page.dart';
 import 'package:efficacy_user/utils/utils.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
 import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
