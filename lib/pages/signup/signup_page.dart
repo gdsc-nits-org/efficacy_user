@@ -1,79 +1,121 @@
+import 'package:efficacy_user/config/config.dart';
+import 'package:efficacy_user/controllers/controllers.dart';
+import 'package:efficacy_user/controllers/services/instituion/institution_controller.dart';
 import 'package:efficacy_user/controllers/services/mail/mail_controller.dart';
-import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/controllers/services/verification_code/verification_code_controller.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
+import 'package:efficacy_user/models/models.dart';
 import 'package:efficacy_user/models/verification_code/verification_code_model.dart';
-import 'package:efficacy_user/pages/signup/widgets/infopass.dart';
-import 'package:efficacy_user/pages/signup/widgets/verification_code_page.dart';
-import 'package:efficacy_user/utils/utils.dart';
-import 'package:efficacy_user/widgets/custom_phone_input/custom_phone_input.dart';
-import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
+import 'package:efficacy_user/pages/pages.dart';
+import 'package:efficacy_user/pages/signup/widgets/edit_form/edit_form.dart';
+import 'package:efficacy_user/pages/signup/widgets/nav_buttons.dart';
+import 'package:efficacy_user/pages/signup/widgets/steps.dart';
+import 'package:efficacy_user/utils/exit_program.dart';
 import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:efficacy_user/config/config.dart';
-import 'package:efficacy_user/pages/pages.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatefulWidget {
   static const String routeName = '/SignUpPage';
+
   const SignUpPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpPage> createState() => _SignUpPageUserDetailsState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageUserDetailsState extends State<SignUpPage> {
+  int currentStep = 0;
+  final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController verificationCodeController = TextEditingController();
-  bool hidePassword = true;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController scholarIDController = TextEditingController();
   PhoneNumber? phoneNumber;
-  IconData passVisibility = Icons.visibility;
-  final _formKey = GlobalKey<FormState>();
-  Future<void> generateAndSendCode(String email) async {
-    showLoadingOverlay(
-      context: context,
-      asyncTask: () async {
-        bool doesUserExist = await UserController.doesUserExists(
-            email: emailController.text);
-        if (!doesUserExist) {
-          VerificationCodeModel verificationCode =
-              await VerificationCodeController.generateRandomCodeAndSave(
-            len: 5,
-            email: email,
-          );
-          print("...........mail sent...........");
-          await MailController.sendVerificationCodeMail(
-            code: verificationCode.code,
-            email: verificationCode.email,
-            expiresAt: verificationCode.expiresAt,
-          );
-          print("............mail sent 2............");
-          showSnackBar(context, "Please check your email for the code");
-        } else {
-          showSnackBar(context, "User already exists");
-        }
-      },
-      onCompleted: () {
-        print("----------navigating to next page-----------");
-        Navigator.pushNamed(
-          context,
-          VerificationCodePage.routeName,
-          arguments:
-              ScreenArguments(emailController, passwordController, phoneNumber),
-        );
-      },
+  String gdscEmail = "gdsc@example.com";
+  String selectedDegree = Degree.BTech.name;
+  String selectedBranch = Branch.CSE.name;
+  String selectedInstitute = 'NIT Silchar';
+
+  List<String> institutes = [];
+
+  Uint8List? _image;
+
+  Future<void> init() async {
+    institutes = (await InstitutionController.getAllInstitutions())
+        .map((model) => model.name)
+        .toList();
+    if (institutes.isNotEmpty) {
+      setState(() {
+        institutes;
+      });
+    }
+  }
+
+  // Function to launch default email app
+  Future<void> _launchEmail() async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: Uri.encodeComponent(gdscEmail),
+      query: 'subject=Addition of new club',
     );
+    if (!await launchUrl(emailLaunchUri)) {
+      throw Exception('Could not launch email');
+    }
+  }
+
+  int activeStep = 0;
+  bool takeStep = false;
+  bool verificationCodeVerified = false;
+
+  bool backButtonDisableChecker() {
+    return activeStep == 0;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  Future<void> generateAndSendCode() async {
+    await showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          if (!(await UserController.doesUserExists(
+              email: emailController.text))) {
+            VerificationCodeModel verificationCode =
+                await VerificationCodeController.generateRandomCodeAndSave(
+              len: 5,
+              email: emailController.text,
+            );
+            await MailController.sendVerificationCodeMail(
+              code: verificationCode.code,
+              email: verificationCode.email,
+              expiresAt: verificationCode.expiresAt,
+            );
+            showSnackBar(context, "Please check your email for the code");
+          } else {
+            throw Exception("User already exists");
+          }
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+    //size of screen
     Size size = MediaQuery.of(context).size;
-    double height = size.height;
     double width = size.width;
-    double gap = height * 0.01;
-    double bodyHeightPercentage = 0.7;
+    double height = size.height;
+    //size constants
+    double gap = height * 0.02;
+    double formWidth = width * 0.8;
+    double vMargin = width * 0.16;
+
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) async {
@@ -86,173 +128,203 @@ class _SignUpPageState extends State<SignUpPage> {
         }
       },
       child: Scaffold(
-          // resizeToAvoidBottomInset: false,
-          body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: height * (1 - bodyHeightPercentage),
-              padding: EdgeInsets.symmetric(vertical: height * 0.08),
-              width: width,
-              decoration: const BoxDecoration(color: dark),
-              child: SizedBox(
-                width: width * 0.3,
-                child: Image.asset(
-                  Assets.efficacyUserLogoImagePath,
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-            ),
-            Container(
-              height: height * bodyHeightPercentage,
-              width: width,
-              color: dark,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: height * 0.03, horizontal: width * 0.05),
-                height: height * 0.7,
+        // resizeToAvoidBottomInset: false,
+        body: Center(
+          child: Container(
+            margin: EdgeInsets.only(top: vMargin),
+            child: SizedBox(
                 width: width,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                ),
                 child: Form(
-                    key: _formKey,
+                  key: _formKey,
+                  child: SingleChildScrollView(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            "Sign Up",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineLarge
-                                ?.copyWith(color: dark),
+                        const Text(
+                          "Hey! Welcome to Efficacy",
+                          style: TextStyle(fontSize: 25),
+                        ),
+                        Steps(
+                          activeStep: activeStep,
+                          takeStep: takeStep,
+                          onPressedStep: (int step) async {
+                            if (_formKey.currentState!.validate() &&
+                                (activeStep - step).abs() == 1) {
+                              bool canMove = false;
+                              if (activeStep != 1) {
+                                canMove = true;
+                              } else if (step == 0) {
+                                canMove = true;
+                              } else if (verificationCodeVerified) {
+                                canMove = true;
+                              }
+                              if (canMove) {
+                                setState(() {
+                                  takeStep = true;
+                                  activeStep = step;
+                                });
+                              }
+                            }
+                          },
+                          onStepReached: (int index) {
+                            setState(() {
+                              activeStep = index;
+                            });
+                          },
+                        ),
+                        SizedBox(
+                          width: formWidth,
+                          child: EditForm(
+                            step: activeStep,
+                            verificationCodeVerified: verificationCodeVerified,
+                            resendVerificationCode: generateAndSendCode,
+                            emailController: emailController,
+                            passwordController: passwordController,
+                            confirmPasswordController:
+                                confirmPasswordController,
+                            verificationCodeController:
+                                verificationCodeController,
+                            nameController: nameController,
+                            scholarIDController: scholarIDController,
+                            onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                              phoneNumber = newPhoneNumber;
+                            },
+                            onImageChanged: (Uint8List? newImage) {
+                              _image = newImage;
+                            },
+                            selectedDegree: selectedDegree,
+                            onDegreeChanged: (String? newSelectedDegree) {
+                              if (newSelectedDegree != null) {
+                                selectedDegree = newSelectedDegree;
+                              }
+                            },
+                            selectedBranch: selectedBranch,
+                            onBranchChanged: (String? newSelectedBranch) {
+                              if (newSelectedBranch != null) {
+                                selectedBranch = newSelectedBranch;
+                              }
+                            },
+                            institutes: institutes,
+                            selectedInstitute: selectedInstitute,
+                            onInstituteChanged: (String? newSelectedInstitute) {
+                              if (newSelectedInstitute != null) {
+                                selectedInstitute = newSelectedInstitute;
+                              }
+                            },
                           ),
                         ),
-                        Column(
-                          children: [
-                            CustomTextField(
-                              controller: emailController,
-                              label: "Email",
-                              validator: Validator.isEmailValid,
-                              borderRadius: 50,
-                              height: 79,
-                              prefixIcon: Icons.email,
-                            ),
-                            CustomTextField(
-                              controller: passwordController,
-                              hiddenText: hidePassword,
-                              label: "Password",
-                              validator: Validator.isPasswordValid,
-                              borderRadius: 50,
-                              height: 79,
-                              prefixIcon: Icons.lock,
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    if (passVisibility == Icons.visibility) {
-                                      setState(() {
-                                        passVisibility = Icons.visibility_off;
-                                        hidePassword = false;
+                        SizedBox(
+                          height: height * 0.1,
+                          width: formWidth,
+                          child: NavButtons(
+                            activeStep: activeStep,
+                            onPressedBack: (int index) {
+                              if (!backButtonDisableChecker()) {
+                                setState(() {
+                                  --activeStep;
+                                });
+                              }
+                            },
+                            onPressedNext: (int index) async {
+                              if (_formKey.currentState!.validate()) {
+                                if (index == 0 && !verificationCodeVerified) {
+                                  await generateAndSendCode();
+
+                                  setState(() {
+                                    ++activeStep;
+                                  });
+                                } else if (index == 1 &&
+                                    !verificationCodeVerified) {
+                                  await showLoadingOverlay(
+                                      context: context,
+                                      asyncTask: () async {
+                                        await VerificationCodeController
+                                            .verifyCode(
+                                          code: verificationCodeController.text,
+                                          email: emailController.text,
+                                        );
+                                        verificationCodeVerified = true;
+
+                                        setState(() {
+                                          ++activeStep;
+                                        });
                                       });
-                                    } else {
-                                      setState(() {
-                                        passVisibility = Icons.visibility;
-                                        hidePassword = true;
+                                } else if (index == 3) {
+                                  UserModel? user;
+                                  showLoadingOverlay(
+                                      context: context,
+                                      asyncTask: () async {
+                                        UploadInformation? info;
+                                        if (_image != null) {
+                                          info =
+                                              await ImageController.uploadImage(
+                                            img: _image!,
+                                            name: nameController.text,
+                                            folder: ImageFolder.userImage,
+                                          );
+                                        }
+                                        user = await UserController.create(
+                                          UserModel(
+                                            name: nameController.text,
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                            scholarID: scholarIDController.text,
+                                            userPhoto: info?.url,
+                                            userPhotoPublicID: info?.publicID,
+                                            phoneNumber: phoneNumber,
+                                            branch: Branch.values.firstWhere(
+                                                (branch) =>
+                                                    branch.name ==
+                                                    selectedBranch),
+                                            degree: Degree.values.firstWhere(
+                                                (degree) =>
+                                                    degree.name ==
+                                                    selectedDegree),
+                                          ),
+                                        );
+                                      },
+                                      onCompleted: () {
+                                        if (user != null && mounted) {
+                                          Navigator.of(context)
+                                              .pushNamedAndRemoveUntil(
+                                            Homepage.routeName,
+                                            (_) => false,
+                                          );
+                                        }
                                       });
-                                    }
-                                  },
-                                  icon: Icon(
-                                    passVisibility,
-                                    color:
-                                        const Color.fromARGB(255, 67, 67, 67),
-                                  )),
-                            ),
-                            CustomPhoneField(
-                              label: "Phone No.",
-                              onPhoneChanged: (PhoneNumber newPhoneNumber) {
-                                phoneNumber = newPhoneNumber;
-                              },
-                              borderRadius: 50,
-                              helperText: "* Optional",
-                            ),
-                          ].separate(height * 0.01),
+                                } else {
+                                  setState(() {
+                                    ++activeStep;
+                                  });
+                                }
+                              }
+                            },
+                          ),
                         ),
-                        Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.topCenter,
-                              height: 50,
-                              width: 150,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    await generateAndSendCode(
-                                      emailController.text.toString(),
-                                    );
-                                  }
-                                },
-                                child: Text(
-                                  "Next",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        fontWeight: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge
-                                            ?.fontWeight,
-                                      ),
-                                ),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Already have an account?",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium
-                                      ?.copyWith(
-                                        color: Theme.of(context).disabledColor,
-                                      ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      LoginPage.routeName,
-                                      (Route<dynamic> route) => false,
-                                    );
-                                  },
-                                  child: Text(
-                                    "Sign in",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium
-                                        ?.copyWith(
+                        TextButton(
+                          onPressed: () {
+                            Navigator.popAndPushNamed(
+                                context, LoginPage.routeName);
+                          },
+                          child: RichText(
+                            text: const TextSpan(
+                                text: "Already have an account? ",
+                                children: [
+                                  TextSpan(
+                                      text: "Log In",
+                                      style: TextStyle(
                                           color: dark,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
+                                          decoration: TextDecoration.underline))
+                                ],
+                                style: TextStyle(color: shadow)),
+                          ),
                         ),
-                      ].separate(gap),
-                    )),
-              ),
-            )
-          ],
+                      ],
+                    ),
+                  ),
+                )),
+          ),
         ),
-      )),
+      ),
     );
   }
 }

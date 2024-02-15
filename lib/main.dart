@@ -1,3 +1,4 @@
+import 'package:efficacy_user/pages/signup/widgets/personal_info.dart';
 import 'package:efficacy_user/pages/signup/widgets/verification_code_page.dart';
 import 'package:flutter/material.dart';
 import 'package:feedback/feedback.dart';

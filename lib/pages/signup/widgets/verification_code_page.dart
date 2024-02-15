@@ -126,8 +126,9 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
                                 CustomTextField(
                                   controller: verificationCodeController,
                                   label: "Verification Code",
-                                  validator: (value) => Validator.nullCheck(
-                                      value, "Verification Code"),
+                                  validator: (value) =>
+                                      Validator.nullAndEmptyCheck(
+                                          value, "Verification Code"),
                                   borderRadius: 50,
                                   height: 79,
                                   prefixIcon: Icons.verified,
