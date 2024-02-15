@@ -173,7 +173,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                             UserModel(
                                               name: nameController.text,
                                               email: args.email.text,
-                                              password: args.password.text,
+                                              password: args.password!.text,
                                               scholarID:
                                                   scholarIDController.text,
                                               userPhoto: info?.url,

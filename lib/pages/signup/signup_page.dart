@@ -33,25 +33,38 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   Future<void> generateAndSendCode(String email) async {
     showLoadingOverlay(
-        context: context,
-        asyncTask: () async {
-          if (!(await UserController.doesUserExists(
-              email: emailController.text))) {
-            VerificationCodeModel verificationCode =
-                await VerificationCodeController.generateRandomCodeAndSave(
-              len: 5,
-              email: email,
-            );
-            await MailController.sendVerificationCodeMail(
-              code: verificationCode.code,
-              email: verificationCode.email,
-              expiresAt: verificationCode.expiresAt,
-            );
-            showSnackBar(context, "Please check your email for the code");
-          } else {
-            showSnackBar(context, "User already exists");
-          }
-        });
+      context: context,
+      asyncTask: () async {
+        bool doesUserExist = await UserController.doesUserExists(
+            email: emailController.text);
+        if (!doesUserExist) {
+          VerificationCodeModel verificationCode =
+              await VerificationCodeController.generateRandomCodeAndSave(
+            len: 5,
+            email: email,
+          );
+          print("...........mail sent...........");
+          await MailController.sendVerificationCodeMail(
+            code: verificationCode.code,
+            email: verificationCode.email,
+            expiresAt: verificationCode.expiresAt,
+          );
+          print("............mail sent 2............");
+          showSnackBar(context, "Please check your email for the code");
+        } else {
+          showSnackBar(context, "User already exists");
+        }
+      },
+      onCompleted: () {
+        print("----------navigating to next page-----------");
+        Navigator.pushNamed(
+          context,
+          VerificationCodePage.routeName,
+          arguments:
+              ScreenArguments(emailController, passwordController, phoneNumber),
+        );
+      },
+    );
   }
 
   @override
@@ -180,12 +193,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                     await generateAndSendCode(
                                       emailController.text.toString(),
                                     );
-                                    Navigator.pushNamed(
-                                        context, VerificationCodePage.routeName,
-                                        arguments: ScreenArguments(
-                                            emailController,
-                                            passwordController,
-                                            phoneNumber));
                                   }
                                 },
                                 child: Text(

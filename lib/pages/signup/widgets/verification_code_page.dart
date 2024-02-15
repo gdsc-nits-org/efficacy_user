@@ -5,6 +5,7 @@ import 'package:efficacy_user/controllers/services/verification_code/verificatio
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/verification_code/verification_code_model.dart';
 import 'package:efficacy_user/pages/login/log_in_page.dart';
+import 'package:efficacy_user/pages/pages.dart';
 import 'package:efficacy_user/pages/signup/widgets/infopass.dart';
 import 'package:efficacy_user/pages/signup/widgets/personal_info.dart';
 import 'package:efficacy_user/utils/validator.dart';
@@ -144,22 +145,30 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       await showLoadingOverlay(
-                                          context: context,
-                                          asyncTask: () async {
-                                            await VerificationCodeController
-                                                .verifyCode(
-                                              code: verificationCodeController
-                                                  .text,
-                                              email: args.email.text,
-                                            );
-
-                                            Navigator.pushNamed(context,
-                                                PersonalInfoPage.routeName,
-                                                arguments: ScreenArguments(
-                                                    args.email,
-                                                    args.password,
-                                                    args.phoneNumber));
-                                          });
+                                        context: context,
+                                        asyncTask: () async {
+                                          await VerificationCodeController
+                                              .verifyCode(
+                                            code:
+                                                verificationCodeController.text,
+                                            email: args.email.text,
+                                          );
+                                        },
+                                        onCompleted: () {
+                                          args.password == null
+                                              ? Navigator.pushReplacementNamed(
+                                                  context,
+                                                  NewPasswordPage.routeName)
+                                              : Navigator.pushNamed(
+                                                  context,
+                                                  PersonalInfoPage.routeName,
+                                                  arguments: ScreenArguments(
+                                                      args.email,
+                                                      args.password,
+                                                      args.phoneNumber),
+                                                );
+                                        },
+                                      );
                                     }
                                   },
                                   child: Text(

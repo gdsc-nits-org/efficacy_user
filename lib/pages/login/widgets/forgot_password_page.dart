@@ -1,12 +1,26 @@
+import 'dart:math';
+
 import 'package:efficacy_user/config/config.dart';
+import 'package:efficacy_user/controllers/controllers.dart';
+import 'package:efficacy_user/controllers/services/mail/mail_controller.dart';
+import 'package:efficacy_user/controllers/services/verification_code/verification_code_controller.dart';
+import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
+import 'package:efficacy_user/models/models.dart';
+import 'package:efficacy_user/models/verification_code/verification_code_model.dart';
+import 'package:efficacy_user/pages/signup/widgets/infopass.dart';
+import 'package:efficacy_user/pages/signup/widgets/verification_code_page.dart';
+import 'package:efficacy_user/states/authenticator/authenticator.dart';
 import 'package:efficacy_user/utils/exit_program.dart';
 import 'package:efficacy_user/utils/validator.dart';
 import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
+import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   static const String routeName = '/ForgotPasswordPage';
+
+  static String emailEntered = "";
 
   const ForgotPasswordPage({super.key});
 
@@ -17,6 +31,49 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   TextEditingController emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  bool isAvailable = false;
+
+  Future<void> generateAndSendCode(String email) async {
+    showLoadingOverlay(
+        context: context,
+        asyncTask: () async {
+          bool doesUserExist = await UserController.doesUserExists(
+            email: emailController.text);
+          if (doesUserExist) {
+            VerificationCodeModel verificationCode =
+                await VerificationCodeController.generateRandomCodeAndSave(
+              len: 5,
+              email: email,
+            );
+            await MailController.sendVerificationCodeMail(
+              code: verificationCode.code,
+              email: verificationCode.email,
+              expiresAt: verificationCode.expiresAt,
+            );
+            showSnackBar(context, "Please check your email for the code");
+          } else {
+            showSnackBar(context, "User not found");
+          }
+        },
+        onCompleted: () {
+          Navigator.pushNamed(
+            context,
+            VerificationCodePage.routeName,
+            arguments: ScreenArguments(
+              emailController,
+              null,
+              null,
+            ),
+          );
+        });
+  }
+
+  String? saveEmail(String? email) {
+    String? isEmailValid = Validator.isEmailValid(email);
+    ForgotPasswordPage.emailEntered = emailController.text.toString();
+    return isEmailValid;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +161,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           CustomTextField(
                             controller: emailController,
                             label: "Email",
-                            validator: Validator.isEmailValid,
+                            validator: saveEmail,
                             borderRadius: 50,
                             height: height * 0.09,
                             prefixIcon: Icons.email,
@@ -114,8 +171,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             height: 50,
                             width: 150,
                             child: ElevatedButton(
-                              onPressed: () {
-                                _formKey.currentState!.validate();
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await generateAndSendCode(
+                                    emailController.text.toString(),
+                                  );
+                                }
                               },
                               child: Text(
                                 "Sign In",

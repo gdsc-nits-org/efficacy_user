@@ -58,14 +58,15 @@ class Validator {
   }
 
   static String? isConfirmPassword(String? password, String? confirmPassword) {
+    print("-----------entered confirm password-------------");
     String? res = nullCheck(confirmPassword, "Confirm Password");
     if (res != null) {
       return res;
     }
-
     if (password != confirmPassword) {
       return "Enter the correct password";
     }
+    print("-----------password found correct-------------");
     return null;
   }
 

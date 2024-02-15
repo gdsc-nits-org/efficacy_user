@@ -1,6 +1,6 @@
 part of '../user_controller.dart';
 
-Future<UserModel?> _updateImpl() async {
+Future<UserModel?> _updateImpl(String? password) async {
   if (UserController.currentUser == null) {
     throw Exception("Please Login");
   }
@@ -18,14 +18,42 @@ Future<UserModel?> _updateImpl() async {
     selectorBuilder.eq(UserFields.app.name, appName);
     selectorBuilder.eq(
         UserFields.email.name, UserController.currentUser!.email);
-    await collection.updateOne(
-      selectorBuilder,
-      compare(
-        oldData.first.toJson(),
-        UserController.currentUser!.toJson(),
-        ignore: [UserFields.password.name, UserFields.email.name],
-      ).map,
-    );
+    if (password == null) {
+      await collection.updateOne(
+        selectorBuilder,
+        compare(
+          oldData.first.toJson(),
+          UserController.currentUser!.toJson(),
+          // ignore: [UserFields.password.name, UserFields.email.name],
+          ignore: [
+            UserFields.email.name,
+            UserFields.password.name,
+          ],
+        ).map,
+      );
+    } else {
+      await collection.updateOne(
+        selectorBuilder,
+        compare(
+          oldData.first.toJson(),
+          UserController.currentUser!.toJson(),
+          // ignore: [UserFields.password.name, UserFields.email.name],
+          ignore: [
+            UserFields.email.name,
+            UserFields.name.name,
+            UserFields.phoneNumber.name,
+            UserFields.scholarID.name,
+            UserFields.userPhoto.name,
+            UserFields.branch.name,
+            UserFields.degree.name,
+            UserFields.socials.name,
+            UserFields.app.name,
+            UserFields.positions.name,
+            UserFields.following.name
+          ],
+        ).map,
+      );
+    }
     UserController.currentUser =
         (await UserController._save(user: UserController.currentUser))!;
     return UserController.currentUser;

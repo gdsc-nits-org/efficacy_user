@@ -19,6 +19,7 @@ Future<VerificationCodeModel> _generateRandomCodeAndSaveImpl({
   Map? res = await collection.findOne(selectorBuilder);
   late String code;
   if (res != null) {
+    print("---------------issue 1---------------");
     VerificationCodeModel verificationCode = VerificationCodeModel.fromJson(
       Formatter.convertMapToMapStringDynamic(res)!,
     );
@@ -37,6 +38,7 @@ Future<VerificationCodeModel> _generateRandomCodeAndSaveImpl({
     }
     return verificationCode;
   } else {
+    print("---------------issue 2---------------");
     VerificationCodeModel verificationCode =
         newVerificationCodeModel(len, email);
     res = await collection.insert(verificationCode.toJson());

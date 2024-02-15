@@ -126,8 +126,8 @@ class UserController {
   /// and stores it in the local database
   ///
   /// It updates the data of the currentUser
-  static Future<UserModel?> update() async {
-    UserModel? user = await _updateImpl();
+  static Future<UserModel?> update({String? password}) async {
+    UserModel? user = await _updateImpl(password);
     await _gatherData();
     return user;
   }

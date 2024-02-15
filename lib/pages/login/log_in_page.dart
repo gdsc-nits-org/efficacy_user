@@ -89,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomTextField(
                               controller: emailController,
@@ -130,7 +131,22 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPasswordPage(),
+                                  )),
+                              child: const Text(
+                                "Forgot Password ?",
+                                style: TextStyle(
+                                    color: dark,
+                                    fontSize: 16,
+                                    fontFamily: 'SofiaPro'),
+                              ),
+                            ),
                           ].separate(height * 0.01),
                         ),
                         Column(
