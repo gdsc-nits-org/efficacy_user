@@ -1,4 +1,3 @@
-import 'package:efficacy_user/pages/signup/widgets/verification_code_page.dart';
 import 'package:flutter/material.dart';
 import 'package:feedback/feedback.dart';
 import 'utils/utils.dart';
@@ -35,9 +34,7 @@ class EfficacyUser extends StatelessWidget {
         SplashScreen.routeName: (context) => const SplashScreen(),
         ProfilePage.routeName: (context) => const ProfilePage(),
         SignUpPage.routeName: (context) => const SignUpPage(),
-        VerificationCodePage.routeName: (context) => const VerificationCodePage(),
         ForgotPasswordPage.routeName: (context) => const ForgotPasswordPage(),
-        PersonalInfoPage.routeName: (context) => const PersonalInfoPage(),
         DevelopersPage.routeName: (context) => const DevelopersPage()
       },
       builder: ErrorHandler.handle,
