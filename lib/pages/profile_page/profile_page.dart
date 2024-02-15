@@ -141,7 +141,6 @@ class _ProfileState extends State<ProfilePage> {
       endDrawer: CustomDrawer(
         pageContext: context,
       ),
-
       appBar: CustomAppBar(title: "Profile", actions: [
         if (editMode == false)
           EditButton(
@@ -221,9 +220,7 @@ class _ProfileState extends State<ProfilePage> {
                       enabled: editMode,
                       value: UserController.currentUser!.degree?.name,
                     ),
-                    DeleteProfileButton(
-                      key: deleteProfileKey,
-                    ),
+                    DeleteProfileButton(key: deleteProfileKey),
                   ].separate(gap),
                 ),
               ),

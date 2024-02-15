@@ -7,7 +7,6 @@ import 'package:efficacy_user/widgets/custom_text_field/custom_text_field.dart';
 import 'package:efficacy_user/widgets/snack_bar/error_snack_bar.dart';
 import 'package:flutter/material.dart';
 
-
 class ConfirmDelProfile extends StatefulWidget {
   const ConfirmDelProfile({super.key});
 
@@ -83,19 +82,19 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
                   if (Encryptor.isValid(
                       user.first.password!, enteredPassword)) {
                     showLoadingOverlay(
-                        context: context,
-                        asyncTask: () async {
-                          await UserController.delete();
-                        },
-                        onCompleted: () {
-                          if (!dialogContext.mounted) return;
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            LoginPage.routeName,
-                            (route) => false,
-                          );
-                          showSnackBar(context, "Profile Deleted!");
-                        });
+                      context: context,
+                      asyncTask: () async {
+                        await UserController.delete();
+
+                        if (!dialogContext.mounted) return;
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          LoginPage.routeName,
+                          (route) => false,
+                        );
+                        showSnackBar(context, "Profile Deleted!");
+                      },
+                    );
                   } else {
                     if (!dialogContext.mounted) return;
                     Navigator.of(dialogContext).pop();
