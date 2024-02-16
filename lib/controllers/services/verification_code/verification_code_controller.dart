@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:efficacy_user/controllers/utils/comparator.dart';
 import 'package:efficacy_user/models/models.dart';
 import 'package:efficacy_user/models/verification_code/verification_code_model.dart';
 import 'package:efficacy_user/utils/database/database.dart';
@@ -21,20 +22,24 @@ class VerificationCodeController {
   static Future<VerificationCodeModel> generateRandomCodeAndSave({
     required int len,
     required String email,
+    required VerificationCodeIntent intent,
   }) async {
     return _generateRandomCodeAndSaveImpl(
       len: len,
       email: email,
+      intent: intent,
     );
   }
 
   static Future<void> verifyCode({
     required String code,
     required String email,
+    required VerificationCodeIntent intent,
   }) async {
     return _verifyCodeImpl(
       code: code,
       email: email,
+      intent: intent,
     );
   }
 }

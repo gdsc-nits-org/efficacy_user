@@ -23,6 +23,8 @@ part 'functions/_delete_impl.dart';
 part 'functions/_gather_data.dart';
 part 'functions/_toggle_follow_club_impl.dart';
 part 'functions/_refresh_current_user_data_impl.dart';
+part 'functions/_does_user_exists_impl.dart';
+part 'functions/_reset_password_impl.dart';
 
 class UserController {
   static const String _collectionName = "users";
@@ -42,6 +44,10 @@ class UserController {
 
   static UserModel _removePassword(UserModel user) {
     return user.copyWith(password: null);
+  }
+
+  static Future<bool> doesUserExists({required String email}) async {
+    return _doesUserExistsImpl(email: email);
   }
 
   /// Checks for duplicate values
@@ -128,6 +134,7 @@ class UserController {
   }
 
   /// Deletes the user if exists from both local database and server
+  /// Logs out the user then
   static Future<void> delete() async {
     return await _deleteImpl();
   }
@@ -136,10 +143,19 @@ class UserController {
     currentUser = null;
     clubs = [];
     clubPositions = [];
-    await LocalDatabase.clearLocalStorage();
+    await LocalDatabase.clearLocalStorageExceptGuideCheckpoints();
   }
 
   static Future<void> toggleFollowClub({required String clubID}) async {
     return await _toggleFollowClubImpl(clubID: clubID);
+  }
+
+  /// Resets the password and returns the username
+  static Future<String> resetPassword(
+      {required String email, required String newPassword}) async {
+    return await _resetPasswordImpl(
+      email: email,
+      newPassword: newPassword,
+    );
   }
 }

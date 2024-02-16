@@ -33,6 +33,7 @@ class _ProfileState extends State<ProfilePage> {
   GlobalKey editProfileKey = GlobalKey();
   GlobalKey deleteProfileKey = GlobalKey();
   final ScrollController scrollController = ScrollController();
+  GlobalKey reportBugKey = GlobalKey();
 
   @override
   void initState() {
@@ -137,7 +138,9 @@ class _ProfileState extends State<ProfilePage> {
     double vMargin = width * 0.1;
 
     return Scaffold(
-      endDrawer: CustomDrawer(pageContext: context),
+      endDrawer: CustomDrawer(
+        pageContext: context,
+      ),
       appBar: CustomAppBar(title: "Profile", actions: [
         if (editMode == false)
           EditButton(
@@ -208,18 +211,26 @@ class _ProfileState extends State<ProfilePage> {
                       items:
                           Branch.values.map((branch) => branch.name).toList(),
                       enabled: editMode,
-                      value: UserController.currentUser!.branch?.name,
+                      onChanged: (String? newBranch) {
+                        if (newBranch != null) {
+                          selectedBranch = newBranch;
+                        }
+                      },
+                      value: selectedBranch,
                     ),
                     CustomDropDown(
                       title: "Degree",
                       items:
                           Degree.values.map((degree) => degree.name).toList(),
                       enabled: editMode,
-                      value: UserController.currentUser!.degree?.name,
+                      onChanged: (String? newDegree) {
+                        if (newDegree != null) {
+                          selectedDegree = newDegree;
+                        }
+                      },
+                      value: selectedDegree,
                     ),
-                    DeleteProfileButton(
-                      key: deleteProfileKey,
-                    ),
+                    DeleteProfileButton(key: deleteProfileKey),
                   ].separate(gap),
                 ),
               ),

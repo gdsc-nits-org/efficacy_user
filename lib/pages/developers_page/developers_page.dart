@@ -35,6 +35,7 @@ class DevelopersPage extends StatefulWidget {
 class DevelopersPageState extends State<DevelopersPage> {
   List<Developer> developers = [];
   late List<bool> iconVisibility;
+  GlobalKey reportBugKey = GlobalKey();
 
   @override
   void initState() {
@@ -67,7 +68,10 @@ class DevelopersPageState extends State<DevelopersPage> {
     double cardImageSizeSmall = width * 0.20;
     double cardSpacing = width * 0.025;
     return Scaffold(
-      endDrawer: CustomDrawer(pageContext: context),
+      endDrawer: CustomDrawer(
+        pageContext: context
+      ),
+
       appBar: const CustomAppBar(
         title: 'Developers',
       ),

@@ -1,14 +1,20 @@
-String generateVerificationEmail(
+import 'package:intl/intl.dart';
+
+String generateForgotPasswordEmail(
   String appName,
   String code,
   String logoUrl,
   String codeColor,
+  DateTime expiresAt,
 ) {
+  final formattedExpiresAt =
+      DateFormat('h:mm a, MMM d, yyyy').format(expiresAt.toLocal());
+
   return '''
 <!DOCTYPE html>
 <html>
 <head>
-<title>Welcome to $appName!</title>
+<title>Password Reset for $appName</title>
 <style>
 body {
   font-family: sans-serif;
@@ -64,11 +70,33 @@ body {
   margin-bottom: 20px;
 }
 
+.button {
+  text-align: center;
+  margin: 10px auto;
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .footer {
   text-align: center;
   font-size: 14px;
   color: #888;
   margin-top: 20px;
+}
+
+.expiry-info {
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.expiry-time {
+  color: $codeColor; /* Match color with code parameter */
+  font-weight: bold; /* Make the time font bold */
 }
 </style>
 </head>
@@ -78,17 +106,18 @@ body {
     <img src="$logoUrl" alt="$appName logo">
   </div>
   <div class="header">
-    Welcome to the $appName community!
+    Reset Your Password for $appName
   </div>
   <div class="code-container">
-    We're excited you're here! To complete your registration, simply enter this code:
+    We received a request to reset your password for your $appName account. Use this code to set a new password:
     <span class="code">$code</span>
   </div>
-  <div class="instruction">
-    Once you've entered the code, you'll be able to explore all that $appName has to offer.
+  <div class="expiry-info">
+    This code expires at <span class="expiry-time">$formattedExpiresAt</span>.
   </div>
   <div class="footer">
-    If you didn't request this verification code, please disregard this email.
+    If you didn't request a password reset, **please disregard this email.** <br>
+    **This is an auto-generated email. Please do not reply.**
   </div>
 </div>
 </body>

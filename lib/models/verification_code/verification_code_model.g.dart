@@ -12,7 +12,9 @@ _$VerificationCodeModelImpl _$$VerificationCodeModelImplFromJson(
       id: json['_id'] as String?,
       email: json['email'] as String,
       code: json['code'] as String,
+      expiresAt: DateTime.parse(json['expiresAt'] as String),
       app: json['app'] as String? ?? appName,
+      intent: $enumDecode(_$VerificationCodeIntentEnumMap, json['intent']),
       lastLocalUpdate: json['lastLocalUpdate'] == null
           ? null
           : DateTime.parse(json['lastLocalUpdate'] as String),
@@ -24,6 +26,13 @@ Map<String, dynamic> _$$VerificationCodeModelImplToJson(
       '_id': instance.id,
       'email': instance.email,
       'code': instance.code,
+      'expiresAt': instance.expiresAt.toIso8601String(),
       'app': instance.app,
+      'intent': _$VerificationCodeIntentEnumMap[instance.intent]!,
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };
+
+const _$VerificationCodeIntentEnumMap = {
+  VerificationCodeIntent.createAccount: 'createAccount',
+  VerificationCodeIntent.forgotPassword: 'forgotPassword',
+};

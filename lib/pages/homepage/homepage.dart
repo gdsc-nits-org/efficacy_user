@@ -29,7 +29,11 @@ class _HomepageState extends State<Homepage> {
   GlobalKey homeKey = GlobalKey();
   GlobalKey subKey = GlobalKey();
   GlobalKey filterKeyHomePage = GlobalKey();
+
+  GlobalKey reportBugKey = GlobalKey();
+
   GlobalKey drawerKey = GlobalKey();
+
 
   @override
   void initState() {

@@ -112,7 +112,6 @@ Future<EventPaginationResponse> _fetchAllEventsFromBackend({
 
   List<Map<String, dynamic>> res =
       await collection.find(selectorBuilder).toList();
-  print(res);
   filteredEvents = res.map((model) => EventModel.fromJson(model)).toList();
   for (int i = 0; i < filteredEvents.length; i++) {
     filteredEvents[i] = await EventController._save(filteredEvents[i]);
