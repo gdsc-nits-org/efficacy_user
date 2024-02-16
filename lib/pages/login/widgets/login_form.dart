@@ -2,6 +2,7 @@ import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/services/user/user_controller.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/user/user_model.dart';
+import 'package:efficacy_user/pages/forgot_password/forgot_password.dart';
 import 'package:efficacy_user/pages/homepage/homepage.dart';
 import 'package:efficacy_user/pages/signup/signup_page.dart';
 import 'package:efficacy_user/utils/validator.dart';
@@ -41,6 +42,7 @@ class LoginFormState extends State<LoginForm> {
             child: SizedBox(
               width: formWidth,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomTextField(
                     label: "Email",
@@ -75,6 +77,20 @@ class LoginFormState extends State<LoginForm> {
                           color: const Color.fromARGB(255, 67, 67, 67),
                         )),
                     prefixIcon: Icons.lock,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, ForgotPasswordPage.routeName);
+                    },
+                    child: Text(
+                      "Forgot password?",
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            decoration: TextDecoration.underline,
+                            color: dark,
+                            decorationColor: dark,
+                          ),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () async {

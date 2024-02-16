@@ -108,7 +108,8 @@ body {
     This code expires at <span class="expiry-time">$formattedExpiresAt</span>.
   </div>
   <div class="footer">
-    If you didn't request this verification code, please disregard this email.
+    If you didn't request this verification code, please disregard this email.<br>
+    This is an auto-generated email. Please do not reply.
   </div>
 </div>
 </body>

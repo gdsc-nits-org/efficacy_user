@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class SignUpNavButtons extends StatelessWidget {
+class ForgotPasswordNavButtons extends StatelessWidget {
   final int activeStep;
   final void Function(int index) onPressedBack;
   final void Function(int index) onPressedNext;
-  const SignUpNavButtons({
+  const ForgotPasswordNavButtons({
     super.key,
     required this.activeStep,
     required this.onPressedBack,
@@ -53,7 +53,7 @@ class SignUpNavButtons extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(activeStep == 3 ? "Sign Up" : "Next"),
+                    Text(activeStep == 2 ? "Continue" : "Next"),
                     Gap(MediaQuery.of(context).size.width * 0.01),
                     const Icon(
                       Icons.arrow_forward_sharp,

@@ -7,7 +7,7 @@ import 'package:efficacy_user/pages/signup/widgets/edit_form/verification_code.d
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
-class EditForm extends StatefulWidget {
+class EditForm extends StatelessWidget {
   final int step;
   final TextEditingController emailController;
   final TextEditingController passwordController;
@@ -52,42 +52,37 @@ class EditForm extends StatefulWidget {
   });
 
   @override
-  State<EditForm> createState() => _EditFormState();
-}
-
-class _EditFormState extends State<EditForm> {
-  @override
   Widget build(BuildContext context) {
-    if (widget.step == 0) {
+    if (step == 0) {
       return CredentialsStep(
-        emailController: widget.emailController,
-        passwordController: widget.passwordController,
-        confirmPasswordController: widget.confirmPasswordController,
-        verificationCodeVerified:widget.verificationCodeVerified,
+        emailController: emailController,
+        passwordController: passwordController,
+        confirmPasswordController: confirmPasswordController,
+        verificationCodeVerified: verificationCodeVerified,
       );
-    } else if (widget.step == 1) {
+    } else if (step == 1) {
       return VerificationStep(
-        verificationCodeController: widget.verificationCodeController,
-        resendVerificationCode: widget.resendVerificationCode,
-        verificationCodeVerified: widget.verificationCodeVerified,
+        verificationCodeController: verificationCodeController,
+        resendVerificationCode: resendVerificationCode,
+        verificationCodeVerified: verificationCodeVerified,
       );
-    } else if (widget.step == 2) {
+    } else if (step == 2) {
       return PersonalInfoStep(
-        nameController: widget.nameController,
-        scholarIDController: widget.scholarIDController,
-        onPhoneChanged: widget.onPhoneChanged,
+        nameController: nameController,
+        scholarIDController: scholarIDController,
+        onPhoneChanged: onPhoneChanged,
       );
     } else {
       return MiscStep(
-        onImageChanged: widget.onImageChanged,
-        selectedDegree: widget.selectedDegree,
-        onDegreeChanged: widget.onDegreeChanged,
-        imageData: widget.imageData,
-        selectedBranch: widget.selectedBranch,
-        onBranchChanged: widget.onBranchChanged,
-        institutes: widget.institutes,
-        selectedInstitute: widget.selectedInstitute,
-        onInstituteChanged: widget.onInstituteChanged,
+        onImageChanged: onImageChanged,
+        selectedDegree: selectedDegree,
+        onDegreeChanged: onDegreeChanged,
+        imageData: imageData,
+        selectedBranch: selectedBranch,
+        onBranchChanged: onBranchChanged,
+        institutes: institutes,
+        selectedInstitute: selectedInstitute,
+        onInstituteChanged: onInstituteChanged,
       );
     }
   }

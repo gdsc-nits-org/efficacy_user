@@ -116,7 +116,8 @@ body {
     This code expires at <span class="expiry-time">$formattedExpiresAt</span>.
   </div>
   <div class="footer">
-    If you didn't request a password reset, please contact us immediately.
+    If you didn't request a password reset, **please disregard this email.** <br>
+    **This is an auto-generated email. Please do not reply.**
   </div>
 </div>
 </body>

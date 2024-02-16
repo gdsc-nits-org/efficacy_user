@@ -2,14 +2,14 @@ import 'package:easy_stepper/easy_stepper.dart';
 import 'package:efficacy_user/config/config.dart';
 import 'package:flutter/material.dart';
 
-class SignUpSteps extends StatelessWidget {
+class ForgotPasswordSteps extends StatelessWidget {
   final int activeStep;
 
   /// Whether the stepping is enabled or disabled.
   final bool takeStep;
   final void Function(int step) onPressedStep;
   final void Function(int index) onStepReached;
-  const SignUpSteps({
+  const ForgotPasswordSteps({
     super.key,
     required this.activeStep,
     required this.takeStep,
@@ -42,10 +42,10 @@ class SignUpSteps extends StatelessWidget {
               EasyStep(
                 customStep: IconButton(
                   onPressed: () => onPressedStep(0),
-                  icon: const Icon(Icons.person),
+                  icon: const Icon(Icons.email),
                 ),
                 customTitle: const Text(
-                  'Credetials',
+                  'Email',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 12),
                 ),
@@ -63,19 +63,9 @@ class SignUpSteps extends StatelessWidget {
               EasyStep(
                 customStep: IconButton(
                     onPressed: () => onPressedStep(2),
-                    icon: const Icon(Icons.group)),
+                    icon: const Icon(Icons.password)),
                 customTitle: const Text(
-                  "Personal Info",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12),
-                ),
-              ),
-              EasyStep(
-                customStep: IconButton(
-                    onPressed: () => onPressedStep(3),
-                    icon: const Icon(Icons.miscellaneous_services)),
-                customTitle: const Text(
-                  "Misc",
+                  "Credentials",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 12),
                 ),
