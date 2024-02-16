@@ -201,11 +201,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                         WidgetsBinding.instance
                                             .addPostFrameCallback((timeStamp) {
                                           if (mounted) {
-                                            Navigator.of(context)
-                                                .pushNamedAndRemoveUntil(
-                                              LoginPage.routeName,
-                                              (_) => false,
-                                            );
+                                            Navigator.of(context).pop();
                                             showSnackBar(context,
                                                 "Password reset successfull");
                                           }
