@@ -8,6 +8,7 @@ Future<String> _resetPasswordImpl({
       Database.instance.collection(UserController._collectionName);
   SelectorBuilder selectorBuilder = SelectorBuilder();
 
+  selectorBuilder.eq(UserFields.app.name, appName);
   selectorBuilder.eq(UserFields.email.name, email);
 
   Map<String, dynamic>? res = await collection.findOne(selectorBuilder);
