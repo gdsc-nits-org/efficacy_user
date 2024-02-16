@@ -80,19 +80,24 @@ class _ConfirmDelProfileState extends State<ConfirmDelProfile> {
                   BuildContext dialogContext = context;
                   String enteredPassword = _passController.text;
                   if (Encryptor.isValid(
-                      user.first.password!, enteredPassword)) {
+                          user.first.password!, enteredPassword) &&
+                      mounted) {
                     showLoadingOverlay(
                       context: context,
                       asyncTask: () async {
                         await UserController.delete();
 
-                        if (!dialogContext.mounted) return;
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          LoginPage.routeName,
-                          (route) => false,
-                        );
-                        showSnackBar(context, "Profile Deleted!");
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((timeStamp) {
+                          if (context.mounted) {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              LoginPage.routeName,
+                              (route) => false,
+                            );
+                            showSnackBar(context, "Profile Deleted!");
+                          }
+                        });
                       },
                     );
                   } else {

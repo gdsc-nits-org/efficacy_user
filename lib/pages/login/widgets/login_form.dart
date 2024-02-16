@@ -32,7 +32,7 @@ class LoginFormState extends State<LoginForm> {
     double fieldGap = height * 0.005;
     double smallGap = height * 0.01;
     double formWidth = width * 0.8;
-    double fieldHeight = height * 0.075;
+    double fieldHeight = height * 0.075 + 8;
 
     return Column(
       children: [

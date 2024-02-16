@@ -62,7 +62,7 @@ class _VerificationStepState extends State<VerificationStep> {
                     CustomTextField(
                       label: "Verification Code",
                       keyboardType: TextInputType.number,
-                      height: MediaQuery.of(context).size.height * 0.075,
+                      height: MediaQuery.of(context).size.height * 0.075 + 8,
                       prefixIcon: Icons.verified_user,
                       controller: widget.verificationCodeController,
                       validator: (val) =>

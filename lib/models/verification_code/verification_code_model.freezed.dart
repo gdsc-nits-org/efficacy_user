@@ -30,6 +30,9 @@ mixin _$VerificationCodeModel {
   /// Which app does this user instance belong to
   /// No need to touch this
   String get app => throw _privateConstructorUsedError;
+
+  /// Basically it is asking for what is purpose of creating the verification code.
+  VerificationCodeIntent get intent => throw _privateConstructorUsedError;
   DateTime? get lastLocalUpdate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,6 +53,7 @@ abstract class $VerificationCodeModelCopyWith<$Res> {
       String code,
       DateTime expiresAt,
       String app,
+      VerificationCodeIntent intent,
       DateTime? lastLocalUpdate});
 }
 
@@ -72,6 +76,7 @@ class _$VerificationCodeModelCopyWithImpl<$Res,
     Object? code = null,
     Object? expiresAt = null,
     Object? app = null,
+    Object? intent = null,
     Object? lastLocalUpdate = freezed,
   }) {
     return _then(_value.copyWith(
@@ -95,6 +100,10 @@ class _$VerificationCodeModelCopyWithImpl<$Res,
           ? _value.app
           : app // ignore: cast_nullable_to_non_nullable
               as String,
+      intent: null == intent
+          ? _value.intent
+          : intent // ignore: cast_nullable_to_non_nullable
+              as VerificationCodeIntent,
       lastLocalUpdate: freezed == lastLocalUpdate
           ? _value.lastLocalUpdate
           : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
@@ -118,6 +127,7 @@ abstract class _$$VerificationCodeModelImplCopyWith<$Res>
       String code,
       DateTime expiresAt,
       String app,
+      VerificationCodeIntent intent,
       DateTime? lastLocalUpdate});
 }
 
@@ -138,6 +148,7 @@ class __$$VerificationCodeModelImplCopyWithImpl<$Res>
     Object? code = null,
     Object? expiresAt = null,
     Object? app = null,
+    Object? intent = null,
     Object? lastLocalUpdate = freezed,
   }) {
     return _then(_$VerificationCodeModelImpl(
@@ -161,6 +172,10 @@ class __$$VerificationCodeModelImplCopyWithImpl<$Res>
           ? _value.app
           : app // ignore: cast_nullable_to_non_nullable
               as String,
+      intent: null == intent
+          ? _value.intent
+          : intent // ignore: cast_nullable_to_non_nullable
+              as VerificationCodeIntent,
       lastLocalUpdate: freezed == lastLocalUpdate
           ? _value.lastLocalUpdate
           : lastLocalUpdate // ignore: cast_nullable_to_non_nullable
@@ -178,6 +193,7 @@ class _$VerificationCodeModelImpl extends _VerificationCodeModel {
       required this.code,
       required this.expiresAt,
       this.app = appName,
+      required this.intent,
       this.lastLocalUpdate})
       : super._();
 
@@ -199,12 +215,16 @@ class _$VerificationCodeModelImpl extends _VerificationCodeModel {
   @override
   @JsonKey()
   final String app;
+
+  /// Basically it is asking for what is purpose of creating the verification code.
+  @override
+  final VerificationCodeIntent intent;
   @override
   final DateTime? lastLocalUpdate;
 
   @override
   String toString() {
-    return 'VerificationCodeModel(id: $id, email: $email, code: $code, expiresAt: $expiresAt, app: $app, lastLocalUpdate: $lastLocalUpdate)';
+    return 'VerificationCodeModel(id: $id, email: $email, code: $code, expiresAt: $expiresAt, app: $app, intent: $intent, lastLocalUpdate: $lastLocalUpdate)';
   }
 
   @JsonKey(ignore: true)
@@ -229,6 +249,7 @@ abstract class _VerificationCodeModel extends VerificationCodeModel {
       required final String code,
       required final DateTime expiresAt,
       final String app,
+      required final VerificationCodeIntent intent,
       final DateTime? lastLocalUpdate}) = _$VerificationCodeModelImpl;
   const _VerificationCodeModel._() : super._();
 
@@ -249,6 +270,10 @@ abstract class _VerificationCodeModel extends VerificationCodeModel {
   /// Which app does this user instance belong to
   /// No need to touch this
   String get app;
+  @override
+
+  /// Basically it is asking for what is purpose of creating the verification code.
+  VerificationCodeIntent get intent;
   @override
   DateTime? get lastLocalUpdate;
   @override

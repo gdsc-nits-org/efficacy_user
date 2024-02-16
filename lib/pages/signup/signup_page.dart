@@ -92,6 +92,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                 await VerificationCodeController.generateRandomCodeAndSave(
               len: 5,
               email: emailController.text,
+              intent: VerificationCodeIntent.createAccount,
             );
             await MailController.sendVerificationCodeMail(
               code: verificationCode.code,
@@ -179,7 +180,8 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                             resendVerificationCode: generateAndSendCode,
                             emailController: emailController,
                             passwordController: passwordController,
-                            confirmPasswordController: confirmPasswordController,
+                            confirmPasswordController:
+                                confirmPasswordController,
                             verificationCodeController:
                                 verificationCodeController,
                             nameController: nameController,
@@ -227,7 +229,7 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                               if (_formKey.currentState!.validate()) {
                                 if (index == 0 && !verificationCodeVerified) {
                                   await generateAndSendCode();
-          
+
                                   setState(() {
                                     ++activeStep;
                                   });
@@ -240,9 +242,11 @@ class _SignUpPageUserDetailsState extends State<SignUpPage> {
                                             .verifyCode(
                                           code: verificationCodeController.text,
                                           email: emailController.text,
+                                          intent: VerificationCodeIntent
+                                              .createAccount,
                                         );
                                         verificationCodeVerified = true;
-          
+
                                         setState(() {
                                           ++activeStep;
                                         });

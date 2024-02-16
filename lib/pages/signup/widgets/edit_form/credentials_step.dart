@@ -38,7 +38,7 @@ class _CredentialsStepState extends State<CredentialsStep> {
           )),
       CustomTextField(
         label: "Email",
-        height: MediaQuery.of(context).size.height * 0.075,
+        height: MediaQuery.of(context).size.height * 0.075 + 8,
         prefixIcon: Icons.email,
         controller: widget.emailController,
         validator: Validator.isEmailValid,
@@ -46,7 +46,7 @@ class _CredentialsStepState extends State<CredentialsStep> {
       ),
       CustomTextField(
         hiddenText: hidePassword,
-        height: MediaQuery.of(context).size.height * 0.075,
+        height: MediaQuery.of(context).size.height * 0.075 + 8,
         label: "Create Password",
         prefixIcon: Icons.lock,
         suffixIcon: IconButton(
@@ -73,7 +73,7 @@ class _CredentialsStepState extends State<CredentialsStep> {
       CustomTextField(
         hiddenText: hideConfPassword,
         controller: widget.confirmPasswordController,
-        height: MediaQuery.of(context).size.height * 0.075,
+        height: MediaQuery.of(context).size.height * 0.075 + 8,
         label: "Confirm Password",
         prefixIcon: Icons.lock,
         suffixIcon: IconButton(

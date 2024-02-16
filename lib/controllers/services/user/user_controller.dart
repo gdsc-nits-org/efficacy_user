@@ -133,6 +133,7 @@ class UserController {
   }
 
   /// Deletes the user if exists from both local database and server
+  /// Logs out the user then
   static Future<void> delete() async {
     return await _deleteImpl();
   }
@@ -141,7 +142,7 @@ class UserController {
     currentUser = null;
     clubs = [];
     clubPositions = [];
-    await LocalDatabase.clearLocalStorage();
+    await LocalDatabase.clearLocalStorageExceptGuideCheckpoints();
   }
 
   static Future<void> toggleFollowClub({required String clubID}) async {

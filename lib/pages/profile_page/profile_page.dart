@@ -211,14 +211,24 @@ class _ProfileState extends State<ProfilePage> {
                       items:
                           Branch.values.map((branch) => branch.name).toList(),
                       enabled: editMode,
-                      value: UserController.currentUser!.branch?.name,
+                      onChanged: (String? newBranch) {
+                        if (newBranch != null) {
+                          selectedBranch = newBranch;
+                        }
+                      },
+                      value: selectedBranch,
                     ),
                     CustomDropDown(
                       title: "Degree",
                       items:
                           Degree.values.map((degree) => degree.name).toList(),
                       enabled: editMode,
-                      value: UserController.currentUser!.degree?.name,
+                      onChanged: (String? newDegree) {
+                        if (newDegree != null) {
+                          selectedDegree = newDegree;
+                        }
+                      },
+                      value: selectedDegree,
                     ),
                     DeleteProfileButton(key: deleteProfileKey),
                   ].separate(gap),
