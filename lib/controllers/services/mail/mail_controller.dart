@@ -1,8 +1,8 @@
 import 'package:cloudinary/cloudinary.dart';
 import 'package:efficacy_user/config/config.dart';
-import 'package:efficacy_user/controllers/services/mail/utils/password_reset_acknowledgement_mail.dart';
-import 'utils/verification_code_mail.dart';
-import 'utils/forgot_password_mail.dart';
+import 'templates/password_reset_acknowledgement_mail.dart';
+import 'templates/verification_code_mail.dart';
+import 'templates/forgot_password_mail.dart';
 import 'package:efficacy_user/models/user/user_model.dart';
 import 'package:efficacy_user/utils/database/constants.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
