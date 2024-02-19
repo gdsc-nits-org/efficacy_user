@@ -19,11 +19,12 @@ class LocalDatabase {
   const LocalDatabase._();
   static bool didInit = false;
 
-  static Future<void> init() async {
-    if (didInit) return;
+  static Future<bool> init() async {
+    if (didInit) return didInit;
     sharedPreferences = await SharedPreferences.getInstance();
     await _removeStaleData();
     didInit = true;
+    return didInit;
   }
 
   static List<String> get(String key) {
