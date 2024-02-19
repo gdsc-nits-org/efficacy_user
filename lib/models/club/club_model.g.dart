@@ -20,11 +20,14 @@ _$ClubModelImpl _$$ClubModelImplFromJson(Map<String, dynamic> json) =>
       phoneNumber: const PhoneNumberSerializer()
           .fromJson(json['phoneNumber'] as Map<String, dynamic>?),
       clubLogoURL: json['clubLogoURL'] as String,
+      clubLogoPublicId: json['clubLogoPublicId'] as String?,
       clubBannerURL: json['clubBannerURL'] as String?,
+      clubBannerPublicId: json['clubBannerPublicId'] as String?,
       members: (json['members'] as Map<String, dynamic>).map(
         (k, e) =>
             MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
+      leadPositionID: json['leadPositionID'] as String?,
       followers: (json['followers'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -45,8 +48,11 @@ Map<String, dynamic> _$$ClubModelImplToJson(_$ClubModelImpl instance) =>
       'email': instance.email,
       'phoneNumber': const PhoneNumberSerializer().toJson(instance.phoneNumber),
       'clubLogoURL': instance.clubLogoURL,
+      'clubLogoPublicId': instance.clubLogoPublicId,
       'clubBannerURL': instance.clubBannerURL,
+      'clubBannerPublicId': instance.clubBannerPublicId,
       'members': instance.members,
+      'leadPositionID': instance.leadPositionID,
       'followers': instance.followers,
       'lastLocalUpdate': instance.lastLocalUpdate?.toIso8601String(),
     };

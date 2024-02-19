@@ -19,12 +19,18 @@ class ClubModel with _$ClubModel {
     required String email,
     @PhoneNumberSerializer() PhoneNumber? phoneNumber,
     required String clubLogoURL,
+    String? clubLogoPublicId,
     String? clubBannerURL,
+    String? clubBannerPublicId,
 
     /// Map<ClubPositionModelID, List<Member Email>>
     /// Cannot use clubPositionModel
     /// Since it has issues with freezed (cannot make keys with custom type)
     required Map<String, List<String>> members,
+
+    /// ID of the club position of the leader
+    /// Required to make sure that all the positions are not deleted
+    String? leadPositionID,
 
     /// Follower Ids
     @Default([]) List<String> followers,
@@ -59,6 +65,62 @@ class ClubModel with _$ClubModel {
       followers: [],
     );
   }
+
+  bool operator ==(dynamic other) {
+    return id != null && other.id != null
+        ? (id == other.id)
+        : identical(this, other) ||
+            (other.runtimeType == runtimeType &&
+                other is _$ClubModelImpl &&
+                (identical(other.id, id) || other.id == id) &&
+                (identical(other.name, name) || other.name == name) &&
+                (identical(other.instituteName, instituteName) ||
+                    other.instituteName == instituteName) &&
+                (identical(other.description, description) ||
+                    other.description == description) &&
+                const DeepCollectionEquality()
+                    .equals(other._socials, socials) &&
+                (identical(other.email, email) || other.email == email) &&
+                (identical(other.phoneNumber, phoneNumber) ||
+                    other.phoneNumber == phoneNumber) &&
+                (identical(other.clubLogoURL, clubLogoURL) ||
+                    other.clubLogoURL == clubLogoURL) &&
+                (identical(other.clubLogoPublicId, clubLogoPublicId) ||
+                    other.clubLogoPublicId == clubLogoPublicId) &&
+                (identical(other.clubBannerURL, clubBannerURL) ||
+                    other.clubBannerURL == clubBannerURL) &&
+                (identical(other.clubBannerPublicId, clubBannerPublicId) ||
+                    other.clubBannerPublicId == clubBannerPublicId) &&
+                const DeepCollectionEquality()
+                    .equals(other._members, members) &&
+                (identical(other.leadPositionID, leadPositionID) ||
+                    other.leadPositionID == leadPositionID) &&
+                const DeepCollectionEquality()
+                    .equals(other._followers, followers) &&
+                (identical(other.lastLocalUpdate, lastLocalUpdate) ||
+                    other.lastLocalUpdate == lastLocalUpdate));
+  }
+
+  @override
+  int get hashCode => id != null
+      ? Object.hash(runtimeType, id)
+      : Object.hash(
+          runtimeType,
+          id,
+          name,
+          instituteName,
+          description,
+          const DeepCollectionEquality().hash(socials),
+          email,
+          phoneNumber,
+          clubLogoURL,
+          clubLogoPublicId,
+          clubBannerURL,
+          clubBannerPublicId,
+          const DeepCollectionEquality().hash(members),
+          leadPositionID,
+          const DeepCollectionEquality().hash(followers),
+          lastLocalUpdate);
 }
 
 enum ClubFields {
@@ -71,6 +133,7 @@ enum ClubFields {
   clubLogoURL,
   clubBannerURL,
   members,
+  leadPositionID,
   followers,
   lastLocalUpdate
 }
