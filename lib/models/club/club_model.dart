@@ -65,7 +65,6 @@ class ClubModel with _$ClubModel {
     );
   }
 
-  @override
   bool operator ==(dynamic other) {
     return id != null && other.id != null
         ? (id == other.id)
