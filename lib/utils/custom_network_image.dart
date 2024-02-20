@@ -16,6 +16,7 @@ class CustomNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
+      fit: BoxFit.fitWidth,
       imageUrl: url,
       errorWidget: errorWidget ??
           (BuildContext context, _, __) {
