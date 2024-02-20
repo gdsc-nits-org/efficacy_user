@@ -34,15 +34,15 @@ class _HomepageState extends State<Homepage> {
 
   GlobalKey drawerKey = GlobalKey();
 
-
   @override
   void initState() {
     super.initState();
     // To view guide everytime uncomment the next line
     // LocalDatabase.resetGuideCheckpoint();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.bottomNav)) {
+      TutorialStatus.isGuideRunningNotifier.value = true;
       Future.delayed(
-        const Duration(seconds: 1),
+        const Duration(seconds: 0),
         () {
           showBottomNavTutorial(
             context,
@@ -51,19 +51,50 @@ class _HomepageState extends State<Homepage> {
             subKey,
             drawerKey,
             onFinish: () {
+              TutorialStatus.isGuideRunningNotifier.value = false;
               if (LocalDatabase.getAndSetGuideStatus(
                   LocalGuideCheck.homeFilter)) {
-                showFilterTutorial(context, filterKeyHomePage);
+                TutorialStatus.isGuideRunningNotifier.value = true;
+                showFilterTutorial(
+                  context,
+                  filterKeyHomePage,
+                  onFinish: () {
+                    TutorialStatus.isGuideRunningNotifier.value = false;
+                  },
+                  onSkip: () {
+                    TutorialStatus.isGuideRunningNotifier.value = false;
+                    // Returning true to allow skip
+                    return true;
+                  },
+                );
               }
+            },
+            onSkip: () {
+              TutorialStatus.isGuideRunningNotifier.value = false;
+              // Returning true to allow skip
+              return true;
             },
           );
         },
       );
     } else if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.homeFilter)) {
+      TutorialStatus.isGuideRunningNotifier.value = true;
       Future.delayed(
-        const Duration(seconds: 1),
+        const Duration(seconds: 0),
         () {
-          showFilterTutorial(context, filterKeyHomePage);
+          showFilterTutorial(
+            context,
+            filterKeyHomePage,
+            onFinish: () {
+              TutorialStatus.isGuideRunningNotifier.value = false;
+            },
+            onSkip: () {
+              TutorialStatus.isGuideRunningNotifier.value = false;
+
+              // Returning true to allow skip
+              return true;
+            },
+          );
         },
       );
     }
@@ -94,9 +125,11 @@ class _HomepageState extends State<Homepage> {
         if (didPop) {
           return;
         }
-        final bool shouldPop = await showExitWarning(context);
-        if (shouldPop) {
-          SystemNavigator.pop();
+        if (!TutorialStatus.isGuideRunningNotifier.value) {
+          final bool shouldPop = await showExitWarning(context);
+          if (shouldPop) {
+            SystemNavigator.pop();
+          }
         }
       },
       child: Scaffold(

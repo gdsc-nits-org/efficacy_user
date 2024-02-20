@@ -7,14 +7,16 @@ void showFilterTutorial(
   BuildContext context,
   GlobalKey filterKeyHomePage, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getFilterTargets(context, filterKeyHomePage);
   TutorialCoachMark(
-          hideSkip: true,
-          useSafeArea: true,
-          targets: targets, // List<TargetFocus>
-          onFinish: onFinish)
-      .show(context: context);
+    hideSkip: true,
+    useSafeArea: true,
+    targets: targets, // List<TargetFocus>
+    onFinish: onFinish,
+    onSkip: onSkip,
+  ).show(context: context);
 }
 
 List<TargetFocus> getFilterTargets(

@@ -7,6 +7,7 @@ void showSubFilterTutorial(
   BuildContext context,
   GlobalKey filterKeySubPage, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getSubFilterTargets(context, filterKeySubPage);
   TutorialCoachMark(
@@ -14,6 +15,7 @@ void showSubFilterTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 
