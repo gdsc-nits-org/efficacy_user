@@ -2,7 +2,8 @@ enum Social { github, facebook, instagram, linkedin }
 
 enum Branch { CE, CSE, ECE, EIE, EE, ME }
 
-enum Degree { BTech, MTech, Phd }
+// enum Degree { BTech, MTech, Phd }
+enum Degree { BTech }
 
 enum Permissions {
   /// Only read permission

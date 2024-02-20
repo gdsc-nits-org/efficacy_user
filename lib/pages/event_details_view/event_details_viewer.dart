@@ -5,6 +5,8 @@ import 'package:efficacy_user/models/club/club_model.dart';
 import 'package:efficacy_user/models/event/event_model.dart';
 import 'package:efficacy_user/pages/event_details_view/widgets/contributors.dart';
 import 'package:efficacy_user/pages/event_details_view/widgets/event_registration_button.dart';
+import 'package:efficacy_user/utils/formatter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'widgets/event_stats.dart';
@@ -55,6 +57,8 @@ class EventDetailsViewer extends StatelessWidget {
                         List<ClubModel> club = snapshot.data;
 
                         if (club.isNotEmpty) {
+                          String clubName =
+                              "${club.first.name[0].toUpperCase()}${club.first.name.substring(1)}";
                           return Row(
                             children: [
                               Text(
@@ -67,7 +71,7 @@ class EventDetailsViewer extends StatelessWidget {
                                         fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                club.first.name,
+                                clubName,
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelLarge
@@ -107,6 +111,22 @@ class EventDetailsViewer extends StatelessWidget {
                     Row(
                       children: [
                         const Icon(
+                          CupertinoIcons.clock,
+                          color: dark,
+                          size: 25,
+                        ),
+                        Text(
+                          Formatter.timeOnly(currentEvent!.startDate),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: shadow,
+                          ),
+                        ),
+                      ].separate(15),
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
                           Icons.location_on_outlined,
                           color: dark,
                           size: 25,
@@ -119,7 +139,7 @@ class EventDetailsViewer extends StatelessWidget {
                           ),
                         ),
                       ].separate(15),
-                    )
+                    ),
                   ].separate(10),
                 ),
                 const Text(
