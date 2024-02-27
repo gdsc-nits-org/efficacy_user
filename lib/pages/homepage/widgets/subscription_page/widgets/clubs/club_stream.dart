@@ -51,8 +51,7 @@ class ClubsStream extends StatelessWidget {
                       .toList();
           return Expanded(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 17.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: ListView.builder(
                 itemCount: specificList.length,
                 itemBuilder: (context, index) {

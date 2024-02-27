@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:efficacy_user/config/config.dart';
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/models/models.dart';
@@ -16,9 +18,10 @@ class ClubCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSubscribed = UserController.currentUser!.following.contains(club.id);
+    String clubName = "${club.name[0].toUpperCase()}${club.name.substring(1)}";
     return ListTile(
       title: Text(
-        club.name,
+        clubName,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
