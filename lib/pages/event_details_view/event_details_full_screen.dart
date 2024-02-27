@@ -70,12 +70,10 @@ class _EventFullScreenState extends State<EventFullScreen> {
                             ),
                           ],
                         )
-                      : Column(
-                          children: [
-                            CustomNetworkImage(
-                                url: widget.currentEvent!.posterURL)
-                          ],
-                        ),
+                      :SizedBox(
+                          child: CustomNetworkImage(
+                        url: widget.currentEvent!.posterURL)
+                        ,)
             ),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30),
