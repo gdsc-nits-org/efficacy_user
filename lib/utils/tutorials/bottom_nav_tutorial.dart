@@ -10,6 +10,7 @@ void showBottomNavTutorial(
   GlobalKey homeKey,
   GlobalKey subKey, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getBottomNavTargets(
     context,
@@ -23,6 +24,7 @@ void showBottomNavTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 

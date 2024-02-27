@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:efficacy_user/controllers/controllers.dart';
 import 'package:efficacy_user/dialogs/loading_overlay/loading_overlay.dart';
 import 'package:efficacy_user/models/models.dart';
-import 'package:efficacy_user/utils/tutorials/profile_tutorial.dart';
 import 'package:efficacy_user/pages/profile_page/widgets/buttons.dart';
 import 'package:efficacy_user/utils/utils.dart';
 import 'package:efficacy_user/widgets/custom_app_bar/custom_app_bar.dart';
@@ -16,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:efficacy_user/config/config.dart';
 import 'package:gap/gap.dart';
 import 'package:intl_phone_field/phone_number.dart';
+
+import '../../utils/tutorials/tutorials.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String routeName = '/ProfilePage';
@@ -40,12 +41,25 @@ class _ProfileState extends State<ProfilePage> {
     super.initState();
     init();
     if (LocalDatabase.getAndSetGuideStatus(LocalGuideCheck.profile)) {
-      Future.delayed(const Duration(seconds: 1), () {
+      TutorialStatus.isGuideRunningNotifier.value = true;
+      Future.delayed(const Duration(seconds: 0), () {
         showProfileTutorial(
           context,
           editProfileKey,
           deleteProfileKey,
           scrollController,
+          onFinish: () {
+            setState(() {
+              TutorialStatus.isGuideRunningNotifier.value = false;
+            });
+          },
+          onSkip: () {
+            setState(() {
+              TutorialStatus.isGuideRunningNotifier.value = false;
+            });
+            // Returning true to allow skip
+            return true;
+          },
         );
       });
     }
@@ -137,101 +151,109 @@ class _ProfileState extends State<ProfilePage> {
     double hMargin = width * 0.08;
     double vMargin = width * 0.1;
 
-    return Scaffold(
-      endDrawer: CustomDrawer(
-        pageContext: context,
-      ),
-      appBar: CustomAppBar(title: "Profile", actions: [
-        if (editMode == false)
-          EditButton(
-            key: editProfileKey,
-            onPressed: () {
-              enableEdit();
-            },
-          ),
-      ]),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton:
-          showButton ? SaveButton(onPressed: saveUpdates) : null,
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: Center(
-          child: SingleChildScrollView(
-            controller: scrollController,
-            child: Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: vMargin, horizontal: hMargin),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Account Details",
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                    Gap(gap),
-                    ProfileImageViewer(
-                      enabled: editMode,
-                      imagePath: UserController.currentUser?.userPhoto,
-                      imageData: image,
-                      onImageChange: (Uint8List? newImage) {
-                        image = newImage;
-                      },
-                    ),
-                    CustomTextField(
-                      controller: _nameController,
-                      title: "Name",
-                      enabled: editMode,
-                      validator: Validator.isNameValid,
-                    ),
-                    CustomTextField(
-                      controller: _emailController,
-                      title: "Email",
-                      enabled: false,
-                      validator: Validator.isEmailValid,
-                    ),
-                    CustomPhoneField(
-                      title: "Phone",
-                      initialValue: phoneNumber,
-                      onPhoneChanged: (PhoneNumber newPhoneNumber) {
-                        phoneNumber = newPhoneNumber;
-                      },
-                      enabled: editMode,
-                    ),
-                    CustomTextField(
-                      controller: _scholarIDController,
-                      title: "ScholarID",
-                      enabled: editMode,
-                      validator: Validator.isScholarIDValid,
-                    ),
-                    CustomDropDown(
-                      title: "Branch",
-                      items:
-                          Branch.values.map((branch) => branch.name).toList(),
-                      enabled: editMode,
-                      onChanged: (String? newBranch) {
-                        if (newBranch != null) {
-                          selectedBranch = newBranch;
-                        }
-                      },
-                      value: selectedBranch,
-                    ),
-                    CustomDropDown(
-                      title: "Degree",
-                      items:
-                          Degree.values.map((degree) => degree.name).toList(),
-                      enabled: editMode,
-                      onChanged: (String? newDegree) {
-                        if (newDegree != null) {
-                          selectedDegree = newDegree;
-                        }
-                      },
-                      value: selectedDegree,
-                    ),
-                    DeleteProfileButton(key: deleteProfileKey),
-                  ].separate(gap),
+    return PopScope(
+      canPop: !TutorialStatus.isGuideRunningNotifier.value,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+      },
+      child: Scaffold(
+        endDrawer: CustomDrawer(
+          pageContext: context,
+        ),
+        appBar: CustomAppBar(title: "Profile", actions: [
+          if (editMode == false)
+            EditButton(
+              key: editProfileKey,
+              onPressed: () {
+                enableEdit();
+              },
+            ),
+        ]),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton:
+            showButton ? SaveButton(onPressed: saveUpdates) : null,
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          child: Center(
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: vMargin, horizontal: hMargin),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Account Details",
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      Gap(gap),
+                      ProfileImageViewer(
+                        enabled: editMode,
+                        imagePath: UserController.currentUser?.userPhoto,
+                        imageData: image,
+                        onImageChange: (Uint8List? newImage) {
+                          image = newImage;
+                        },
+                      ),
+                      CustomTextField(
+                        controller: _nameController,
+                        title: "Name",
+                        enabled: editMode,
+                        validator: Validator.isNameValid,
+                      ),
+                      CustomTextField(
+                        controller: _emailController,
+                        title: "Email",
+                        enabled: false,
+                        validator: Validator.isEmailValid,
+                      ),
+                      CustomPhoneField(
+                        title: "Phone",
+                        initialValue: phoneNumber,
+                        onPhoneChanged: (PhoneNumber newPhoneNumber) {
+                          phoneNumber = newPhoneNumber;
+                        },
+                        enabled: editMode,
+                      ),
+                      CustomTextField(
+                        controller: _scholarIDController,
+                        title: "ScholarID",
+                        enabled: editMode,
+                        validator: Validator.isScholarIDValid,
+                      ),
+                      CustomDropDown(
+                        title: "Branch",
+                        items:
+                            Branch.values.map((branch) => branch.name).toList(),
+                        enabled: editMode,
+                        onChanged: (String? newBranch) {
+                          if (newBranch != null) {
+                            selectedBranch = newBranch;
+                          }
+                        },
+                        value: selectedBranch,
+                      ),
+                      CustomDropDown(
+                        title: "Degree",
+                        items:
+                            Degree.values.map((degree) => degree.name).toList(),
+                        enabled: editMode,
+                        onChanged: (String? newDegree) {
+                          if (newDegree != null) {
+                            selectedDegree = newDegree;
+                          }
+                        },
+                        value: selectedDegree,
+                      ),
+                      DeleteProfileButton(key: deleteProfileKey),
+                    ].separate(gap),
+                  ),
                 ),
               ),
             ),

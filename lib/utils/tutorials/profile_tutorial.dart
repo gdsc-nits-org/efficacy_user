@@ -9,6 +9,7 @@ void showProfileTutorial(
   GlobalKey deleteProfileKey,
   ScrollController scrollController, {
   void Function()? onFinish,
+  bool Function()? onSkip,
 }) {
   List<TargetFocus> targets = getProfileTargets(
     context,
@@ -22,6 +23,7 @@ void showProfileTutorial(
     useSafeArea: true,
     targets: targets, // List<TargetFocus>
     onFinish: onFinish,
+    onSkip: onSkip,
   ).show(context: context);
 }
 
