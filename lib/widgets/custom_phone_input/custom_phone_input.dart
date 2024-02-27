@@ -10,10 +10,8 @@ class CustomPhoneField extends StatelessWidget {
   final EdgeInsets? contentPadding;
   final IconData? prefixIcon;
   final Widget? suffixIcon;
-  final void Function(PhoneNumber) onPhoneChanged;
-  final double borderRadius;
   final double height;
-  final String? helperText;
+  final void Function(PhoneNumber) onPhoneChanged;
   const CustomPhoneField({
     super.key,
     this.title,
@@ -23,10 +21,8 @@ class CustomPhoneField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.label,
-    required this.onPhoneChanged,
-    this.borderRadius = 5,
     this.height = 40,
-    this.helperText,
+    required this.onPhoneChanged,
   });
 
   @override
@@ -43,14 +39,15 @@ class CustomPhoneField extends StatelessWidget {
           height: height * 1.5,
           child: IntlPhoneField(
             decoration: InputDecoration(
-              helperText: helperText,
               labelText: label,
+              counter: const Offstage(),
               focusColor: const Color(0xFF05354C),
               contentPadding:
                   contentPadding ?? const EdgeInsets.symmetric(horizontal: 10),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
+                borderRadius: BorderRadius.circular(5),
               ),
+
               prefixIcon: Icon(prefixIcon,
                   color: const Color.fromARGB(
                       255, 67, 67, 67)), //const Color(0xFF05354C),),
@@ -59,7 +56,11 @@ class CustomPhoneField extends StatelessWidget {
             onChanged: onPhoneChanged,
             enabled: enabled,
             initialCountryCode: initialValue?.countryISOCode ?? "IN",
-            initialValue:  "${initialValue?.countryCode}${initialValue?.number}"
+            initialValue: (initialValue?.number != null)
+                ? initialValue!.number.startsWith("91")
+                    ? "91${initialValue!.number}"
+                    : initialValue!.number
+                : "",
           ),
         ),
       ],
