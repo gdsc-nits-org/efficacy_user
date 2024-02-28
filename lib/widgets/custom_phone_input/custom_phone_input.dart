@@ -11,6 +11,7 @@ class CustomPhoneField extends StatelessWidget {
   final IconData? prefixIcon;
   final Widget? suffixIcon;
   final double height;
+  final String? helperText;
   final void Function(PhoneNumber) onPhoneChanged;
   const CustomPhoneField({
     super.key,
@@ -22,6 +23,7 @@ class CustomPhoneField extends StatelessWidget {
     this.suffixIcon,
     this.label,
     this.height = 40,
+    this.helperText,
     required this.onPhoneChanged,
   });
 
@@ -39,6 +41,7 @@ class CustomPhoneField extends StatelessWidget {
           height: height * 1.5,
           child: IntlPhoneField(
             decoration: InputDecoration(
+              helperText: helperText,
               labelText: label,
               counter: const Offstage(),
               focusColor: const Color(0xFF05354C),
