@@ -4,6 +4,7 @@ import 'package:efficacy_user/pages/event_details_view/event_details_viewer.dart
 import 'package:efficacy_user/pages/event_details_view/widgets/photo_viewer.dart';
 import 'package:efficacy_user/utils/custom_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:intl/intl.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -70,10 +71,15 @@ class _EventFullScreenState extends State<EventFullScreen> {
                             ),
                           ],
                         )
-                      :SizedBox(
-                          child: CustomNetworkImage(
-                        url: widget.currentEvent!.posterURL)
-                        ,)
+                      :SingleChildScrollView(
+                        child: Column(
+                            children: [
+                              SizedBox(
+                                child: CustomNetworkImage(
+                                url: widget.currentEvent!.posterURL),
+                              )]
+                          ,),
+                      )
             ),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30),
