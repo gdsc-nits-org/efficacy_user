@@ -19,8 +19,8 @@ Efficacy is an innovative app designed to streamline event organization and comm
   - [Bug Reports](#bug-reports)
   - [Feature Requests](#feature-requests)
   - [Pull Requests](#pull-requests)
-<!-- - [Code of Conduct](#code-of-conduct)
-- [License](#license) -->
+- [Code of Conduct](#code-of-conduct)
+<!-- - [License](#license) -->
 
 ## Introduction
 
@@ -74,10 +74,12 @@ We appreciate code contributions! To submit a pull request:
 4. Push your branch to your fork.
 5. Create a pull request against the `master` branch of the original repository.
 
-<!-- ## Code of Conduct
+For more details check out our [Contributing Guide](CONTRIBUTING.md).
+
+## Code of Conduct
 
 Please review and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive community.
 
-## License
+<!-- ## License
 
 This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE.md) file for details. -->
