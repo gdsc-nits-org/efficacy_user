@@ -68,10 +68,7 @@ class DevelopersPageState extends State<DevelopersPage> {
     double cardImageSizeSmall = width * 0.20;
     double cardSpacing = width * 0.025;
     return Scaffold(
-      endDrawer: CustomDrawer(
-        pageContext: context
-      ),
-
+      endDrawer: CustomDrawer(pageContext: context),
       appBar: const CustomAppBar(
         title: 'Developers',
       ),
@@ -141,7 +138,10 @@ class DevelopersPageState extends State<DevelopersPage> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text(developers[index].name),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(developers[index].name),
+                              ),
                               const SizedBox(height: 10),
                               AnimatedContainer(
                                 height: (iconVisibility[index]) ? 40 : 0,
