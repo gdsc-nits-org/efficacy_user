@@ -20,6 +20,9 @@ _$ClubModelImpl _$$ClubModelImplFromJson(Map<String, dynamic> json) =>
       phoneNumber: const PhoneNumberSerializer()
           .fromJson(json['phoneNumber'] as Map<String, dynamic>?),
       clubLogoURL: json['clubLogoURL'] as String,
+      clubStatus:
+          $enumDecodeNullable(_$ClubStatusEnumMap, json['clubStatus']) ??
+              ClubStatus.requested,
       clubLogoPublicId: json['clubLogoPublicId'] as String?,
       clubBannerURL: json['clubBannerURL'] as String?,
       clubBannerPublicId: json['clubBannerPublicId'] as String?,
@@ -48,6 +51,7 @@ Map<String, dynamic> _$$ClubModelImplToJson(_$ClubModelImpl instance) =>
       'email': instance.email,
       'phoneNumber': const PhoneNumberSerializer().toJson(instance.phoneNumber),
       'clubLogoURL': instance.clubLogoURL,
+      'clubStatus': _$ClubStatusEnumMap[instance.clubStatus]!,
       'clubLogoPublicId': instance.clubLogoPublicId,
       'clubBannerURL': instance.clubBannerURL,
       'clubBannerPublicId': instance.clubBannerPublicId,
@@ -62,4 +66,10 @@ const _$SocialEnumMap = {
   Social.facebook: 'facebook',
   Social.instagram: 'instagram',
   Social.linkedin: 'linkedin',
+};
+
+const _$ClubStatusEnumMap = {
+  ClubStatus.requested: 'requested',
+  ClubStatus.accepted: 'accepted',
+  ClubStatus.rejected: 'rejected',
 };

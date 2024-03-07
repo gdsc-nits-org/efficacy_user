@@ -37,7 +37,9 @@ class ClubsStream extends StatelessWidget {
           return const Text('No clubs available for NIT Silchar');
         } else {
           // Data available
-          final clubs = snapshot.data!;
+          final clubs = snapshot.data!
+              .where((club) => club.clubStatus == ClubStatus.accepted)
+              .toList();
           final userClubList = clubs
               .where((club) =>
                   UserController.currentUser!.following.contains(club.id))
